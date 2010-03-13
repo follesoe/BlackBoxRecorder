@@ -9,7 +9,7 @@ using Xunit.Extensions;
 
 namespace BlackBox.Tests.Testing
 {
-    public class CharacterizationTestTest : BDD<CharacterizationTestTest>
+    public class CharacterizationTestBaseClassTest : BDD<CharacterizationTestBaseClassTest>
     {
         [Fact]
         public void Can_load_a_test_recording_as_XDocument()
@@ -41,7 +41,7 @@ namespace BlackBox.Tests.Testing
         private readonly DefaultRecorder recorder;
         private XDocument recording;
 
-        public CharacterizationTestTest()
+        public CharacterizationTestBaseClassTest()
         {
             testClass = new CharacterizationTest();
             writer = new RecordingXmlWriter();
