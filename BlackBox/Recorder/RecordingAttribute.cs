@@ -8,13 +8,15 @@ namespace BlackBox.Recorder
     {
         public override void OnEntry(MethodExecutionEventArgs eventArgs)
         {
-            eventArgs.MethodExecutionTag = Guid.NewGuid();           
-            RecordingServices.Recorder.RecordEntry(eventArgs.Instance, eventArgs.Method, eventArgs.GetReadOnlyArgumentArray());
+            Guid callGuid = Guid.NewGuid();
+            eventArgs.MethodExecutionTag = callGuid;
+            var recording = new MethodRecording(eventArgs.Method, eventArgs.Instance, eventArgs.GetReadOnlyArgumentArray());
+            RecordingServices.Recorder.RecordEntry(callGuid, recording);
         }
 
         public override void OnExit(MethodExecutionEventArgs eventArgs)
         {            
-            RecordingServices.Recorder.RecordExit(eventArgs.Method, eventArgs.ReturnValue);
+            RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.ReturnValue);
         }
     }
 }
