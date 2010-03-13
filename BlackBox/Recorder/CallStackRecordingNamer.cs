@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
-using System;
 
 namespace BlackBox.Recorder
 {
@@ -30,18 +31,15 @@ namespace BlackBox.Recorder
 
         private StackFrame FindTestMethod(IEnumerable<StackFrame> stackFrames)
         {
-            foreach(StackFrame frame in stackFrames)                
-            {                
-                MethodBase method = frame.GetMethod();
-
-                if(HasTestAttribute(method)) return frame;                
-            }
-            return null;
+            return (from frame in stackFrames 
+                    let method = frame.GetMethod() 
+                    where HasTestAttribute(method) 
+                    select frame).FirstOrDefault();
         }
 
         private bool HasTestAttribute(MemberInfo method)
         {
-            Attribute[] attributes = Attribute.GetCustomAttributes(method, false);
+            Attribute[] attributes = Attribute.GetCustomAttributes(method, true);
 
             foreach(var attribute in attributes)
             {

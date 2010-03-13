@@ -18,9 +18,9 @@ namespace BlackBox
             get { return Method.ToString(); }
         }
 
-        public MethodRecording(string recordingName, MethodBase method, object instance, object[] parameterValues)
+        public MethodRecording(MethodBase method, object instance, object[] parameterValues)
         {
-            RecordingName = recordingName;
+            RecordingName = RecordingServices.RecordingNamer.GetNameForRecording(method); ;
             Parameters = new List<ParameterRecording>();
             AddMethod(method, instance, parameterValues);
         }

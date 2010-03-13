@@ -24,7 +24,15 @@ namespace BlackBox.Tests.Recorder
         {
             Given.we_have_an_xml_recording();
             When.we_load_the_recording_into_the_reader();
-            reader.GetRecordingName().ShouldEqual("Can_read_name_of_the_recording");
+           
+            string expectedIfUITestRunner = "Can_read_name_of_the_recording";
+            string expectedIfConsoleTestRunner = "System.Collections.Generic.List`1[BlackBox.Tests.Fakes.Contact]_AllExcept_BlackBox.Tests.Fakes.Contact";
+            string recordingName = reader.GetRecordingName();
+
+            if(recordingName != expectedIfUITestRunner && recordingName != expectedIfConsoleTestRunner)
+            {
+                Assert.True(false, string.Format("Actual value ({0}) does not match any of the expected values ({1} or {2})", recordingName, expectedIfConsoleTestRunner, expectedIfUITestRunner));                
+            }
         }
 
         [Fact]

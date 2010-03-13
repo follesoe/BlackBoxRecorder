@@ -8,8 +8,8 @@ namespace BlackBox.Recorder
     {
         public override void OnEntry(MethodExecutionEventArgs eventArgs)
         {
-            string recordingName = RecordingServices.RecordingNamer.GetNameForRecording(eventArgs.Method);
-            RecordingServices.Recorder.RecordEntry(recordingName, eventArgs.Instance, eventArgs.Method, eventArgs.GetReadOnlyArgumentArray());
+            eventArgs.MethodExecutionTag = Guid.NewGuid();           
+            RecordingServices.Recorder.RecordEntry(eventArgs.Instance, eventArgs.Method, eventArgs.GetReadOnlyArgumentArray());
         }
 
         public override void OnExit(MethodExecutionEventArgs eventArgs)

@@ -70,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDD.cs" />
-    <Compile Include="CodeGeneration\TestGeneratorTest.cs" />
     <Compile Include="Recorder\TypeAndMethodNamerTest.cs" />
     <Compile Include="Fakes\SimpleAddressBook.cs" />
     <Compile Include="Fakes\SimpleMath.cs" />
@@ -82,7 +81,7 @@
     <Compile Include="Recorder\RecordingOfComplexTypesTest.cs" />
     <Compile Include="Recorder\SaveRecordingToDiskTest.cs" />
     <Compile Include="SerializationExtensionTest.cs" />
-    <Compile Include="Testing\CharacterizationTestTest.cs" />
+    <Compile Include="Testing\CharacterizationTestBaseClassTest.cs" />
     <Compile Include="TypeExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -90,20 +89,6 @@
       <Project>{11FA65CD-EBC2-41D2-8B12-B2CA9EC2E846}</Project>
       <Name>BlackBox</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TestInputFiles\Recording\Demo.SalesLib.SalesCalculation\Double CalculateCommissionDue%28Double%29\ProcessSalesPeopleScenarioTest.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestInputFiles\Recording\Demo.SalesLib.SalesCalculation\Double CalculateCommissionDue%28Double%29\ProcessSalesPeopleScenarioTest_2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestInputFiles\Recording\Demo.SalesLib.SalesCalculation\Double CalculateCommissionDue%28Double%29\ProcessSalesPeopleScenarioTest_3.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestInputFiles\Recording\Demo.SalesLib.SalesCalculation\Double CalculateCommissionDue%28Double%29\ProcessSalesPeopleScenarioTest_4.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <DontImportPostSharp>True</DontImportPostSharp>

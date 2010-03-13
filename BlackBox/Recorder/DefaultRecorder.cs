@@ -17,9 +17,9 @@ namespace BlackBox.Recorder
             _notExited = new Dictionary<MethodBase, MethodRecording>();
         }
 
-        public void RecordEntry(string recordingName, object instance, MethodBase method, object[] parameters)
+        public void RecordEntry(object instance, MethodBase method, object[] parameters)
         {
-            var recording = new MethodRecording(recordingName, method, instance, parameters);
+            var recording = new MethodRecording(method, instance, parameters);
             _notExited.Add(method, recording);
         }
 
