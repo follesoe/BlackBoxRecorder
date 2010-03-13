@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>PostSharp.AspNet</name>
+  </assembly>
+  <members>
+    <member name="T:PostSharp.AspNet.AssemblyPostProcessor">
+      <summary>
+             Hooks into the ASP.NET compilation process by post-processing
+             assemblies using PostSharp (implementation of <see cref="T:System.Web.Compilation.IAssemblyPostProcessor" />).
+             </summary>
+      <remarks>
+        <para>In order to use PostSharp in a web project, specify this class
+             as an assembly post-processor in <b>web.config</b>:</para>
+        <code>
+             &lt;configuration&gt;
+                  &lt;system.web&gt;
+                    &lt;compilation debug="true" assemblyPostProcessorType="PostSharp.AspNet.AssemblyPostProcessor, PostSharp.AspNet"/&gt;
+                  &lt;/system.web&gt;
+             &lt;/configuration&gt;
+             </code>
+        <para>Additionally, you have to add the <b>&lt;postsharp ... /&gt;</b>
+             section in the configuration file:
+             </para>
+        <code>
+            &lt;?xml version="1.0"?&gt;
+            &lt;configuration&gt;
+            	&lt;!-- Add a configuration handler for PostSharp. --&gt;
+            	&lt;configSections&gt;
+            		&lt;section name="postsharp" type="PostSharp.AspNet.PostSharpConfiguration, PostSharp.AspNet"/&gt;
+            	&lt;/configSections&gt;
+            	&lt;!-- PostSharp configuration --&gt;
+            	&lt;postsharp directory="P:\open\branches\1.0\Core\PostSharp.MSBuild\bin\Debug" trace="true"&gt;
+            		&lt;parameters&gt;
+            			&lt;!--&lt;add name="parameter-name" value="parameter-value"/&gt;--&gt;
+            		&lt;/parameters&gt;
+            		&lt;searchPath&gt;
+            			&lt;!-- Always add the binary folder to the search path. --&gt;
+            			&lt;add name="bin" value="~\bin"/&gt;
+            			&lt;!-- Then add the location of plug-ins that are not installed in standard locations. --&gt;
+            			&lt;add name="laos-weaver" value="P:\open\branches\1.0\Laos\PostSharp.Laos.Weaver\bin\Debug"/&gt;
+            		&lt;/searchPath&gt;
+            	&lt;/postsharp&gt;
+            	&lt;appSettings/&gt;
+            	&lt;connectionStrings/&gt;
+            	&lt;system.web&gt;
+            		&lt;!-- Note the 'assemblyPostProcessorType' attribute. --&gt;
+            		&lt;compilation debug="true" assemblyPostProcessorType="PostSharp.AspNet.AssemblyPostProcessor, PostSharp.AspNet"&gt;
+            		&lt;authentication mode="None"/&gt;
+            		&lt;trace enabled="true" pageOutput="true"/&gt;
+            	&lt;/system.web&gt;
+            &lt;/configuration&gt;
+             </code>
+        <para>
+             In all configuration parameters and in search path elements, the tilde character (~) is
+             replaced by the physical path of the application.
+             </para>
+      </remarks>
+      <seealso cref="T:PostSharp.AspNet.PostSharpConfiguration" />
+    </member>
+    <member name="M:PostSharp.AspNet.AssemblyPostProcessor.#ctor">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.AspNet.AssemblyPostProcessor" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.AspNet.AssemblyPostProcessor.PostProcessAssembly(System.String)">
+      <summary>
+            Method invoked after the C# or VB compiler has done its job.
+            </summary>
+      <param name="path">Full path to the newly created assembly.</param>
+    </member>
+    <member name="M:PostSharp.AspNet.AssemblyPostProcessor.Dispose">
+      <summary>
+            Disposes the current object.
+            </summary>
+    </member>
+    <member name="T:PostSharp.AspNet.PostSharpConfiguration">
+      <summary>
+            Configuration section of PostSharp ASP.NET assembly post-processor.
+            </summary>
+      <remarks>
+            See <see cref="T:PostSharp.AspNet.AssemblyPostProcessor" /> for a complete example
+            of <b>web.config</b>.
+            </remarks>
+      <seealso cref="T:PostSharp.AspNet.AssemblyPostProcessor" />
+    </member>
+    <member name="P:PostSharp.AspNet.PostSharpConfiguration.Trace">
+      <summary>
+            Determines whether PostSharp tracing is enabled.
+            </summary>
+      <value>
+            A boolean. Default is <b>false</b>.
+            </value>
+    </member>
+    <member name="P:PostSharp.AspNet.PostSharpConfiguration.Project">
+      <summary>
+            Gets or sets the PostSharp project to be executed.
+            If not specified, the default project is used. 
+            </summary>
+    </member>
+    <member name="P:PostSharp.AspNet.PostSharpConfiguration.Parameters">
+      <summary>
+            Gets collection of parameters passed to the PostSharp project.
+            </summary>
+    </member>
+    <member name="P:PostSharp.AspNet.PostSharpConfiguration.SearchPath">
+      <summary>
+            Gets collection of parameters passed to the PostSharp project.
+            </summary>
+    </member>
+    <member name="P:PostSharp.AspNet.PostSharpConfiguration.AttachDebugger">
+      <summary>
+            If <b>true</b>, the method <see cref="T:System.Diagnostics.Debugger" />.<see cref="M:System.Diagnostics.Debugger.Launch" />
+            will be invoked before the execution of PostSharp, given the opportunity to
+            attach a debugger to the building process.
+            </summary>
+    </member>
+    <member name="P:PostSharp.AspNet.PostSharpConfiguration.Directory">
+      <summary>
+            Gets or sets the directory containing PostSharp.
+            </summary>
+    </member>
+  </members>
+</doc>

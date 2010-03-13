@@ -1,0 +1,2424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>PostSharp.Laos</name>
+  </assembly>
+  <members>
+    <member name="T:PostSharp.Laos.AspectSpecification">
+      <summary>
+            Completely specifies an aspect. Contains either the aspect instance itself (<see cref="P:PostSharp.Laos.AspectSpecification.Aspect" /> property),
+            either information allowing to construct the aspect (<see cref="P:PostSharp.Laos.AspectSpecification.AspectConstruction" />) and configure
+            the weaver (<see cref="P:PostSharp.Laos.AspectSpecification.AspectConfiguration" />).
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.AspectSpecification.#ctor(PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.AspectSpecification" /> from an aspect instance.
+            </summary>
+      <param name="aspect">Aspect instance.</param>
+      <param name="aspectConstruction">Construction of the aspect (or <b>null</b> if the construction
+            is not available - in this case the aspect is required to have a serializer).</param>
+    </member>
+    <member name="M:PostSharp.Laos.AspectSpecification.#ctor(PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspectConfiguration)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.AspectSpecification" /> when one cannot provide an aspect instance,
+            i.e. from an <see cref="T:PostSharp.Reflection.IObjectConstruction" /> and a <see cref="T:PostSharp.Laos.ILaosAspectConfiguration" />.
+            </summary>
+      <param name="aspectConstruction">Aspect construction.</param>
+      <param name="aspectConfiguration">Aspect configuration.</param>
+    </member>
+    <member name="P:PostSharp.Laos.AspectSpecification.AspectConfiguration">
+      <summary>
+            Gets the aspect configuration.
+            </summary>
+      <value>
+            The aspect configuration, or <b>null</b> if none was provided.
+            </value>
+    </member>
+    <member name="P:PostSharp.Laos.AspectSpecification.AspectConstruction">
+      <summary>
+            Gets the aspect construction.
+            </summary>
+      <value>
+            The aspect construction, or <b>null</b> if the aspect instance was provided instead.
+            </value>
+    </member>
+    <member name="P:PostSharp.Laos.AspectSpecification.Aspect">
+      <summary>
+            Gets the aspect instance.
+            </summary>
+      <value>
+            The aspect instance, or <b>null</b> if the <see cref="P:PostSharp.Laos.AspectSpecification.AspectConfiguration" /> was provided instead.
+            </value>
+    </member>
+    <member name="P:PostSharp.Laos.AspectSpecification.AspectAssemblyQualifiedTypeName">
+      <summary>
+            Gets the assembly-qualified type name of the aspect.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.AspectSpecification.AspectTypeName">
+      <summary>
+            Gets the type name of the aspect.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.CompositionAspect">
+      <summary>
+            Custom attribute that, when applied on a type, compose another type into that
+            type and implements one of its interfaces.
+            </summary>
+      <remarks>
+            Use the <see cref="T:PostSharp.Post" />.<see cref="M:PostSharp.Post.Cast``2(``0)" />
+            method to cast the enhanced type to the newly implemented interface. This
+            cast is verified during post-compilation.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.LaosTypeLevelAspect">
+      <summary>
+            Base class for all aspects applied on types.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosTypeLevelAspect" />
+    </member>
+    <member name="T:PostSharp.Laos.LaosWeavableAspect">
+      <summary>
+            Base class for aspects that can be woven.
+            </summary>
+      <remarks>
+            Combined aspects, for instance, are not woven in themselves, and
+            are not derived from this class.
+            </remarks>
+      <seealso cref="T:PostSharp.Laos.ILaosWeavableAspect" />
+    </member>
+    <member name="T:PostSharp.Laos.LaosAspect">
+      <summary>
+            Base class for all aspects that are declared using custom attributes
+            (<see cref="T:PostSharp.Extensibility.MulticastAttribute" />).
+            </summary>
+      <remarks>
+        <para>All classes derived from <see cref="T:PostSharp.Laos.LaosAspect" /> should be serializable
+            (using the <see cref="T:System.SerializableAttribute" /> custom attribute). Fields that
+            are only used at runtime (and unknown at compile-time) should be carefully
+            marked with the <see cref="T:System.NonSerializedAttribute" /> custom attribute.</para>
+      </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosAspect">
+      <summary>
+            Base interface for th run-time semantics of all Laos aspects.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosAspectBuildSemantics" />
+      <seealso cref="T:PostSharp.Laos.ILaosAspectConfiguration" />
+    </member>
+    <member name="T:PostSharp.Laos.ILaosAspectBuildSemantics">
+      <summary>
+            Compile-time semantics of <see cref="T:PostSharp.Laos.ILaosAspect" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosAspectConfiguration">
+      <summary>
+            Configuration of an <see cref="T:PostSharp.Laos.ILaosAspect" />.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.ILaosAspectConfiguration.RequiresReflectionWrapper">
+      <summary>
+            Determines whether the aspect requires reflection wrappers.
+            If not, compile-time semantics of the aspect will receive
+            normal reflection objects, requiring the enhanced assembly to
+            be loaded in the weaver.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ILaosAspectBuildSemantics.CompileTimeValidate(System.Object)">
+      <summary>
+            Method invoked at compile time to ensure that the aspect has been applied to
+            the right target.
+            </summary>
+      <param name="target">Target element.</param>
+      <returns>
+        <b>true</b> if the aspect was applied to an acceptable target, otherwise
+            <b>false</b>.</returns>
+      <remarks>The implementation of this method is expected to emit an error message
+            or an exception in case of error. Only returning <b>false</b> causes the aspect
+            to be silently ignored.</remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosAspect.CompileTimeValidate(System.Object)">
+      <summary>
+            Method invoked at compile time to ensure that the aspect has been applied to
+            the right target.
+            </summary>
+      <param name="target">Target element.</param>
+      <returns>
+        <b>true</b> if the aspect was applied to an acceptable target, otherwise
+            <b>false</b>.</returns>
+      <remarks>The implementation of this method is expected to emit an error message
+            or an exception in case of error. Only returning <b>false</b> causes the aspect
+            to be silently ignored.</remarks>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosWeavableAspect">
+      <summary>
+            Base interface for all aspects that can be woven, that is, that
+            really change the code.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosWeavableAspectConfiguration">
+      <summary>
+            Configuration of <see cref="T:PostSharp.Laos.ILaosWeavableAspect" /> aspects.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" />
+    </member>
+    <member name="P:PostSharp.Laos.ILaosWeavableAspectConfiguration.AspectPriority">
+      <summary>
+            Gets the weaving priority of the aspect.
+            </summary>
+      <value>The aspect priority, or <b>null</b> if the aspect priority is not specified.</value>
+      <remarks>
+            Handlers with lower priority are executed before
+            in case of 'entry' semantics (entering or invoking a method, setting a field value),
+            but this order is inverted for handlers of 'exit' semantics (leaving a method, getting a field value).
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.ILaosWeavableAspectConfiguration.SerializerType">
+      <summary>
+            Gets the type of the serializer that will be used
+            to configure the current aspect. 
+            </summary>
+      <remarks>
+            This type should have derive from <see cref="T:PostSharp.Laos.LaosSerializer" />
+            and have a default constructor. Use <b>null</b> to specify that the aspect will not
+            be serialized, but will be constructed using MSIL instructions.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.LaosWeavableAspect.AspectPriority">
+      <summary>
+            Gets the weaving priority of the aspect.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.LaosWeavableAspect.SerializerType">
+      <summary>
+            Gets the type of the serializer that will be used
+            to configure the current aspect. 
+            </summary>
+      <remarks>
+            This type should have derive from <see cref="T:PostSharp.Laos.LaosSerializer" />
+            and have a default constructor. Use <b>null</b> to specify that the aspect will not
+            be serialized, but will be constructed using MSIL instructions.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosTypeLevelAspect">
+      <summary>
+            Defines the run-time semantics of aspects applied to types.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosTypeLevelAspectBuildSemantics" />
+    </member>
+    <member name="M:PostSharp.Laos.ILaosTypeLevelAspect.RuntimeInitialize(System.Type)">
+      <summary>
+            Method called at runtime just after the instance is deserialized.
+            </summary>
+      <param name="type">Type on which this instance is applied.</param>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosTypeLevelAspectBuildSemantics">
+      <summary>
+            Compile-time semantics of <see cref="T:PostSharp.Laos.ILaosTypeLevelAspect" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ILaosTypeLevelAspectBuildSemantics.CompileTimeInitialize(System.Type)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="type">Type on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+        <para>
+            You cannot store and serialize the <paramref name="type" /> parameter because it is basically
+            a runtime object. You shall receive the <see cref="T:System.Type" /> at runtime by the
+            <see cref="M:PostSharp.Laos.ILaosTypeLevelAspect.RuntimeInitialize(System.Type)" /> method.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosTypeLevelAspect.CompileTimeValidate(System.Type)" />
+    <member name="M:PostSharp.Laos.LaosTypeLevelAspect.CompileTimeValidate(System.Object)">
+      <summary>
+            Method invoked at compile time to ensure that the aspect has been applied to
+            the right target.
+            </summary>
+      <param name="target">Target element.</param>
+      <returns>
+        <b>true</b> if the aspect was applied to an acceptable target, otherwise
+            <b>false</b>.</returns>
+      <remarks>The implementation of this method is expected to emit an error message
+            or an exception in case of error. Only returning <b>false</b> causes the aspect
+            to be silently ignored.</remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosTypeLevelAspect.CompileTimeInitialize(System.Type)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="type">Type on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+        <para>
+            You cannot store and serialize the <paramref name="type" /> parameter because it is basically
+            a runtime object. You shall receive the <see cref="T:System.Type" /> at runtime by the
+            <see cref="M:PostSharp.Laos.ILaosTypeLevelAspect.RuntimeInitialize(System.Type)" /> method.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosTypeLevelAspect.RuntimeInitialize(System.Type)">
+      <summary>
+            Method called at runtime just after the instance is deserialized.
+            </summary>
+      <param name="type">Type on which this instance is applied.</param>
+    </member>
+    <member name="T:PostSharp.Laos.ICompositionAspect">
+      <summary>
+            Defines the semantics of an aspect that, when applied on a type, adds
+            an interface to this type and delegates the implementation of this interface
+            to a third object.
+            </summary>
+      <remarks>
+            Use the <see cref="T:PostSharp.Post" />.<see cref="M:PostSharp.Post.Cast``2(``0)" />
+            method to cast the enhanced type to the newly implemented interface. This
+            cast is verified during post-compilation.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.ICompositionAspect.CreateImplementationObject(PostSharp.Laos.InstanceBoundLaosEventArgs)">
+      <summary>
+            Method called at runtime, in the constructor of the container object,
+            to create the composed object.
+            </summary>
+      <returns>The composed object. This interface should implement the interface returned
+            by the <see cref="M:PostSharp.Laos.ICompositionAspectConfiguration.GetPublicInterface(System.Type)" /> method.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.ICompositionAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.ICompositionAspect" />.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.CompositionAspectConfigurationAttribute" />
+    </member>
+    <member name="T:PostSharp.Laos.IInstanceBoundLaosAspectConfiguration">
+      <summary>
+            Configuration of aspects that are bound to an object instance,
+            for instance to a field or to a method. Note that if the aspect is 
+            applied to a static field or method, methods of this interface are
+            never invoked.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IInstanceBoundLaosAspectConfiguration.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.ICompositionAspectConfiguration.GetPublicInterface(System.Type)">
+      <summary>
+            Gets the type name of the public interface. Called at compile time.
+            </summary>
+      <param name="containerType">Type of the container object.</param>
+      <returns>The name of the interface that should be exposed on the container object and that
+            will be implemented by the implementation object (<see cref="M:PostSharp.Laos.ICompositionAspect.CreateImplementationObject(PostSharp.Laos.InstanceBoundLaosEventArgs)" />).</returns>
+    </member>
+    <member name="M:PostSharp.Laos.ICompositionAspectConfiguration.GetProtectedInterfaces(System.Type)">
+      <summary>
+            Gets the name of all interfaces exposed with 'protected' visibility. Called at compile time.
+            </summary>
+      <param name="containerType">Type of the container object.</param>
+      <returns>The interface that should be exposed on the container object and that
+            will be implemented by the implementation object (<see cref="M:PostSharp.Laos.ICompositionAspect.CreateImplementationObject(PostSharp.Laos.InstanceBoundLaosEventArgs)" />).</returns>
+      <seealso cref="T:PostSharp.Laos.InstanceCredentials" />
+    </member>
+    <member name="M:PostSharp.Laos.ICompositionAspectConfiguration.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>Weaving options, or <b>null</b> if no weaving option is specified.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.CompositionAspect.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.CompositionAspect.CreateImplementationObject(PostSharp.Laos.InstanceBoundLaosEventArgs)">
+      <summary>
+            Method called at runtime, in the constructor of the container object,
+            to create the composed object.
+            </summary>
+      <returns>The composed object. This interface should implement the interface returned
+            by the <see cref="M:PostSharp.Laos.ICompositionAspectConfiguration.GetPublicInterface(System.Type)" /> method.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.CompositionAspect.GetPublicInterface(System.Type)">
+      <summary>
+            Gets the type name of the public interface. Called at compile time.
+            </summary>
+      <param name="containerType">Type of the container object.</param>
+      <returns>The name of the interface that should be exposed on the container object and that
+            will be implemented by the implementation object (<see cref="M:PostSharp.Laos.ICompositionAspect.CreateImplementationObject(PostSharp.Laos.InstanceBoundLaosEventArgs)" />).</returns>
+    </member>
+    <member name="M:PostSharp.Laos.CompositionAspect.GetProtectedInterfaces(System.Type)">
+      <summary>
+            Gets the name of all interfaces exposed with 'protected' visibility. Called at compile time.
+            </summary>
+      <param name="containerType">Type of the container object.</param>
+      <returns>The interface that should be exposed on the container object and that
+            will be implemented by the implementation object (<see cref="M:PostSharp.Laos.ICompositionAspect.CreateImplementationObject(PostSharp.Laos.InstanceBoundLaosEventArgs)" />).</returns>
+      <seealso cref="T:PostSharp.Laos.InstanceCredentials" />
+    </member>
+    <member name="M:PostSharp.Laos.CompositionAspect.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>Weaving options, or <b>null</b> if no weaving option is specified.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.CompoundAspect">
+      <summary>
+            Custom attribute that can be extended to develop combined aspects,
+            i.e. aspects composed of many 'sub-aspects'. These are provided
+            by the <see cref="M:PostSharp.Laos.CompoundAspect.ProvideAspects(System.Object,PostSharp.Laos.LaosReflectionAspectCollection)" /> method, which should be
+            overwritten.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ICompoundAspect" />
+    </member>
+    <member name="T:PostSharp.Laos.ICompoundAspect">
+      <summary>
+            Defines the semantics of an aspect that is not woven in itself, but can
+            provide other aspects. The current interface extends <see cref="T:PostSharp.Laos.ILaosReflectionAspectProvider" />
+            but support compile-time initialization and validation.
+            </summary>
+      <remarks>
+            Seems combined aspects are not weavable, they don't have to be serializable.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosReflectionAspectProvider">
+      <summary>
+            Interface that should be implemented by aspects that want
+            to provide other aspects to the weaver (i.e. combined
+            aspects, see <see cref="T:PostSharp.Laos.ICompoundAspect" />).
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ILaosReflectionAspectProvider.ProvideAspects(PostSharp.Laos.LaosReflectionAspectCollection)">
+      <summary>
+            Provides new aspects.
+            </summary>
+      <param name="collection">Collection into which
+            new aspects have to be added.</param>
+    </member>
+    <member name="M:PostSharp.Laos.ICompoundAspect.CompileTimeInitialize(System.Object)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="element">Element (<see cref="T:System.Reflection.MethodBase" />, <see cref="T:System.Reflection.FieldInfo" /> 
+            or <see cref="T:System.Type" /> on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.CompoundAspect.ProvideAspects(System.Object,PostSharp.Laos.LaosReflectionAspectCollection)">
+      <summary>
+            Provides new aspects.
+            </summary>
+      <param name="element">Element to which the current custom attribute is applied.</param>
+      <param name="collection">Collection into which
+            new aspects have to be added.</param>
+    </member>
+    <member name="M:PostSharp.Laos.CompoundAspect.CompileTimeInitialize(System.Object)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="element">Element (<see cref="T:System.Reflection.MethodBase" />, <see cref="T:System.Reflection.FieldInfo" /> 
+            or <see cref="T:System.Type" /> on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.CompoundAspect.GetOptions">
+      <summary>
+            Gets the options of the current <see cref="T:PostSharp.Laos.CompoundAspect" />.
+            </summary>
+      <returns>The options of the current <see cref="T:PostSharp.Laos.CompoundAspect" />.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.CompoundAspectOptions">
+      <summary>
+            Options for the aspect <see cref="T:PostSharp.Laos.CompoundAspect" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.CompoundAspectOptions.None">
+      <summary>
+            Default options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.CompoundAspectConfigurationAttribute">
+      <summary>
+            Custom attribute configuring the aspect <see cref="T:PostSharp.Laos.CompoundAspect" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.LaosAspectConfigurationAttribute">
+      <summary>
+            Configures an aspect of type <see cref="T:PostSharp.Laos.ILaosAspect" />.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.LaosAspectConfigurationAttribute.RequiresReflectionWrapper">
+      <summary>
+            Determines whether the aspect requires reflection wrappers.
+            If not, compile-time semantics of the aspect will receive
+            normal reflection objects, requiring the enhanced assembly to
+            be loaded in the weaver.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.EnableLaosAwarenessAttribute">
+      <summary>
+            Custom attribute enabling a Laos awareness (like awareness of serialization) on the aspect class or the target
+            assembly on which the custom attribute is applied.
+            </summary>
+      <remarks>
+            When this custom attribute is applied on an <b>aspect class</b>, it means that the awareness should be enabled
+            on any assembly using that aspect. When this custom attribute is applied on an <b>assembly</b>, it means
+            that this awareness should be enabled when processing that assembly.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.EnableLaosAwarenessAttribute.#ctor(System.String,System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.EnableLaosAwarenessAttribute" />.
+            </summary>
+      <param name="pluginName">Short name of the plug-in containing the awareness implementation.</param>
+      <param name="name">Name of the task implementing the awareness.</param>
+    </member>
+    <member name="P:PostSharp.Laos.EnableLaosAwarenessAttribute.PlugInName">
+      <summary>
+            Gets the short name of the plug-in containing the awareness implementation.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.EnableLaosAwarenessAttribute.TaskName">
+      <summary>
+            Gets the name of the task containing the awareness implementation.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.ExceptionHandlerAspect">
+      <summary>
+            Base class for aspects that implement an exception handler
+            (<see cref="T:PostSharp.Laos.OnMethodBoundaryAspect" />, <see cref="T:PostSharp.Laos.OnExceptionAspect" />).
+            </summary>
+      <seealso cref="T:PostSharp.Laos.IExceptionHandlerAspect" />
+    </member>
+    <member name="T:PostSharp.Laos.LaosMethodLevelAspect">
+      <summary>
+            Base class for all aspects applied on methods.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosMethodLevelAspect" />
+    </member>
+    <member name="T:PostSharp.Laos.ILaosMethodLevelAspect">
+      <summary>
+            Defines the run-time semantics of aspects applied to methods.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosMethodLevelAspectBuildSemantics" />
+    </member>
+    <member name="M:PostSharp.Laos.ILaosMethodLevelAspect.RuntimeInitialize(System.Reflection.MethodBase)">
+      <summary>
+            Method called at runtime just after the instance is deserialized.
+            </summary>
+      <param name="method">Method on which this instance is applied.</param>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosMethodLevelAspectBuildSemantics">
+      <summary>
+            Compile-time semantics of <see cref="T:PostSharp.Laos.ILaosMethodLevelAspect" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ILaosMethodLevelAspectBuildSemantics.CompileTimeInitialize(System.Reflection.MethodBase)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="method">Method on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+        <para>
+            You cannot store and serialize the <paramref name="method" /> parameter because it is basically
+            a runtime object. You shall receive the <see cref="T:System.Reflection.MethodBase" /> at runtime by the
+            <see cref="M:PostSharp.Laos.ILaosMethodLevelAspect.RuntimeInitialize(System.Reflection.MethodBase)" /> method.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosMethodLevelAspect.CompileTimeValidate(System.Reflection.MethodBase)" />
+    <member name="M:PostSharp.Laos.LaosMethodLevelAspect.CompileTimeValidate(System.Object)">
+      <summary>
+            Method invoked at compile time to ensure that the aspect has been applied to
+            the right target.
+            </summary>
+      <param name="target">Target element.</param>
+      <returns>
+        <b>true</b> if the aspect was applied to an acceptable target, otherwise
+            <b>false</b>.</returns>
+      <remarks>The implementation of this method is expected to emit an error message
+            or an exception in case of error. Only returning <b>false</b> causes the aspect
+            to be silently ignored.</remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosMethodLevelAspect.CompileTimeInitialize(System.Reflection.MethodBase)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="method">Method on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+        <para>
+            You cannot store and serialize the <paramref name="method" /> parameter because it is basically
+            a runtime object. You shall receive the <see cref="T:System.Reflection.MethodBase" /> at runtime by the
+            <see cref="M:PostSharp.Laos.ILaosMethodLevelAspect.RuntimeInitialize(System.Reflection.MethodBase)" /> method.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosMethodLevelAspect.RuntimeInitialize(System.Reflection.MethodBase)">
+      <summary>
+            Method called at runtime just after the instance is deserialized.
+            </summary>
+      <param name="method">Method on which this instance is applied.</param>
+    </member>
+    <member name="T:PostSharp.Laos.IExceptionHandlerAspect">
+      <summary>
+            Base interface for aspects defining an exception handler
+            (<see cref="T:PostSharp.Laos.IOnExceptionAspect" />, <see cref="T:PostSharp.Laos.IOnMethodBoundaryAspect" />).
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.IExceptionHandlerAspect.OnException(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed when an exception occurs in the methods to which the current
+            custom attribute has been applied.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being called and with which parameters.</param>
+    </member>
+    <member name="T:PostSharp.Laos.IExceptionHandlerAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.IExceptionHandlerAspect" /> aspect.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ExceptionHandlerOptionsAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IExceptionHandlerAspectConfiguration.GetExceptionType(System.Reflection.MethodBase)">
+      <summary>
+            Gets the type name of exceptions that are caught by this aspect.
+            </summary>
+      <param name="method">Method to which the current custom attribute instance
+            is applied.</param>
+      <returns>The assembly-qualified name of the type (derived from <see cref="T:System.Exception" />),
+            or <b>null</b> if any <see cref="T:System.Exception" /> is to be caught.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.ExceptionHandlerAspect.OnException(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed when an exception occurs in the methods to which the current
+            custom attribute has been applied.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being called and with which parameters.</param>
+    </member>
+    <member name="M:PostSharp.Laos.ExceptionHandlerAspect.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.ExceptionHandlerAspect.GetExceptionType(System.Reflection.MethodBase)">
+      <summary>
+            Gets the type name of exceptions that are caught by this aspect.
+            </summary>
+      <param name="method">Method to which the current custom attribute instance
+            is applied.</param>
+      <returns>The assembly-qualified name of the type (derived from <see cref="T:System.Exception" />),
+            or <b>null</b> if any <see cref="T:System.Exception" /> is to be caught.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.ExternalAspect">
+      <summary>
+            Custom attribute representing an aspect implemented in
+            a different type (implementing the <see cref="T:PostSharp.Laos.IExternalAspectImplementation" />
+            interface), typically contained in an external assembly.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IExternalAspect">
+      <summary>
+            Allows to turn a custom attribute into an aspect, while implementing the aspect in
+            a different class. This allows to develop complex aspects even using the Compact
+            Framework or Silverlight, because the aspect implementation is linked to the
+            full .NET Framework.
+            </summary>
+      <remarks>
+            Classes implementing this interface should be annotated with the 
+            <see cref="T:PostSharp.Laos.ExternalAspectConfigurationAttribute" /> custom attribute.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.FieldAccessEventArgs">
+      <summary>
+            Arguments of field-related join points. Used by
+            <see cref="T:PostSharp.Laos.OnFieldAccessAspect" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.InstanceBoundLaosEventArgs">
+      <summary>
+            Arguments of events bound to an instance (because they
+            relate to a field or to a method, for instance).
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.LaosEventArgs">
+      <summary>
+            Base of all event arguments used in PostSharp Laos.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceBoundLaosEventArgs.#ctor(System.Object)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.InstanceBoundLaosEventArgs" /></summary>
+      <param name="instance">Object instance, or <b>null</b>
+            if the event relates to a static field or method.</param>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceBoundLaosEventArgs.Instance">
+      <summary>
+            Gets or sets the object instance on which the method is being executed.
+            </summary>
+      <remarks>
+            This set may be set by user code only when the instance is a value type.
+            As usually, user code is responsible for setting an object of the
+            right type.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceBoundLaosEventArgs.InstanceTag">
+      <summary>
+            Gets or sets the instance tag.
+            </summary>
+      <remarks>
+        <para>Not applicable (and null) if the event does relates to a static
+            field or method.
+            </para>
+        <para>
+            The instance tag is a location where aspects can store custom
+            informations (tags). This location is instance-dependent. It is
+            implemented as an instance field.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceBoundLaosEventArgs.InstanceCredentials">
+      <summary>
+            Gets the credentials of the current instance.
+            </summary>
+      <remarks>
+            Credentials allow to use protected interfaces like <see cref="T:PostSharp.Laos.IComposed`1" />.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.FieldAccessEventArgs.#ctor(System.Object,System.Object,System.Reflection.FieldInfo,System.Object)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.FieldAccessEventArgs" />.
+            </summary>
+      <param name="fieldInfo">Accessed field instance.</param>
+      <param name="instance">Accessed instance, or <b>null</b> if the field is static.</param>
+      <param name="exposedFieldValue">Exposed field value (<b>null</b> for get operations).</param>
+      <param name="storedFieldValue">Value currently effectively stored in the field.</param>
+    </member>
+    <member name="P:PostSharp.Laos.FieldAccessEventArgs.FieldInfo">
+      <summary>
+            Gets the field being accessed.
+            </summary>
+      <remarks>
+            If the type declaring this field is a generic type, this property
+            contains the concrete generic field instance.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.FieldAccessEventArgs.ExposedFieldValue">
+      <summary>
+            Gets or sets the field value that is <i>exposed</i> to the external
+            code. Do not confuse with <see cref="P:PostSharp.Laos.FieldAccessEventArgs.StoredFieldValue" />, which is
+            the value effectively stored.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.FieldAccessEventArgs.StoredFieldValue">
+      <summary>
+            Gets or sets the field value that is effectively <i>stored</i> in the
+            field location. Do not confuse with <see cref="P:PostSharp.Laos.FieldAccessEventArgs.ExposedFieldValue" />, which is
+            the value that is 'seen' by the code.
+            </summary>
+      <remarks>
+            Setting this property does not immediately set the underlying field.
+            The field is typically set after the execution of advices located at the
+            join point. This remark is important for multi-threaded applications.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.FieldAccessEventArgs.DeclaringType">
+      <summary>
+            Gets the type declaring the accessed field.
+            </summary>
+      <remarks>
+            If the declaring type is generic, this property contains the concrete
+            generic type instance being accessed.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.FlowBehavior">
+      <summary>
+            Specifies how the control flow will behave once it will leave the aspect method.
+            </summary>
+      <remarks>
+            This enumeration is used by the <see cref="T:PostSharp.Laos.MethodExecutionEventArgs" /> class.
+            </remarks>
+    </member>
+    <member name="F:PostSharp.Laos.FlowBehavior.Default">
+      <summary>
+            Default flow behavior for the current method. For <b>OnEntry</b> or <b>OnExit</b>, the fault flow is
+            <see cref="F:PostSharp.Laos.FlowBehavior.Continue" />, for <b>OnException</b> it is <see cref="F:PostSharp.Laos.FlowBehavior.RethrowException" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.FlowBehavior.Continue">
+      <summary>
+            Continue normally.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.FlowBehavior.RethrowException">
+      <summary>
+            The current exception will be rethrown. Available only for <b>OnException</b>.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.FlowBehavior.Return">
+      <summary>
+            Return immediately from the current method. Available only for <b>OnEntry</b> and
+            <b>OnException</b>. Note that you may want to set the <see cref="P:PostSharp.Laos.MethodExecutionEventArgs.ReturnValue" />
+            property.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IComposed`1">
+      <summary>
+            Interface implemented by composed types (i.e. types implementing an
+            interface that is implemented, not by the type itself, but by another
+            type <i>composed</i> in the first one) that want to expose their 
+            implementation.
+            </summary>
+      <typeparam name="T">Composed interface whose implementation
+            is made accessible.</typeparam>
+      <remarks>
+            This interface is <i>optional</i>
+            and is implemented only when the composed type wants to expose its
+            implementation. This interface provides a way to <i>protect</i>
+            the implementation: the implementation is provided only to callers
+            holding credentials that should have been received by the composed
+            instance itself. A second defensive approach is to make the implementation
+            <b>internal</b>.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.IComposed`1.GetImplementation(PostSharp.Laos.InstanceCredentials)">
+      <summary>
+            Gets the object implementing the interface <typeparamref name="T" />
+            on behalf of the current instance.
+            </summary>
+      <param name="credentials">Credentials provided by the current instance.</param>
+      <returns>The object implementing the interface <typeparamref name="T" />
+            on behalf of the current instance.
+            </returns>
+    </member>
+    <member name="M:PostSharp.Laos.IComposed`1.SetImplementation(PostSharp.Laos.InstanceCredentials,`0)">
+      <summary>
+            Set the object implementing the interface <typeparamref name="T" /> on behalf
+            of the current instance.
+            </summary>
+      <param name="credentials">Credentials provided by the current instance.</param>
+      <param name="implementation">Object implementing the <typeparamref name="T" />
+            interface on behalf of the current instance.</param>
+    </member>
+    <member name="T:PostSharp.Laos.ICustomAttributeInjectorAspect">
+      <summary>
+            Defines the semantics of an aspect that, when applied to a target,
+            adds a custom attribute to this target.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.ICustomAttributeInjectorAspect.CustomAttribute">
+      <summary>
+            Gets the custom attribute to be applied to the
+            target of this aspect.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.CustomAttributeInjectorAspect">
+      <summary>
+            Aspect that, when applied to a target, adds a custom attribute to this target.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.CustomAttributeInjectorAspect.#ctor(PostSharp.Reflection.ObjectConstruction)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.CustomAttributeInjectorAspect" />.
+            </summary>
+      <param name="attribute">Custom attribute to be added to the target.</param>
+    </member>
+    <member name="P:PostSharp.Laos.CustomAttributeInjectorAspect.CustomAttribute">
+      <summary>
+            Gets the custom attribute to be applied to the
+            target of this aspect.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.CustomAttributeInjectorAspectConfigurationAttribute">
+      <summary>
+            Custom attribute configuring the aspect <see cref="T:PostSharp.Laos.ICustomAttributeInjectorAspect" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.ExceptionHandlerOptionsAttribute">
+      <summary>
+            Base class of a custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.IExceptionHandlerAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute">
+      <summary>
+            Base class of a custom attribute that, when applied on a class implementing an instance-bound aspect
+            (see<see cref="T:PostSharp.Laos.IInstanceBoundLaosAspectConfiguration" />), defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute">
+      <summary>
+            Base class of a custom attribute that, 
+            when applied on a class implementing <see cref="T:PostSharp.Laos.ILaosWeavableAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+            This custom attribute is typically used with the Compact Framework or Silverlight.
+            </para>
+        <para>
+            If the class to which this custom attribute is applied already implements 
+            <see cref="T:PostSharp.Laos.ILaosWeavableAspectConfiguration" /> (which is the case with the full .NET Framework), 
+            the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> is ignored.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute.AspectPriority">
+      <summary>
+            Gets or sets the weaving priority of the aspect.
+            </summary>
+      <value>The aspect priority, or <b>null</b> if the aspect priority is not specified.</value>
+      <remarks>
+        <para>Handlers with lower priority are executed before
+            in case of 'entry' semantics (entering or invoking a method, setting a field value),
+            but this order is inverted for handlers of 'exit' semantics (leaving a method, getting a field value).
+            </para>
+        <para>This property must not be confused with <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributePriority" />,
+            which solely influences the multicasting process.</para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute.SerializerType">
+      <summary>
+            Gets or sets the type of the serializer that will be used
+            to configure the current aspect. 
+            </summary>
+      <remarks>
+            This type should have derive from <see cref="T:PostSharp.Laos.LaosSerializer" />
+            and have a default constructor. Use <b>null</b> to specify that the aspect will not
+            be serialized, but will be constructed using MSIL instructions.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute.InstanceTagPreferredName">
+      <summary>
+            Gets or sets the preferred short name of the instance field.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute.InstanceTagGuid">
+      <summary>
+            Gets or sets the unique identifier of the requested field.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute.InstanceTagForceStatic">
+      <summary>
+            Determines whether the instance tag should be static, i.e. shared
+            between all instances of the same target type.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.ExceptionHandlerOptionsAttribute.ExceptionType">
+      <summary>
+            Gets or sets the type of the exceptions caught by this handler.
+            </summary>
+      <value>
+            Default value: <see cref="T:System.Exception" />.
+            </value>
+    </member>
+    <member name="T:PostSharp.Laos.ExternalAspectConfigurationAttribute">
+      <summary>
+            Specifies the type name of the implementation of external aspects (<see cref="T:PostSharp.Laos.IExternalAspect" />).
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ExternalAspectConfigurationAttribute.#ctor">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.ExternalAspectConfigurationAttribute" />.
+            In user code, use the <see cref="M:PostSharp.Laos.ExternalAspectConfigurationAttribute.#ctor(System.String)" />
+            constructor instead of this one.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ExternalAspectConfigurationAttribute.#ctor(System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.ExternalAspectConfigurationAttribute" />.
+            </summary>
+      <param name="implementationTypeName">Assembly-qualified name of the implementation
+            type. This type should implement the <see cref="T:PostSharp.Laos.IExternalAspectImplementation" />
+            interface.</param>
+    </member>
+    <member name="P:PostSharp.Laos.ExternalAspectConfigurationAttribute.ImplementationTypeName">
+      <summary>
+            Gets the assembly-qualified name of the implementation  type.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IExternalAspectImplementation">
+      <summary>
+            Implementation of an <see cref="T:PostSharp.Laos.IExternalAspect" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.IExternalAspectImplementation.ImplementAspect(System.Object,PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.LaosReflectionAspectCollection)">
+      <summary />
+      <param name="target">Target (<see cref="T:System.Type" />, <see cref="T:System.Reflection.FieldInfo" />, <see cref="T:System.Reflection.MethodInfo" />,
+            <see cref="T:System.Reflection.ConstructorInfo" />, <see cref="T:System.Reflection.ParameterInfo" />, ...) on which the
+            aspect is applied.</param>
+      <param name="aspectConstruction">Data about the source aspect instance 
+            (the one implementing <see cref="T:PostSharp.Laos.IExternalAspect" />).</param>
+      <param name="aspects">Collection to which weavable aspects can be added. Implementations
+            will typically use the <see cref="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspectConstruction(System.Type,PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspectConfiguration)" /> method.</param>
+    </member>
+    <member name="T:PostSharp.Laos.InstanceTagRequest">
+      <summary>
+            Request of an instance tag. An instance tag is an instance field
+            where aspects can store and share information.
+            </summary>
+      <remarks>
+            By requesting the same instance tag, many aspects can share the
+            same instance field, so they can share information.
+            </remarks>
+      <seealso cref="T:PostSharp.Laos.IInstanceBoundLaosAspectConfiguration" />
+      <seealso cref="T:PostSharp.Laos.InstanceBoundAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.InstanceTagRequest.#ctor(System.String,System.Guid)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.InstanceTagRequest" />.
+            </summary>
+      <param name="preferredName">Preferred short name of the instance field.</param>
+      <param name="guid">Unique field identifier.</param>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceTagRequest.#ctor(System.String,System.Guid,System.Boolean)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.InstanceTagRequest" />, and specifies whether the
+            instance tag should be forced to be static.
+            </summary>
+      <param name="preferredName">Preferred short name of the instance field.</param>
+      <param name="guid">Unique field identifier.</param>
+      <param name="forceStatic">
+        <b>true</b> if the instance tag is forced to be
+            static (i.e. will be shared between all instances of the target type), 
+            or <b>false</b> otherwise.</param>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceTagRequest.PreferredName">
+      <summary>
+            Gets the preferred short name of the instance field.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceTagRequest.Guid">
+      <summary>
+            Gets the unique identifier of the requested field.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.InstanceTagRequest.ForceStatic">
+      <summary>
+            Determines whether the instance tag should be static, i.e. shared
+            between all instances of the same target type.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.CompositionAspectConfigurationAttribute">
+      <summary>
+            Custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.ICompositionAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.CompositionAspectConfigurationAttribute.PublicInterface">
+      <summary>
+            Gets or sets the type of the public interface to be injected in the target type.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.CompositionAspectConfigurationAttribute.ProtectedInterfaces">
+      <summary>
+            Gets or sets the set of 'protected' interfaces to be injected to the target type.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.CompositionAspectConfigurationAttribute.Options">
+      <summary>
+            Gets or sets the aspect options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.CompositionAspectOptions">
+      <summary>
+            Weaving options of <see cref="T:PostSharp.Laos.ICompositionAspect" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.CompositionAspectOptions.None">
+      <summary>
+            Default.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.CompositionAspectOptions.IgnoreIfAlreadyImplemented">
+      <summary>
+            Ignore this aspect (i.e. does not implement it) if the interface
+            is already implemented (even indirectly) in a parent type.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.CompositionAspectOptions.GenerateImplementationAccessor">
+      <summary>
+            Implements the <see cref="T:PostSharp.Laos.IComposed`1" /> interface on the 
+            target type.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.CompositionAspectOptions.NonSerializedImplementationField">
+      <summary>
+            Marks the field storing the interface implementation as
+            non serialized (see <see cref="T:System.NonSerializedAttribute" />).
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IImplementMethodAspect">
+      <summary>
+            Defines the semantics of an aspect that implement method without previous
+            implementations, like <b>abstract</b> or <b>external</b> methods.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.IImplementMethodAspect.OnExecution(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method called instead of the body of the modified method.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method is being
+            executed, on which object instance and with which parameters.</param>
+      <remarks>
+        <para>
+            The implementation is allowed to modify output arguments passed in the <paramref name="eventArgs" />
+            array, but it is required to respect argument types (otherwise an <see cref="T:System.InvalidCastException" />
+            will be thrown at runtime).
+            </para>
+      </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.IImplementMethodAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.IImplementMethodAspect" /> aspect.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ImplementMethodAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IImplementMethodAspectConfiguration.GetOptions">
+      <summary>
+            Get weaving options.
+            </summary>
+      <returns>Weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.ImplementMethodAspectConfigurationAttribute">
+      <summary>
+            Custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.IImplementMethodAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.ImplementMethodAspectConfigurationAttribute.Options">
+      <summary>
+            Gets or sets the aspect options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.ImplementMethodAspectOptions">
+      <summary>
+            Weaving options for the <see cref="T:PostSharp.Laos.IImplementMethodAspect" /> aspect.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.ImplementMethodAspectOptions.None">
+      <summary>
+            Default.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosFieldLevelAspect">
+      <summary>
+            Defines the run-time semantics of aspects applied to fields.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosMethodLevelAspectBuildSemantics" />
+    </member>
+    <member name="M:PostSharp.Laos.ILaosFieldLevelAspect.RuntimeInitialize(System.Reflection.FieldInfo)">
+      <summary>
+            Method called at runtime just before the instance is deserialized.
+            </summary>
+      <param name="field">Field on which this instance is applied.</param>
+    </member>
+    <member name="T:PostSharp.Laos.ILaosFieldLevelAspectBuildSemantics">
+      <summary>
+            Compile-time semantics of <see cref="T:PostSharp.Laos.ILaosFieldLevelAspect" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ILaosFieldLevelAspectBuildSemantics.CompileTimeInitialize(System.Reflection.FieldInfo)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="field">Field on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+        <para>
+            You cannot store and serialize the <paramref name="field" /> parameter because it is basically
+            a runtime object. You shall receive the <see cref="T:System.Reflection.FieldInfo" /> at runtime by the
+            <see cref="M:PostSharp.Laos.ILaosFieldLevelAspect.RuntimeInitialize(System.Reflection.FieldInfo)" /> method.
+            </para>
+      </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.ImplementMethodAspect">
+      <summary>
+            Custom attribute that, when applied to a method defined in the current assembly,
+            replaces the implementation of this method by a call to the current custom
+            attribute.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.ImplementMethodAspect.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.ImplementMethodAspect.OnExecution(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method called instead of the body of the modified method.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method is being
+            executed, on which object instance and with which parameters.</param>
+      <remarks>
+        <para>
+            The implementation is allowed to modify output arguments passed in the <paramref name="eventArgs" />
+            array, but it is required to respect argument types (otherwise an <see cref="T:System.InvalidCastException" />
+            will be thrown at runtime).
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.ImplementMethodAspect.GetOptions">
+      <summary>
+            Get weaving options.
+            </summary>
+      <returns>Weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.InstanceCredentials">
+      <summary>
+            Credentials that give access to 'protected' semantics.
+            </summary>
+      <remarks>
+            A protected semantic is specified by an interface with public visibility, but
+            code can only get this interface when it provides the semantics represented
+            by the current type. Instance semantics are typically retrieved by an instance
+            method <b>GetInstanceCredentials</b>, which has <i>protected</i> visibility.
+            This method is implemented by PostSharp Laos automatically.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceCredentials.MakeNew">
+      <summary>
+            Creates a new <see cref="T:PostSharp.Laos.InstanceCredentials" />.
+            </summary>
+      <returns>A new <see cref="T:PostSharp.Laos.InstanceCredentials" />.</returns>
+    </member>
+    <member name="F:PostSharp.Laos.InstanceCredentials.Null">
+      <summary>
+            Gets a null (or empty) <see cref="T:PostSharp.Laos.InstanceCredentials" />/
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceCredentials.Equals(PostSharp.Laos.InstanceCredentials)" />
+    <member name="M:PostSharp.Laos.InstanceCredentials.Equals(System.Object)" />
+    <member name="M:PostSharp.Laos.InstanceCredentials.AssertEquals(PostSharp.Laos.InstanceCredentials)">
+      <summary>
+            Throws an exception if given credentials are not equal
+            to the current one.
+            </summary>
+      <param name="others">Other credentials.</param>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceCredentials.GetHashCode" />
+    <member name="M:PostSharp.Laos.InstanceCredentials.op_Equality(PostSharp.Laos.InstanceCredentials,PostSharp.Laos.InstanceCredentials)">
+      <summary>
+            Determines whether two <see cref="T:PostSharp.Laos.InstanceCredentials" /> are equal.
+            </summary>
+      <param name="left">An <see cref="T:PostSharp.Laos.InstanceCredentials" /> object.</param>
+      <param name="right">An <see cref="T:PostSharp.Laos.InstanceCredentials" /> object.</param>
+      <returns>
+        <b>true</b> if <paramref name="left" /> equals <paramref name="right" />,
+            otherwise <b>false</b>.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceCredentials.op_Inequality(PostSharp.Laos.InstanceCredentials,PostSharp.Laos.InstanceCredentials)">
+      <summary>
+            Determines whether two <see cref="T:PostSharp.Laos.InstanceCredentials" /> are different.
+            </summary>
+      <param name="left">An <see cref="T:PostSharp.Laos.InstanceCredentials" /> object.</param>
+      <param name="right">An <see cref="T:PostSharp.Laos.InstanceCredentials" /> object.</param>
+      <returns>
+        <b>true</b> if <paramref name="left" /> is different than <paramref name="right" />,
+            otherwise <b>false</b>.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.InstanceCredentials.GetCredentials``1(``0)">
+      <summary>
+            Obsolete.
+            </summary>
+      <typeparam name="T" />
+      <param name="instance" />
+      <returns />
+    </member>
+    <member name="M:PostSharp.Laos.InstanceCredentials.ToString" />
+    <member name="T:PostSharp.Laos.IOnExceptionAspect">
+      <summary>
+            Defines the semantics of an aspect that, when applied on a method,
+            defines an exception handler around the whole method body
+            and let the implementation of this interface handle the exception.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IOnExceptionAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.IOnExceptionAspect" /> aspect.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.OnExceptionAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IOnExceptionAspectConfiguration.GetOptions">
+      <summary>
+            Get the weaving options.
+            </summary>
+      <returns>The weaving options, or <b>null</b> if options are not specified.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnExceptionAspectOptions">
+      <summary>
+            Weaving options for <see cref="T:PostSharp.Laos.IOnExceptionAspect" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnExceptionAspectOptions.None">
+      <summary>
+            Default.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.OnExceptionAspectConfigurationAttribute">
+      <summary>
+            Custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.IOnExceptionAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.OnExceptionAspectConfigurationAttribute.Options">
+      <summary>
+            Gets or sets the aspect options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IOnFieldAccessAspect">
+      <summary>
+            Defines the semantics of an aspect that, when applied on a field, intercepts
+            all <b>get</b> and <b>set</b> operations to this field.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.IOnFieldAccessAspect.OnGetValue(PostSharp.Laos.FieldAccessEventArgs)">
+      <summary>
+            Method called instead of the <i>get</i> operation on the modified field.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which field is being
+            accessed and which is its current value.</param>
+    </member>
+    <member name="M:PostSharp.Laos.IOnFieldAccessAspect.OnSetValue(PostSharp.Laos.FieldAccessEventArgs)">
+      <summary>
+            Method called instead of the <i>set</i> operation on the modified field.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which field is being
+            accessed and which is its current value, and allowing to change its value.
+            </param>
+    </member>
+    <member name="T:PostSharp.Laos.IOnFieldAccessAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.IOnFieldAccessAspect" /> aspect.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.OnFieldAccessAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IOnFieldAccessAspectConfiguration.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>Weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnFieldAccessAspectOptions">
+      <summary>
+            Weaving options for the <see cref="T:PostSharp.Laos.IOnFieldAccessAspect" /> aspect.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.None">
+      <summary>
+            Default.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.RemoveFieldStorage">
+      <summary>
+            Specifies that the field should be removed from the declaring type.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyMask">
+      <summary>
+            Mask isolating <see cref="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyAuto" />, 
+            <see cref="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyAlways" /> and <see cref="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyNever" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyAuto">
+      <summary>
+            Specifies that a property should be generated around the field
+            if and only if the field is exposed outside the assembly.
+            </summary>
+      <remarks>
+            If this property is set and a public or protected field is found,
+            the field is made private and renamed, and a property
+            with the original name and visibility of the field is created.
+            </remarks>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.GenerarePropertyNever">
+      <summary>
+            Obsolete.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyNever">
+      <summary>
+            Specifies the field should <b>never</b> be encapsulated into
+            a property.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnFieldAccessAspectOptions.GeneratePropertyAlways">
+      <summary>
+            Specifies that a property should be generated around the field,
+            even if the field is not visible outside its assembly.
+            </summary>
+      <remarks>
+            If this property is set, the field is made private and renamed, and a property
+            with the original name and visibility of the field is created.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.OnFieldAccessAspectConfigurationAttribute">
+      <summary>
+            Custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.IOnFieldAccessAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.OnFieldAccessAspectConfigurationAttribute.Options">
+      <summary>
+            Gets or sets the aspect options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IOnMethodBoundaryAspect">
+      <summary>
+            Defines the semantics of an aspect that, when applied on a method,
+            defines an exception handler around the whole method body
+            and let the implementation of this interface be invoked before the
+            method execution (<see cref="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnEntry(PostSharp.Laos.MethodExecutionEventArgs)" />), in the exception handling
+            block (<see cref="M:PostSharp.Laos.IExceptionHandlerAspect.OnException(PostSharp.Laos.MethodExecutionEventArgs)" />) and
+            after the method execution, in the <i>finally</i> block (<see cref="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnExit(PostSharp.Laos.MethodExecutionEventArgs)" />).
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnEntry(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed <b>before</b> the body of methods to which this aspect is applied.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed, which are its arguments, and how should the execution continue
+            after the execution of <see cref="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnEntry(PostSharp.Laos.MethodExecutionEventArgs)" />.</param>
+      <remarks>
+            If the aspect is applied to a constructor, the current method is invoked
+            after the <b>this</b> pointer has been initialized, that is, after
+            the base constructor has been called.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnExit(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed <b>after</b> the body of methods to which this aspect is applied,
+            even when the method exists with an exception (this method is invoked from
+            the <b>finally</b> block).
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed and which are its arguments.</param>
+    </member>
+    <member name="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnSuccess(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed <b>after</b> the body of methods to which this aspect is applied,
+            but only when the method succesfully returns (i.e. when no exception flies out
+            the method.).
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed and which are its arguments.</param>
+    </member>
+    <member name="T:PostSharp.Laos.IOnMethodBoundaryAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.IOnMethodBoundaryAspect" /> aspect.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.OnMethodBoundaryAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IOnMethodBoundaryAspectConfiguration.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>The weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnMethodBoundaryAspectOptions">
+      <summary>
+            Weaving options of the <see cref="T:PostSharp.Laos.IOnMethodBoundaryAspect" /> aspect.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnMethodBoundaryAspectOptions.None">
+      <summary>
+            Default.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.OnMethodBoundaryAspectConfigurationAttribute">
+      <summary>
+            Custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.IOnMethodBoundaryAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.OnMethodBoundaryAspectConfigurationAttribute.Options">
+      <summary>
+            Gets or sets aspect options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IOnMethodInvocationAspect">
+      <summary>
+            Defines the semantics of an aspect that, when applied on a method, intercepts
+            all calls to this method.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.IOnMethodInvocationAspect.OnInvocation(PostSharp.Laos.MethodInvocationEventArgs)">
+      <summary>
+            Method called instead of the intercepted method.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed and which are its arguments. The implementation
+            should set the return value and ouput arguments.</param>
+    </member>
+    <member name="T:PostSharp.Laos.IOnMethodInvocationAspectConfiguration">
+      <summary>
+            Configuration of the <see cref="T:PostSharp.Laos.IOnMethodInvocationAspect" /> aspect.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.OnMethodInvocationAspectConfigurationAttribute" />
+    </member>
+    <member name="M:PostSharp.Laos.IOnMethodInvocationAspectConfiguration.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>Weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnMethodInvocationAspectOptions">
+      <summary>
+            Weaving options of the <see cref="T:PostSharp.Laos.IOnMethodInvocationAspect" /> aspect.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnMethodInvocationAspectOptions.None">
+      <summary>
+            Default.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteCall">
+      <summary>
+            Specifies that the aspect should be woven at <i>call</i> site, i.e. <c>call</c>
+            instructions are to be replaced by calls to our stub. Allows to apply
+            aspects to methods defined out of the current assembly.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteTarget">
+      <summary>
+            Specifies that the aspect should be woven at <i>target</i> site, i.e. in
+            the method to which the aspect is applied.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteAuto">
+      <summary>
+            Chooses automatically <see cref="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteCall" /> 
+            when the target method is defined outside the current assembly, or
+            <see cref="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteTarget" /> otherwise.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteMask">
+      <summary>
+            Isolates the bits that specify where the aspect should be woven
+            (<see cref="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteCall" />, <see cref="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteTarget" />,
+            <see cref="F:PostSharp.Laos.OnMethodInvocationAspectOptions.WeaveSiteAuto" />).
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.OnMethodInvocationAspectConfigurationAttribute">
+      <summary>
+            Custom attribute that, when applied on a class implementing <see cref="T:PostSharp.Laos.IOnMethodInvocationAspect" />,
+            defines the configuration of that aspect.
+            </summary>
+      <remarks>
+        <para>
+          <b>Important.</b>
+            See the comment on the <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" /> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.OnMethodInvocationAspectConfigurationAttribute.Options">
+      <summary>
+            Gets or sets the aspect options.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.IProtectedInterface`1">
+      <summary>
+            Gives access to a 'protected' interface. 
+            </summary>
+      <typeparam name="T">The exposed interface.</typeparam>
+      <remarks>
+            A 'protected' interface has necessarily public visibility, but objects
+            don't expose them directly. Instead, they expose them through
+            the <see cref="T:PostSharp.Laos.IProtectedInterface`1" /> interface. An object that
+            wants access to a protected interface needs to get <see cref="T:PostSharp.Laos.InstanceCredentials" />.
+            Since the method providing <see cref="T:PostSharp.Laos.InstanceCredentials" /> is protected, it
+            allows an instance to control which code can have access to protected semantics.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.IProtectedInterface`1.GetInterface(PostSharp.Laos.InstanceCredentials)">
+      <summary>
+            Gets a protected interface.
+            </summary>
+      <param name="credentials">Credentials of the current instance.</param>
+      <returns>The implementation of the interface <typeparamref name="T" />.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.LaosFieldLevelAspect">
+      <summary>
+            Base class for all aspects applied on fields.
+            </summary>
+      <seealso cref="T:PostSharp.Laos.ILaosFieldLevelAspect" />
+    </member>
+    <member name="M:PostSharp.Laos.LaosFieldLevelAspect.CompileTimeValidate(System.Reflection.FieldInfo)" />
+    <member name="M:PostSharp.Laos.LaosFieldLevelAspect.CompileTimeValidate(System.Object)">
+      <summary>
+            Method invoked at compile time to ensure that the aspect has been applied to
+            the right target.
+            </summary>
+      <param name="target">Target element.</param>
+      <returns>
+        <b>true</b> if the aspect was applied to an acceptable target, otherwise
+            <b>false</b>.</returns>
+      <remarks>The implementation of this method is expected to emit an error message
+            or an exception in case of error. Only returning <b>false</b> causes the aspect
+            to be silently ignored.</remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosFieldLevelAspect.CompileTimeInitialize(System.Reflection.FieldInfo)">
+      <summary>
+            Method called at compile-time by the weaver just before the instance is serialized.
+            </summary>
+      <param name="field">Field on which this instance is applied.</param>
+      <remarks>
+        <para>Derived classes should implement this method if they want to compute some information
+            at compile time. This information to be stored in member variables. It shall be
+            serialized at compile time and deserialized at runtime.
+            </para>
+        <para>
+            You cannot store and serialize the <paramref name="field" /> parameter because it is basically
+            a runtime object. You shall receive the <see cref="T:System.Reflection.FieldInfo" /> at runtime by the
+            <see cref="M:PostSharp.Laos.ILaosFieldLevelAspect.RuntimeInitialize(System.Reflection.FieldInfo)" /> method.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosFieldLevelAspect.RuntimeInitialize(System.Reflection.FieldInfo)">
+      <summary>
+            Method called at runtime just before the instance is deserialized.
+            </summary>
+      <param name="field">Field on which this instance is applied.</param>
+    </member>
+    <member name="T:PostSharp.Laos.LaosNotInitializedException">
+      <summary>
+            Exception raised typically when a woven program requires PostSharp Laos to be
+            initialized, but it was not yet initialized. This situation typically occurs
+            when an aspect has a static constructor that has aspects on it or calls (directly
+            or not) an aspected method.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.LaosNotInitializedException.Throw">
+      <summary>
+            Throws a <see cref="T:PostSharp.Laos.LaosNotInitializedException" /> and write some
+            warnings to the debugger.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.LaosNotInitializedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a <see cref="T:PostSharp.Laos.LaosNotInitializedException" /> from serialized
+            data.
+            </summary>
+      <param name="info">Serialization info.</param>
+      <param name="context">Streaming context.</param>
+    </member>
+    <member name="T:PostSharp.Laos.LaosReflectionAspectCollection">
+      <summary>
+            Collection that types implementing the <see cref="T:PostSharp.Laos.ILaosReflectionAspectProvider" /> interface
+            can use to provide new aspects.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Object,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Adds an aspect to an element of unknown type.
+            </summary>
+      <param name="target">Target of the aspect.</param>
+      <param name="aspect">Aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Reflection.MethodBase,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Add a new method-level aspect.
+            </summary>
+      <param name="targetMethod">Target method.</param>
+      <param name="aspect">Aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Reflection.FieldInfo,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Add a new field-level aspect.
+            </summary>
+      <param name="targetField">Target field.</param>
+      <param name="aspect">Aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Reflection.PropertyInfo,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Add a new property-level aspect.
+            </summary>
+      <param name="targetProperty">Target property.</param>
+      <param name="aspect">Aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Reflection.EventInfo,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Add a new event-level aspect.
+            </summary>
+      <param name="targetEvent">Target event.</param>
+      <param name="aspect">Aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Reflection.ParameterInfo,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Add a new parameter-level aspect.
+            </summary>
+      <param name="targetParameter">Target parameter.</param>
+      <param name="aspect">Aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspect(System.Type,PostSharp.Laos.ILaosAspect)">
+      <summary>
+            Add a new type-level aspect.
+            </summary>
+      <param name="targetType">Target type.</param>
+      <param name="aspect">aspect.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspectConstruction(System.Type,PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspectConfiguration)">
+      <summary>
+            Allows to add an aspect to a <see cref="T:System.Type" /> when it is not possible to create an instance of this aspect,
+            typically because the transformed assembly is linked against the Compact Framework
+            or Silverlight.
+            </summary>
+      <param name="targetType">Target <see cref="T:System.Type" /> of the aspect.</param>
+      <param name="aspectConstruction">Aspect construction.</param>
+      <param name="aspectConfiguration">Aspect configuration (optional).</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspectConstruction(System.Reflection.MemberInfo,PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspectConfiguration)">
+      <summary>
+            Allows to add an aspect to a method, constructor, property, field or even, when it is not possible to create an instance of this aspect,
+            typically because the transformed assembly is linked against the Compact Framework
+            or Silverlight.
+            </summary>
+      <param name="targetMember">Target <see cref="T:System.Reflection.MemberInfo" /> of the aspect.</param>
+      <param name="aspectConstruction">Aspect construction.</param>
+      <param name="aspectConfiguration">Aspect configuration (optional).</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspectConstruction(System.Reflection.ParameterInfo,PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspectConfiguration)">
+      <summary>
+            Allows to add an aspect to a parameter when it is not possible to create an instance of this aspect,
+            typically because the transformed assembly is linked against the Compact Framework
+            or Silverlight.
+            </summary>
+      <param name="targetParameter">Target <see cref="T:System.Reflection.MemberInfo" /> of the aspect.</param>
+      <param name="aspectConstruction">Aspect construction.</param>
+      <param name="aspectConfiguration">Aspect configuration (optional).</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.AddAspectConstruction(PostSharp.CodeModel.IAssemblyName,PostSharp.Reflection.IObjectConstruction,PostSharp.Laos.ILaosAspectConfiguration)">
+      <summary>
+            Allows to add an aspect to an assembly when it is not possible to create an instance of this aspect,
+            typically because the transformed assembly is linked against the Compact Framework
+            or Silverlight.
+            </summary>
+      <param name="targetAssembly">Target <see cref="T:System.Reflection.MemberInfo" /> of the aspect.</param>
+      <param name="aspectConstruction">Aspect construction.</param>
+      <param name="aspectConfiguration">Aspect configuration (optional).</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosReflectionAspectCollection.GetEnumerator">
+      <summary>
+            Enumerates the content of this collection.
+            </summary>
+      <returns>An enumerator of <see cref="T:System.Collections.Generic.KeyValuePair`2" />
+            where the key is the target element (<see cref="T:System.Reflection.MethodBase" />, <see cref="T:System.Reflection.FieldInfo" />
+            or <see cref="T:System.Type" />) and the value is the aspect.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.LaosSerializer">
+      <summary>
+            Base class for Laos serializers, whose role is to serialize aspect instances at compile-time and
+            deserialize them at runtime.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.LaosSerializer.Serialize(PostSharp.Laos.ILaosAspect[],System.IO.Stream)">
+      <summary>
+            Serializes an array of aspects into a stream.
+            </summary>
+      <param name="aspects">Array of aspects to be serialized.</param>
+      <param name="stream">Stream into which aspects have to be serialized.</param>
+    </member>
+    <member name="M:PostSharp.Laos.LaosSerializer.Deserialize(System.IO.Stream)">
+      <summary>
+            Deserializes a stream into an array if aspects.
+            </summary>
+      <param name="stream">Stream containing serialized aspects.</param>
+      <returns>An array of aspects.</returns>
+      <remarks>
+            The implementation is not allowed to change the order or array elements.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosSerializer.Deserialize(System.Reflection.Assembly,System.String)">
+      <summary>
+            Deserializes aspects contained in a managed resource of an assembly.
+            </summary>
+      <param name="assembly">Assembly containing the serialized aspects.</param>
+      <param name="resourceName">Name of the managed resources into which aspects have been serialized.</param>
+      <returns>An array of aspects.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.LaosUtils">
+      <summary>
+            Utility methods for PostSharp Laos.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.LaosUtils.GetCurrentInstanceCredentials">
+      <summary>
+            Gets the <see cref="T:PostSharp.Laos.InstanceCredentials" /> of the calling instance. This method must be
+            invoked from an instance method (not a static method) of a type that has been enhanced
+            by an aspect.
+            </summary>
+      <returns>The <see cref="T:PostSharp.Laos.InstanceCredentials" /> of the calling instance.</returns>
+      <remarks>
+            Calls to this method are transformed, at build time, to calls to
+            <b>this.GetInstanceCredentials</b>, a method that is typically generated by PostSharp. 
+            This is why the current method has actually no
+            implementation.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.LaosUtils.InitializeCurrentAspects">
+      <summary>
+            Initializes the all the aspects of the calling instance. This method must be
+            invoked from an instance method (not a static method) of a type that has been enhanced
+            by an aspect.
+            </summary>
+      <remarks>
+        <para>
+            Calls to this method are transformed, at build time, to calls to
+            <b>this.InitializeAspects</b>, a method that is typically generated by PostSharp. 
+            This is why the current method has actually no implementation.
+            </para>
+        <para>
+            The constructors of enhanced classes always initialize aspects. The only scenario
+            where this method needs to be invoked manually is when instances are not built
+            using the constructor, but for instance with the method <see cref="M:System.Runtime.Serialization.FormatterServices.GetUninitializedObject(System.Type)" />.
+            </para>
+      </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.MethodExecutionEventArgs">
+      <summary>
+            Arguments of join points related to a method body, like those of
+            <see cref="T:PostSharp.Laos.OnMethodBoundaryAspect" />, <see cref="T:PostSharp.Laos.OnExceptionAspect" />
+            or <see cref="T:PostSharp.Laos.ImplementMethodAspect" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.MethodExecutionEventArgs.#ctor(System.Reflection.MethodBase,System.Object,System.Object[])">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.MethodExecutionEventArgs" />.
+            </summary>
+      <param name="method">Method instance being executed.</param>
+      <param name="instance">Object instance on which the method is currently
+            executed, or <b>null</b> if the method is static.</param>
+      <param name="arguments">Array of arguments of this method.</param>
+    </member>
+    <member name="M:PostSharp.Laos.MethodExecutionEventArgs.GetArguments">
+      <summary>
+            Obsolete.
+            </summary>
+      <returns />
+    </member>
+    <member name="M:PostSharp.Laos.MethodExecutionEventArgs.GetReadOnlyArgumentArray">
+      <summary>
+            Gets a read-only array of method arguments.
+            </summary>
+      <returns>The array of method arguments, or <b>null</b> if the
+            method has no arguments.</returns>
+      <remarks>
+            For performance reason, this method actually returns a writable array. However,
+            later versions of PostSharp Laos may optimize code generation and not write
+            back values when you use this method. If you plan to modify values, use
+            the <see cref="M:PostSharp.Laos.MethodExecutionEventArgs.GetWritableArgumentArray" /> instead.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.MethodExecutionEventArgs.GetWritableArgumentArray">
+      <summary>
+            Gets a writable array of method arguments.
+            </summary>
+      <returns>The array of method arguments, or <b>null</b> if the
+            method has no arguments.</returns>
+      <remarks>
+            You should modify only arguments passed by reference (<b>out</b> and <b>ref</b> 
+            in C#).  If you need to change input arguments, consider using
+            <see cref="T:PostSharp.Laos.OnMethodInvocationAspect" />.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.MethodExecutionEventArgs.Method">
+      <summary>
+            Gets the method instance being executed.
+            </summary>
+      <remarks>
+            If the executed method is generic or if its declaring type is generic,
+            the current property contains the generic instance being executed.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.MethodExecutionEventArgs.ReturnValue">
+      <summary>
+            Gets or sets the method return value.
+            </summary>
+      <remarks>
+            You can modify the return value only when the join point is located
+            after a method execution, typically when the return value has already
+            been set.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Laos.MethodExecutionEventArgs.Exception">
+      <summary>
+            Gets the exception currently flying.
+            </summary>
+      <value>An <see cref="P:PostSharp.Laos.MethodExecutionEventArgs.Exception" />, or <b>null</b> if the method is
+            exiting normally.</value>
+    </member>
+    <member name="P:PostSharp.Laos.MethodExecutionEventArgs.FlowBehavior">
+      <summary>
+            Determines the control flow of the target method once the handler is exited.
+            </summary>
+      <see cref="T:PostSharp.Laos.FlowBehavior" />
+    </member>
+    <member name="P:PostSharp.Laos.MethodExecutionEventArgs.MethodExecutionTag">
+      <summary>
+            User-defined state information whose lifetime is linked to the
+            current method execution. Aspects derived from <see cref="T:PostSharp.Laos.OnMethodBoundaryAspect" />
+            should use this property to save state information between
+            different events (<see cref="M:PostSharp.Laos.OnMethodBoundaryAspect.OnEntry(PostSharp.Laos.MethodExecutionEventArgs)" />,
+            <see cref="M:PostSharp.Laos.OnMethodBoundaryAspect.OnExit(PostSharp.Laos.MethodExecutionEventArgs)" /> and <see cref="M:PostSharp.Laos.ExceptionHandlerAspect.OnException(PostSharp.Laos.MethodExecutionEventArgs)" />).
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.MethodInvocationEventArgs">
+      <summary>
+            Arguments of a join point related to a method invocation (or method call).
+            Used by <see cref="T:PostSharp.Laos.OnMethodInvocationAspect" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.MethodInvocationEventArgs.#ctor(System.Delegate,System.Object[])">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.MethodInvocationEventArgs" />.
+            </summary>
+      <param name="delegate">Delegate representing the method being called.</param>
+      <param name="arguments">Arguments passed to the method.</param>
+    </member>
+    <member name="M:PostSharp.Laos.MethodInvocationEventArgs.GetArguments">
+      <summary>
+            Obsolete.
+            </summary>
+      <returns />
+    </member>
+    <member name="M:PostSharp.Laos.MethodInvocationEventArgs.GetArgumentArray">
+      <summary>
+            Gets the array of arguments being passed to the method.
+            </summary>
+      <returns>The array of arguments being passed to the method,
+            or <b>null</b> if the method takes no argument.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.MethodInvocationEventArgs.Proceed">
+      <summary>
+            Invokes the intercepted method with original parameters.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.MethodInvocationEventArgs.Proceed(System.Object[])">
+      <summary>
+            Invokes the intercepted method and provides new parameters.
+            </summary>
+      <param name="parameters" />
+    </member>
+    <member name="P:PostSharp.Laos.MethodInvocationEventArgs.Delegate">
+      <summary>
+            Gets the delagate representing the method being called.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.MethodInvocationEventArgs.Method">
+      <summary>
+            Gets the intercepted method.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.MethodInvocationEventArgs.Instance">
+      <summary>
+            Gets the object instance on which the method is being executed.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.MethodInvocationEventArgs.ReturnValue">
+      <summary>
+            Gets or sets the method return value.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Laos.OnMethodBoundaryAspect">
+      <summary>
+            Custom attribute that, when applied to a method defined in the current assembly, inserts a piece
+            of code before and after the body of these methods. This custom attribute can be multicasted
+            (see <see cref="T:PostSharp.Extensibility.MulticastAttribute" />).
+            </summary>
+      <remarks>
+            This custom attribute is useful to implement "boundary" functionalities like tracing (writing a 
+            line to log) or transactions (automatically start a transaction at entry and commit or rollback
+            at exit).
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodBoundaryAspect.OnEntry(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed <b>before</b> the body of methods to which this aspect is applied.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed, which are its arguments, and how should the execution continue
+            after the execution of <see cref="M:PostSharp.Laos.IOnMethodBoundaryAspect.OnEntry(PostSharp.Laos.MethodExecutionEventArgs)" />.</param>
+      <remarks>
+            If the aspect is applied to a constructor, the current method is invoked
+            after the <b>this</b> pointer has been initialized, that is, after
+            the base constructor has been called.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodBoundaryAspect.OnExit(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed <b>after</b> the body of methods to which this aspect is applied,
+            even when the method exists with an exception (this method is invoked from
+            the <b>finally</b> block).
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed and which are its arguments.</param>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodBoundaryAspect.OnSuccess(PostSharp.Laos.MethodExecutionEventArgs)">
+      <summary>
+            Method executed <b>after</b> the body of methods to which this aspect is applied,
+            but only when the method succesfully returns (i.e. when no exception flies out
+            the method.).
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed and which are its arguments.</param>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodBoundaryAspect.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>The weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnFieldAccessAspect">
+      <summary>
+            Custom attribute that, when applied to a field defined in the current assembly, intercepts
+            all <i>get</i> and <i>set</i> operations on this field. 
+            This custom attribute can be multicasted (see <see cref="T:PostSharp.Extensibility.MulticastAttribute" />).
+            </summary>
+      <remarks>
+        <para>
+            This aspect can be applied only to fields defined inside the current assembly. 
+            It is recommended that you apply this attribute only to fields with <b>private</b> 
+            or <b>internal</b> visibility.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.OnFieldAccessAspect.OnGetValue(PostSharp.Laos.FieldAccessEventArgs)">
+      <summary>
+            Method called instead of the <i>get</i> operation on the modified field.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which field is being
+            accessed and which is its current value.</param>
+    </member>
+    <member name="M:PostSharp.Laos.OnFieldAccessAspect.OnSetValue(PostSharp.Laos.FieldAccessEventArgs)">
+      <summary>
+            Method called instead of the <i>set</i> operation on the modified field.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which field is being
+            accessed and which is its current value, and allowing to change its value.
+            </param>
+    </member>
+    <member name="M:PostSharp.Laos.OnFieldAccessAspect.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.OnFieldAccessAspect.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>Weaving options.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnMethodInvocationAspect">
+      <summary>
+            Custom attribute that, when applied to a method, intercepts all calls to this method.
+            The aspect implementation receives a delegate to the called method and the array of
+            arguments.
+            </summary>
+      <remarks>
+        <para>This aspect creates a stub for each method to which it is applied. The stub
+            instantiates a delegate to the original method, then it calls the <see cref="M:PostSharp.Laos.OnMethodInvocationAspect.OnInvocation(PostSharp.Laos.MethodInvocationEventArgs)" /> 
+            method of the aspect implementation and passes the delegate as a part of the event
+            arguments (<see cref="T:PostSharp.Laos.MethodInvocationEventArgs" />).
+            </para>
+        <para>This aspect can be woven at two location:</para>
+        <list type="table">
+          <item>
+            <term>Call Site</term>
+            <description>Each <c>call</c> instruction to the aspected method
+                    is replaced by a call to our stub. This allows to intercept calls
+                    to methods defined in another assembly than the current one.
+                    However, since it does not modify the target method, calls from
+                    other assemblies will not be intercepted. This weaving site
+                    is generally not useful when applied to methods defined in the
+                    current assembly.</description>
+          </item>
+          <item>
+            <term>Target Site</term>
+            <description>The method itself is modified, so the aspect will
+                    be applied even when the method will be called from a different
+                    assembly. Actually, the body of the original method is moved
+                    into a new method, and the original method is replaced by
+                    the stub. That is, the original method becomes the stub and the
+                    new method contain the original method body, 
+                    By default, all custom attributes defined on the original
+                    method are moved to the new method. The <see cref="T:PostSharp.Extensibility.ImplementationBoundAttributeAttribute" />
+                    custom attribute controls which custom attribute should stay on
+                    the original method.</description>
+          </item>
+        </list>
+        <para>
+            The default behavior is to use the <b>Call Site</b> strategy for methods defined
+            in an external assembly, and <b>Target Site</b> for methods defined in the
+            current assembly. This behavior can be changed by overwriting the <see cref="M:PostSharp.Laos.OnMethodInvocationAspect.GetOptions" />
+            method.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodInvocationAspect.OnInvocation(PostSharp.Laos.MethodInvocationEventArgs)">
+      <summary>
+            Method called instead of the intercepted method.
+            </summary>
+      <param name="eventArgs">Event arguments specifying which method
+            is being executed and which are its arguments. The implementation
+            should set the return value and ouput arguments.</param>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodInvocationAspect.GetOptions">
+      <summary>
+            Gets the weaving options.
+            </summary>
+      <returns>Weaving options.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.OnMethodInvocationAspect.GetInstanceTagRequest">
+      <summary>
+            Gets the <i>Instance Tag</i> required by this aspect.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Laos.InstanceTagRequest" />, or <b>null</b> if
+            no instance tag is requested by this aspect.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.OnExceptionAspect">
+      <summary>
+            Custom attribute that, when applied to a method, defines an exception
+            handler around the whole method and calls a custom method in this exception
+            handler.
+            </summary>
+      <see cref="T:PostSharp.Laos.OnMethodBoundaryAspect" />
+    </member>
+    <member name="M:PostSharp.Laos.OnExceptionAspect.GetOptions">
+      <summary>
+            Get the weaving options.
+            </summary>
+      <returns>The weaving options, or <b>null</b> if options are not specified.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.Serializers.BinaryLaosSerializationBinder">
+      <summary>
+            Implementation of <see cref="T:System.Runtime.Serialization.SerializationBinder" /> used at runtime when aspect instances
+            are deserialized. By overriding the default binder, you can resolve assembly names differently.
+            This can be useful if assemblies have been renamed or merged between PostSharp run and execution
+            </summary>
+      <example>
+            LaosSerializationBinder binder = new LaosSerializationBinder();
+            binder.Retarget("MyAssembly", "MyAssemblyMerged");
+            BinaryLaosSerializer.Binder = binder;
+            </example>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.BinaryLaosSerializationBinder.Retarget(System.String,System.String)">
+      <summary>
+            Retarget an assembly name to a new one.
+            </summary>
+      <param name="oldAssemblyName">Old assembly name (in short form only).</param>
+      <param name="newAssemblyName">New assembly name (in short or full form).</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.BinaryLaosSerializationBinder.BindToType(System.String,System.String)" />
+    <member name="T:PostSharp.Laos.Serializers.BinaryLaosSerializer">
+      <summary>
+            Implementation of <see cref="T:PostSharp.Laos.LaosSerializer" /> based on the
+            <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> provided by the full version
+            of the .NET Framework.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.BinaryLaosSerializer.#ctor">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.Serializers.BinaryLaosSerializer" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.BinaryLaosSerializer.Serialize(PostSharp.Laos.ILaosAspect[],System.IO.Stream)" />
+    <member name="M:PostSharp.Laos.Serializers.BinaryLaosSerializer.Deserialize(System.IO.Stream)" />
+    <member name="P:PostSharp.Laos.Serializers.BinaryLaosSerializer.Binder">
+      <summary>
+            Gets or sets the <see cref="T:System.Runtime.Serialization.SerializationBinder" /> used to deserializedaspects.
+            </summary>
+      <value>A <see cref="T:System.Runtime.Serialization.SerializationBinder" />, or <b>null</b>
+            to use the default one. By default, <see cref="T:PostSharp.Laos.Serializers.BinaryLaosSerializationBinder" />
+            is used.</value>
+      <remarks>
+            You should set this property before the first aspect is deserialized;
+            that is, before the static constructor of the first enhanced type is invoked.</remarks>
+    </member>
+    <member name="T:PostSharp.Laos.Serializers.IStateBagSerializable">
+      <summary>
+            Interface to be implemented by classes that should be serializable using
+            a <see cref="T:PostSharp.Laos.Serializers.StateBagSerializer" />. These classes should also implement
+            a default (parameterless) constructor.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.IStateBagSerializable.Serialize(PostSharp.Laos.Serializers.StateBag)">
+      <summary>
+            Serializes the current object into a <see cref="T:PostSharp.Laos.Serializers.StateBag" />/
+            </summary>
+      <param name="stateBag">
+        <see cref="T:PostSharp.Laos.Serializers.StateBag" /> into which the current object has to be saved.</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.IStateBagSerializable.Deserialize(PostSharp.Laos.Serializers.StateBag)">
+      <summary>
+            Deserialized the current object from a <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+      <param name="stateBag">The <see cref="T:PostSharp.Laos.Serializers.StateBag" /> into which the object was previously serialized,
+            and from which it should be reserialized.</param>
+      <remarks>
+            This method is called during deserialization just after the default (parameterless) constructor
+            has been invoked.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Laos.Serializers.MsilLaosSerializer">
+      <summary>
+            When used as a value of <see cref="T:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute" />.<see cref="P:PostSharp.Laos.LaosWeavableAspectConfigurationAttribute.SerializerType" />
+            property, specifies that the aspect should not be serialized but should instead be constructed at runtime using MSIL instructions.
+            </summary>
+      <remarks>
+            This class is <b>not</b> a serializer. When you use MSIL aspect construction, the aspect is built at runtime
+            just as normal custom attributes, and any change made at build time is lost.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.MsilLaosSerializer.Serialize(PostSharp.Laos.ILaosAspect[],System.IO.Stream)" />
+    <member name="M:PostSharp.Laos.Serializers.MsilLaosSerializer.Deserialize(System.IO.Stream)" />
+    <member name="T:PostSharp.Laos.Serializers.StateBag">
+      <summary>
+            Simple recursive structure of name-value collections used by the <see cref="T:PostSharp.Laos.Serializers.StateBagSerializer" />
+            to implement portable serialization.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.#ctor">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.SetValue(System.String,System.String)">
+      <summary>
+            Sets a value in the current <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+      <param name="name">Item name.</param>
+      <param name="value">Item value.</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.GetValue(System.String)">
+      <summary>
+            Gets a value of the current <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+      <param name="name">Name of the requested value.</param>
+      <returns>The value named <paramref name="name" />, or <b>null</b>
+            if the <see cref="T:PostSharp.Laos.Serializers.StateBag" /> does not contain this value.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.CreateBag(System.String)">
+      <summary>
+            Create a child <see cref="T:PostSharp.Laos.Serializers.StateBag" /> and assign it a name.
+            </summary>
+      <param name="name">Name of the child bag.</param>
+      <returns>The new <see cref="T:PostSharp.Laos.Serializers.StateBag" />.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.SetBag(System.String,PostSharp.Laos.Serializers.IStateBagSerializable)">
+      <summary>
+            Sets a child <see cref="T:PostSharp.Laos.Serializers.StateBag" /> to the <see cref="T:PostSharp.Laos.Serializers.StateBag" /> obtained
+            by deserializing an object.
+            </summary>
+      <param name="name">Name of the child <see cref="T:PostSharp.Laos.Serializers.StateBag" /> in the current <see cref="T:PostSharp.Laos.Serializers.StateBag" />.</param>
+      <param name="obj">Object to deserialize.</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.GetBag(System.String)">
+      <summary>
+            Gets a child <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+      <param name="name">Name of the child <see cref="T:PostSharp.Laos.Serializers.StateBag" />.</param>
+      <returns>The child <see cref="T:PostSharp.Laos.Serializers.StateBag" /> named <paramref name="name" />, or <b>null</b>
+            if there is no child <see cref="T:PostSharp.Laos.Serializers.StateBag" /> of this name.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.Serialize(System.IO.BinaryWriter)">
+      <summary>
+            Serializes the current <see cref="T:PostSharp.Laos.Serializers.StateBag" /> into a <see cref="T:System.IO.BinaryWriter" />.
+            </summary>
+      <param name="writer">A <see cref="T:System.IO.BinaryWriter" />.</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBag.Deserialize(System.IO.BinaryReader)">
+      <summary>
+            Deserializes a stream (given a <see cref="T:System.IO.BinaryReader" />) into a <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+      <param name="reader">A <see cref="T:System.IO.BinaryReader" />.</param>
+      <returns>The <see cref="T:PostSharp.Laos.Serializers.StateBag" /> built from <paramref name="reader" />.</returns>
+    </member>
+    <member name="P:PostSharp.Laos.Serializers.StateBag.Item(System.String)">
+      <summary>
+            Gets or sets a value in the current <see cref="T:PostSharp.Laos.Serializers.StateBag" />.
+            </summary>
+      <param name="name">Value name.</param>
+      <returns>The value named <paramref name="name" />, or <b>null</b> if the
+            current <see cref="T:PostSharp.Laos.Serializers.StateBag" /> does not contain any value named <paramref name="name" />.</returns>
+    </member>
+    <member name="T:PostSharp.Laos.Serializers.StateBagSerializer">
+      <summary>
+            Trivial serializer for use with light editions of the .NET Framework
+            (Compact Framework, Silverlight). Aspects should implement the
+            <see cref="T:PostSharp.Laos.Serializers.IStateBagSerializable" /> interface and should have
+            a parameterless constructor. This constructor is used during deserialization.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBagSerializer.Serialize(PostSharp.Laos.ILaosAspect[],System.IO.Stream)" />
+    <member name="M:PostSharp.Laos.Serializers.StateBagSerializer.Deserialize(System.IO.Stream)" />
+    <member name="T:PostSharp.Laos.Serializers.StateBagSerializerException">
+      <summary>
+            Exception thrown by the <see cref="T:PostSharp.Laos.Serializers.StateBagSerializer" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBagSerializerException.#ctor">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.Serializers.StateBagSerializerException" /> with the default message.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBagSerializerException.#ctor(System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.Serializers.StateBagSerializerException" /> with a given message.
+            </summary>
+      <param name="message">Error message.</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBagSerializerException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Laos.Serializers.StateBagSerializerException" /> with a given message and an inner exception.
+            </summary>
+      <param name="message">Error message.</param>
+      <param name="inner">Inner exception.</param>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.StateBagSerializerException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Deserializes a <see cref="T:PostSharp.Laos.Serializers.StateBagSerializerException" />.
+            </summary>
+      <param name="info">Serialization information.</param>
+      <param name="context">Streaming context.</param>
+    </member>
+    <member name="T:PostSharp.Laos.Serializers.XmlLaosSerializer">
+      <summary>
+            Implementation of <see cref="T:PostSharp.Laos.LaosSerializer" /> based on the <see cref="T:System.Xml.Serialization.XmlSerializer" /> provided by the
+            .NET Framework.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.Serializers.XmlLaosSerializer.Serialize(PostSharp.Laos.ILaosAspect[],System.IO.Stream)" />
+    <member name="M:PostSharp.Laos.Serializers.XmlLaosSerializer.Deserialize(System.IO.Stream)" />
+    <member name="T:PostSharp.Laos.TypeIdentity">
+      <summary>
+             Wraps a <see cref="P:PostSharp.Laos.TypeIdentity.Type" /> or a type name.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Laos.TypeIdentity.Wrap(System.Type)">
+      <summary>
+            Wraps a <see cref="P:PostSharp.Laos.TypeIdentity.Type" /> into a <see cref="T:PostSharp.Laos.TypeIdentity" />.
+            </summary>
+      <param name="type">A <see cref="P:PostSharp.Laos.TypeIdentity.Type" />.</param>
+      <returns>A <see cref="T:PostSharp.Laos.TypeIdentity" /> wrapping <paramref cref="F:PostSharp.Laos.TypeIdentity.type" />.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.TypeIdentity.Wrap(System.Type[])">
+      <summary>
+            Wraps an array of <see cref="P:PostSharp.Laos.TypeIdentity.Type" /> into an array of <see cref="T:PostSharp.Laos.TypeIdentity" />.
+            </summary>
+      <param name="types">An array of <see cref="P:PostSharp.Laos.TypeIdentity.Type" />.</param>
+      <returns>An array of <see cref="T:PostSharp.Laos.TypeIdentity" /> wrapping <paramref name="types" />.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.TypeIdentity.Wrap(System.String)">
+      <summary>
+            Wraps a type name into a <see cref="T:PostSharp.Laos.TypeIdentity" />.
+            </summary>
+      <param name="typeName">The type name.</param>
+      <returns>A <see cref="T:PostSharp.Laos.TypeIdentity" /> wrapping the type name.</returns>
+    </member>
+    <member name="M:PostSharp.Laos.TypeIdentity.Wrap(System.String[])">
+      <summary>
+            Wraps an array of type names into an array of <see cref="T:PostSharp.Laos.TypeIdentity" />.
+            </summary>
+      <param name="typeNames">An array of type names.</param>
+      <returns>An array of <see cref="T:PostSharp.Laos.TypeIdentity" /> wrapping <paramref name="typeNames" />.</returns>
+    </member>
+    <member name="P:PostSharp.Laos.TypeIdentity.Type">
+      <summary>
+            Gets the wrapped <see cref="P:PostSharp.Laos.TypeIdentity.Type" />, or <b>null</b> it the <see cref="P:PostSharp.Laos.TypeIdentity.TypeName" /> property is set.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Laos.TypeIdentity.TypeName">
+      <summary>
+            Gets the wrapped type name, or <b>null</b> it the <see cref="P:PostSharp.Laos.TypeIdentity.Type" /> property is set.
+            </summary>
+    </member>
+  </members>
+</doc>

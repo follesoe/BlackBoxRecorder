@@ -1,0 +1,1654 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>PostSharp.Public</name>
+  </assembly>
+  <members>
+    <member name="T:PostSharp.BoolWithDefault">
+      <summary>
+            Boolean with a "default" value. For use in design-time configurable boolean properties.
+            </summary>
+    </member>
+    <member name="F:PostSharp.BoolWithDefault.Default">
+      <summary>
+            Indicates that the value has not been set.
+            </summary>
+    </member>
+    <member name="F:PostSharp.BoolWithDefault.True">
+      <summary>
+            Indicates that the value has been set to <b>true</b>.
+            </summary>
+    </member>
+    <member name="F:PostSharp.BoolWithDefault.False">
+      <summary>
+            Indicates that the value has been set to <b>false</b>.
+            </summary>
+    </member>
+    <member name="T:PostSharp.CodeModel.IAssemblyName">
+      <summary>
+            Defines the semantics of an assembly name.
+            </summary>
+    </member>
+    <member name="M:PostSharp.CodeModel.IAssemblyName.GetPublicKey">
+      <summary>
+            Gets the assemby public key.
+            </summary>
+      <value>
+            An array of bytes containing the public key,
+            or <b>null</b> if no public key is specified (for instance if
+            only the public key token is given).
+            </value>
+      <returns>An array of bytes containing the public key,
+            or <b>null</b> if no public key is specified.</returns>
+    </member>
+    <member name="M:PostSharp.CodeModel.IAssemblyName.GetPublicKeyToken">
+      <summary>
+            Gets the assembly public key token.
+            </summary>
+      <returns>An array of bytes containing the public key token,
+            or <b>null</b> if no public key is specified.</returns>
+    </member>
+    <member name="P:PostSharp.CodeModel.IAssemblyName.Name">
+      <summary>
+            Gets the assembly friendly name.
+            </summary>
+      <value>
+            The assembly friendly name.
+            </value>
+    </member>
+    <member name="P:PostSharp.CodeModel.IAssemblyName.FullName">
+      <summary>
+            Gets the assembly full name.
+            </summary>
+      <value>
+            The assembly full name including version number, culture name
+            and public key token.
+            </value>
+    </member>
+    <member name="P:PostSharp.CodeModel.IAssemblyName.Version">
+      <summary>
+            Gets the assembly version.
+            </summary>
+      <value>
+            A <see cref="P:PostSharp.CodeModel.IAssemblyName.Version" />.
+            </value>
+    </member>
+    <member name="P:PostSharp.CodeModel.IAssemblyName.Culture">
+      <summary>
+            Gets the assembly culture name.
+            </summary>
+      <value>
+            The standard assembly culture name, or <b>null</b> if the assembly
+            is culture-neutral.
+            </value>
+    </member>
+    <member name="P:PostSharp.CodeModel.IAssemblyName.IsMscorlib">
+      <summary>
+            Determines whether the current assembly is <b>mscorlib</b>.
+            </summary>
+    </member>
+    <member name="T:PostSharp.CodeModel.ReflectionWrapper.IReflectionWrapper">
+      <summary>
+            Interface implemented by all reflection wrappers.
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.ReflectionWrapper.IReflectionWrapper.UnderlyingSystemObject">
+      <summary>
+            Gets the system object (<see cref="T:System.Type" />, <see cref="T:System.Reflection.FieldInfo" />, <see cref="T:System.Reflection.MethodInfo" />,
+            <see cref="T:System.Reflection.ConstructorInfo" />, <see cref="T:System.Reflection.ParameterInfo" />, ...) corresponding to the current wrapper.
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.ReflectionWrapper.IReflectionWrapper.DeclaringAssemblyName">
+      <summary>
+            Gets the name of the assembly declaring the current element.
+            </summary>
+    </member>
+    <member name="T:PostSharp.CodeModel.SymbolSequencePoint">
+      <summary>
+            Maps a point in IL instructions to location in source code.
+            </summary>
+      <remarks>
+            This class implements the <see cref="T:System.IComparable`1" /> interface.
+            This allows sorting sequence points according to their IL offsets and performing
+            binary searches in sorted arrays.
+            </remarks>
+    </member>
+    <member name="F:PostSharp.CodeModel.SymbolSequencePoint.Hidden">
+      <summary>
+            Gets a symbol meaning that the associated instructions have no source code.
+            </summary>
+    </member>
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Diagnostics.SymbolStore.ISymbolDocument)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.CodeModel.SymbolSequencePoint" />.
+            </summary>
+      <param name="startLine">The start line in the source file.</param>
+      <param name="startColumn">The start column in the source file.</param>
+      <param name="endLine">The end line in the source file.</param>
+      <param name="endColumn">The end column in the source file.</param>
+      <param name="document">Source file</param>
+    </member>
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.Equals(PostSharp.CodeModel.SymbolSequencePoint)" />
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.Equals(System.Object)" />
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.op_Equality(PostSharp.CodeModel.SymbolSequencePoint,PostSharp.CodeModel.SymbolSequencePoint)">
+      <summary>
+            Determines whether two sequence points are equal.
+            </summary>
+      <param name="left">A <see cref="T:PostSharp.CodeModel.SymbolSequencePoint" />.</param>
+      <param name="right">A <see cref="T:PostSharp.CodeModel.SymbolSequencePoint" />.</param>
+      <returns>
+        <b>true</b> if both sequence points are equal, otherwise <b>false</b>.</returns>
+    </member>
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.op_Inequality(PostSharp.CodeModel.SymbolSequencePoint,PostSharp.CodeModel.SymbolSequencePoint)">
+      <summary>
+            Determines whether two sequence points are different.
+            </summary>
+      <param name="left">A <see cref="T:PostSharp.CodeModel.SymbolSequencePoint" />.</param>
+      <param name="right">A <see cref="T:PostSharp.CodeModel.SymbolSequencePoint" />.</param>
+      <returns>
+        <b>true</b> if both sequence points are different, otherwise <b>false</b>.</returns>
+    </member>
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.GetHashCode" />
+    <member name="M:PostSharp.CodeModel.SymbolSequencePoint.ToString" />
+    <member name="P:PostSharp.CodeModel.SymbolSequencePoint.IsHidden">
+      <summary>
+            Determines whether the current symbol means that the associated
+            instructions have no source code..
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.SymbolSequencePoint.StartLine">
+      <summary>
+            Gets the start line in the source file.
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.SymbolSequencePoint.EndLine">
+      <summary>
+            Gets the end line in the source file.
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.SymbolSequencePoint.StartColumn">
+      <summary>
+            Gets the start column in the source file.
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.SymbolSequencePoint.EndColumn">
+      <summary>
+            Gets the end column in the source file.
+            </summary>
+    </member>
+    <member name="P:PostSharp.CodeModel.SymbolSequencePoint.Document">
+      <summary>
+            Gets the document defining the next instructions.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.AssemblyIdAttribute">
+      <summary>
+            Assigns a unique identifier to an assembly. This assembly identifier is used
+            to generate unique attribute identifiers. 
+            </summary>
+      <remarks>
+            By default, the assembly identifier is computed from the module name
+            (by using the first 4 bytes of the MD5 sum of the module name).
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Extensibility.AssemblyIdAttribute.#ctor(System.Int32)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.AssemblyIdAttribute" />.
+            </summary>
+      <param name="id">Assembly identifier.</param>
+    </member>
+    <member name="T:PostSharp.Extensibility.CompileTimeSemanticAttribute">
+      <summary>
+            Annotation meaning that the semantic to which it is applied is used at
+            compile-time only. It has a purely informational role.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.DisablePostSharpMessageAttribute">
+      <summary>
+            Custom attribute that, when applied on an assembly, means that a given message
+            should be disabled during the current PostSharp session.
+            </summary>
+      <remarks>
+            Errors and fatal errors cannot be disabled.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Extensibility.DisablePostSharpMessageAttribute.#ctor(System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.DisablePostSharpMessageAttribute" />.
+            </summary>
+      <param name="messageId">Identifier of the message to be disabled.</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.DisablePostSharpMessageAttribute.MessageId">
+      <summary>
+            Gets the identifier of the message to be disabled.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.EscalatePostSharpMessageAttribute">
+      <summary>
+            Custom attribute that, when applied on an assembly, means that a given message
+            should be escalated to an error during the current PostSharp session.
+            </summary>
+      <remarks>
+            Errors and fatal errors cannot be disabled.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Extensibility.EscalatePostSharpMessageAttribute.#ctor(System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.EscalatePostSharpMessageAttribute" />.
+            </summary>
+      <param name="messageId">Identifier of the message to be disabled.</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.EscalatePostSharpMessageAttribute.MessageId">
+      <summary>
+            Gets the identifier of the message to be disabled.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.FrameworkVariants">
+      <summary>
+            Defines constants identifying the different variants of the
+            .NET Framework (<see cref="F:PostSharp.Extensibility.FrameworkVariants.Full" />, <see cref="F:PostSharp.Extensibility.FrameworkVariants.Compact" />, <see cref="F:PostSharp.Extensibility.FrameworkVariants.Silverlight" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.FrameworkVariants.Full">
+      <summary>
+            Normal, full .NET Framework.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.FrameworkVariants.Compact">
+      <summary>
+            .NET Compact Framework.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.FrameworkVariants.Silverlight">
+      <summary>
+            Silverlight.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.FrameworkVariants.Micro">
+      <summary>
+            Micro Framework.
+            </summary>
+      <remarks>
+            There is strong name in the Micro Framework.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Extensibility.FrameworkVariants.FromBytes(System.Byte[])">
+      <summary>
+            Convert a byte array (typically containing the public key token of <b>mscorlib</b>)
+            into a string that can be compared to one of the constants defined in this class.
+            </summary>
+      <param name="bytes">A byte array (typically containing the public key token of <b>mscorlib</b>)</param>
+      <returns>A string that can be compared to one of the constants defined in this class</returns>
+    </member>
+    <member name="T:PostSharp.Extensibility.IMessageSink">
+      <summary>
+            Receives messages.
+            </summary>
+      <remarks>
+            Use this interface instead of events for cross-domain communication.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Extensibility.IMessageSink.Write(PostSharp.Extensibility.Message)">
+      <summary>
+            Writes a message to the sink.
+            </summary>
+      <param name="message">A message.</param>
+    </member>
+    <member name="T:PostSharp.Extensibility.ImplementationBoundAttributeAttribute">
+      <summary>
+            Custom attribute meaning that custom attributes of a given type are
+            bound to the implementation, not to the semantics.
+            </summary>
+      <remarks>
+        <para>This custom attribute influences whether instances of a given other
+            custom attribute should be moved from the semantic to the implementation,
+            when the semantic is detached from the implementation. This happens for instance
+            when a property is generated from a field; the property become the semantic
+            (and is made public) and the field the implementation (and is made private).
+            Most custom attributes apply to semantics, so they are moved from the field
+            to the property. If a custom attribute must not be moved, it should be
+            marked with the <see cref="T:PostSharp.Extensibility.ImplementationBoundAttributeAttribute" />
+            custom attribute.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:PostSharp.Extensibility.ImplementationBoundAttributeAttribute.#ctor(System.Type)">
+      <summary>
+            Initializes the new <see cref="T:PostSharp.Extensibility.ImplementationBoundAttributeAttribute" />.
+            </summary>
+      <param name="attributeType">Type of the custom attribute that
+            should not be moved from implementation to semantic.</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.ImplementationBoundAttributeAttribute.AttributeType">
+      <summary>
+            Gets the type of the custom attribute that
+            should not be moved from implementation to semantic
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.Message">
+      <summary>
+            Encapsulates a message (error, warning, info, ...).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.Message.NotAvailable">
+      <summary>
+            When set to the <see cref="P:PostSharp.Extensibility.Message.LocationLine" /> or the
+            <see cref="P:PostSharp.Extensibility.Message.LocationColumn" /> property, means that
+            the value of this property is unknown.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.Message.#ctor(PostSharp.Extensibility.SeverityType,System.String,System.String,System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.Message" /> and specifies only required parameters.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="source">Name of the component emitting the message.</param>
+      <param name="messageText">Fully formatted message text.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.Message.#ctor(PostSharp.Extensibility.SeverityType,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Exception)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.Message" /> and specifies all its properties.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="locationFile">File that caused the error, or <b>null</b> if
+            the file is unknown or does not apply.</param>
+      <param name="locationLine"> Position (line) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="locationColumn">Position (column) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="innerException">The <see cref="T:System.Exception" /> that caused this message,
+            or <b>null</b> if this message was not caused by an
+            exception.</param>
+      <param name="source">Name of the component emitting the message.</param>
+      <param name="helpLink">Link to the help file page associated to this message.</param>
+      <param name="messageText">Fully formatted message text.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.Message.GetExceptionStackMessage(System.Exception)">
+      <summary>
+            Returns a string composed of the messages of
+            all inner exceptions.
+            </summary>
+      <param name="outerException">The outer exception.</param>
+      <returns>A string composed of the mesages of all
+            <paramref name="outerException" /> and all inner exceptions,
+            concatenated by the string <c>--&gt;</c>.</returns>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.Severity">
+      <summary>
+            Gets the message severity.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.MessageId">
+      <summary>
+            Gets the message type identifier.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.LocationFile">
+      <summary>
+            Gets the name of the file that caused
+            the message.
+            </summary>
+      <value>
+            A full file name, or <b>null</b> if the file name
+            is unknown or not applicable.
+            </value>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.LocationLine">
+      <summary>
+            Gets the line in the file that caused the
+            message.
+            </summary>
+      <summary>
+            An integer greater or equal to 1, or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" />
+            if the line is unknown or does not apply.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.LocationColumn">
+      <summary>
+            Gets the column in the file that caused the
+            message.
+            </summary>
+      <summary>
+            An integer greater or equal to 1, or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" />
+            if the column is unknown or does not apply.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.InnerException">
+      <summary>
+            Gets the
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.Source">
+      <summary>
+            Gets or sets the name of the source component.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.MessageText">
+      <summary>
+            Gets the message formatted text.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.Message.HelpLink">
+      <summary>
+            Gets the help link.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.SeverityType">
+      <summary>
+            Types of message severities.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.Debug">
+      <summary>
+            Debugging information (typically trace).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.Verbose">
+      <summary>
+            Verbose (lowly important information).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.Info">
+      <summary>
+            Information.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.ImportantInfo">
+      <summary>
+            Important information.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.CommandLine">
+      <summary>
+            Command line.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.Warning">
+      <summary>
+            Warning.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.Error">
+      <summary>
+            Error.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.SeverityType.Fatal">
+      <summary>
+            Fatal error.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.MessageException">
+      <summary>
+            Exception embedding a <see cref="T:PostSharp.Extensibility.Message" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageException.#ctor(PostSharp.Extensibility.Message)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.MessageException" /> from
+            an existing <see cref="T:PostSharp.Extensibility.Message" />.
+            </summary>
+      <param name="message">A <see cref="T:PostSharp.Extensibility.Message" />.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Serializes the current object.
+            </summary>
+      <param name="info">Serialization information.</param>
+      <param name="context">Serialization context.</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.MessageException.MessageObject">
+      <summary>
+            Gets the <see cref="T:PostSharp.Extensibility.Message" /> em
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.MessageSource">
+      <summary>
+            Provides commodify methods to work with an <see cref="T:PostSharp.Extensibility.IMessageSink" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.#ctor(System.String,System.Resources.ResourceManager)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.MessageSource" />.
+            </summary>
+      <param name="source">Name of the component emitting. the messages.</param>
+      <param name="resourceManager">The <see cref="T:System.Resources.ResourceManager" /> that will be used to
+            retrieve message texts.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.CreateMessage(PostSharp.Extensibility.SeverityType,System.String,System.Object[],System.String,System.Int32,System.Int32,System.Exception)">
+      <summary>
+            Creates a <see cref="T:PostSharp.Extensibility.Message" /> object.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="arguments">Array of arguments used to format the message text,
+            or <b>null</b> if this message has no argument.</param>
+      <param name="locationFile">File that caused the error, or <b>null</b> if
+            the file is unknown or does not apply.</param>
+      <param name="locationLine"> Position (line) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="locationColumn">Position (column) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="innerException">The <see cref="T:System.Exception" /> that caused this message,
+            or <b>null</b> if this message was not caused by an
+            exception.</param>
+      <returns>A <see cref="T:PostSharp.Extensibility.Message" /> object.</returns>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.SeverityType,System.String,System.Object[],System.String,System.Int32,System.Int32,System.Exception)">
+      <summary>
+            Emits a <see cref="T:PostSharp.Extensibility.Message" /> and specifies all its properties.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="arguments">Array of arguments used to format the message text,
+            or <b>null</b> if this message has no argument.</param>
+      <param name="locationFile">File that caused the error, or <b>null</b> if
+            the file is unknown or does not apply.</param>
+      <param name="locationLine"> Position (line) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="locationColumn">Position (column) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="innerException">The <see cref="T:System.Exception" /> that caused this message,
+            or <b>null</b> if this message was not caused by an
+            exception.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.SeverityType,System.String,System.Object[],System.String,System.Int32,System.Int32)">
+      <summary>
+            Emits a <see cref="T:PostSharp.Extensibility.Message" /> and specifies the source file name,
+            line and column.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="locationFile">File that caused the error, or <b>null</b> if
+            the file is unknown or does not apply.</param>
+      <param name="locationLine"> Position (line) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="locationColumn">Position (column) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+      <param name="arguments">Message arguments.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.SeverityType,System.String,System.Object[],System.String,System.Int32)">
+      <summary>
+            Emits a <see cref="T:PostSharp.Extensibility.Message" /> and specifies the source file name and
+            line.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="arguments">Array of arguments used to format the message text,
+            or <b>null</b> if this message has no argument.</param>
+      <param name="locationFile">File that caused the error, or <b>null</b> if
+            the file is unknown or does not apply.</param>
+      <param name="locationLine"> Position (line) in the file that caused the error,
+            or <see cref="F:PostSharp.Extensibility.Message.NotAvailable" /> if the line is 
+            unknown or does not apply.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.SeverityType,System.String,System.Object[],System.String)">
+      <summary>
+            Emits a <see cref="T:PostSharp.Extensibility.Message" /> and specifies the source file name..
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="arguments">Array of arguments used to format the message text,
+            or <b>null</b> if this message has no argument.</param>
+      <param name="locationFile">File that caused the error, or <b>null</b> if
+            the file is unknown or does not apply.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.SeverityType,System.String,System.Object[])">
+      <summary>
+            Emits a <see cref="T:PostSharp.Extensibility.Message" /> without specifying the location of the error.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="arguments">Array of arguments used to format the message text,
+            or <b>null</b> if this message has no argument.</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.SeverityType,System.String,System.Object[],PostSharp.CodeModel.SymbolSequencePoint)">
+      <summary>
+            Emits a <see cref="T:PostSharp.Extensibility.Message" /> and specifies the error location using a <see cref="T:PostSharp.CodeModel.SymbolSequencePoint" />.
+            </summary>
+      <param name="severity">Message severify (fatal error, error, info, debug).</param>
+      <param name="messageId">Identifier of the message type.</param>
+      <param name="arguments">Array of arguments used to format the message text,
+            or <b>null</b> if this message has no argument.</param>
+      <param name="symbolSequencePoint">Location of the problem in source code..</param>
+    </member>
+    <member name="M:PostSharp.Extensibility.MessageSource.Write(PostSharp.Extensibility.Message)">
+      <summary>
+            Writes a message to the sink.
+            </summary>
+      <param name="message">A message.</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.MessageSource.MessageSink">
+      <summary>
+            Gets the current message sink.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.MulticastAttribute">
+      <summary>
+            Custom attribute that can be applied to multiple elements
+            using wildcards.
+            </summary>
+      <remarks>
+        <para>Each class derived from <see cref="T:PostSharp.Extensibility.MulticastAttribute" />
+            should be decorated with an instance of <see cref="T:PostSharp.Extensibility.MulticastAttributeUsageAttribute" />.
+            </para>
+        <para>
+            Multicasting is performed by the <b>MulticastAttributeTask</b>, which should be
+            included in the project. After multicasting, custom attribute instances are
+            available on the <b>CustomAttributeDictionaryTask</b> class.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements">
+      <summary>
+            Gets or sets the kind of elements to which this custom attributes applies.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetAssemblies">
+      <summary>
+            Gets or sets the assemblies to which the current attribute apply.
+            </summary>
+      <value>
+            Wildcard or regular expression specifying to which assemblies
+            this instance applies, or <b>null</b> if this instance applies
+            only to elements of the current assembly. Wildcard expressions should
+            start with the <code>regex:</code> prefix.
+            </value>
+      <remarks>
+            When this property is not specified or is <b>null</b>, the current
+            attribute is multicasted only in the current assembly. Otherwise, it
+            is multicasted also to external assemblies, i.e. to declarations that
+            are <i>referenced</i> by the current assembly.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetTypes">
+      <summary>
+            Gets or sets the expression specifying to which types
+            this instance applies.
+            </summary>
+      <value>
+            A wildcard or regular expression specifying to which types
+            this instance applies, or <b>null</b> this instance
+            applies either to all types. Wildcard expressions should
+            start with the <code>regex:</code> prefix.
+            </value>
+      <remarks>
+            Ignored if the <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" /> are only the module and/or the assembly.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetTypeAttributes">
+      <summary>
+            Gets or sets the visibilities of types to which this attribute applies.
+            </summary>
+      <remarks>
+            On type-level, the only meaningfull enumeration values are related to visibility.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetMembers">
+      <summary>
+            Gets or sets the expression specifying to which members 
+            this instance applies.
+            </summary>
+      <value>
+            A wildcard or regular expression specifying to which members
+            this instance applies, or <b>null</b> this instance
+            applies either to all members whose kind is given in <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" />.
+            Wildcard expressions should
+            start with the <code>regex:</code> prefix.
+            </value>
+      <remarks>
+        <para>Ignored if the only <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" /> are only types.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetMemberAttributes">
+      <summary>
+            Gets or sets the visibilities, scopes, virtualities, and implementation
+             of members to which this attribute applies.
+            </summary>
+      <remarks>
+        <para>Ignored if the <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" /> are only the module, the assembly,
+            and/or types.
+            </para>
+        <para>
+            The <see cref="T:PostSharp.Extensibility.MulticastAttributes" /> enumeration is a multi-part flag: there is one
+            part for visibility, one for scope, one for virtuality, and one for implementation.
+            If you specify one part, it will override the values defined on the custom attribute definition.
+            If you do not specify it, the values defined on the custom attribute definition will be inherited.
+            Note that custom attributes may apply restrictions on these attributes. For instance, 
+            a custom attribute may not be valid on abstract methods. You are obviously not allowed
+            to 'enlarge' the set of possible targets.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetParameters">
+      <summary>
+            Gets or sets the expression specifying to which parameters 
+            this instance applies.
+            </summary>
+      <value>
+            A wildcard or regular expression specifying to which parameters
+            this instance applies, or <b>null</b> this instance
+            applies either to all members whose kind is given in <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" />.
+            Wildcard expressions should
+            start with the <code>regex:</code> prefix.
+            </value>
+      <remarks>
+        <para>Ignored if the only <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" /> are only types.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetParameterAttributes">
+      <summary>
+            Gets or sets the passing style (by value, <b>out</b> or <b>ref</b>)
+             of parameters to which this attribute applies.
+            </summary>
+      <remarks>
+        <para>Ignored if the <see cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeTargetElements" /> do not include parameters.
+            </para>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeExclude">
+      <summary>
+            If true, indicates that this attribute <i>removes</i> all other instances of the
+            same attribute type from the set of elements defined by the current instance.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributePriority">
+      <summary>
+            Gets or sets the priority of the current attribute in case that multiple 
+            instances are defined on the same element (lower values are processed before).
+            </summary>
+      <remarks>
+            You should use only 16-bit values in user code. Top 16 bits are reserved for the system.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeReplace">
+      <summary>
+            Determines whether this attribute replaces other attributes found on the
+            target declarations.
+            </summary>
+      <value>
+        <b>true</b> if the current instance will replace previous ones, or <b>false</b>
+            if it will be added to previous instances.
+            </value>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeInheritance">
+      <summary>
+            Determines whether this attribute is inherited
+            </summary>
+      <remarks>
+        <para>If this property is <b>true</b>, a copy of this attribute will be propagated along
+            the lines of inheritance of the target element:</para>
+        <list type="bullet">
+          <item>On <b>classes</b>: all classed derived from that class.</item>
+          <item>On <b>interfaces</b>: all classes implementing this interface.</item>
+          <item>On <b>virtual, abstract or interface methods</b>: all methods overriding 
+            or implementing this method.</item>
+          <item>On <b>parameters</b> or <b>return value</b> of virtual, abstract or interface methods:
+            corresponding parameter or return value on all methods or overriding or implementing the
+            parent method of the target parameter or return value.</item>
+        </list>
+      </remarks>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttribute.AttributeId">
+      <summary>
+        <b>Internal Only.</b> Identifier of the current instance of the custom attribute.
+            </summary>
+      <remarks>
+            This property is used internally by PostSharp to uniquely identify instances of custom
+            attributes and avoid adding duplicates. Do not use this property in customer code.
+            </remarks>
+    </member>
+    <member name="T:PostSharp.Extensibility.MulticastAttributeUsageAttribute">
+      <summary>
+            Custom attribute that determines the usage of a <see cref="T:PostSharp.Extensibility.MulticastAttribute" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.MulticastAttributeUsageAttribute.#ctor(PostSharp.Extensibility.MulticastTargets)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.MulticastAttributeUsageAttribute" />.
+            </summary>
+      <param name="validOn">Kinds of targets that instances of the related <see cref="T:PostSharp.Extensibility.MulticastAttribute" />
+            apply to.</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.ValidOn">
+      <summary>
+            Gets the kinds of targets that instances of the related <see cref="T:PostSharp.Extensibility.MulticastAttribute" />
+            apply to.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.AllowMultiple">
+      <summary>
+            Determines wether many instances of the custom attribute are allowed on a single declaration.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.Inheritance">
+      <summary>
+            Determines wether the custom attribute in inherited along the lines of inheritance
+            of the target element.
+            </summary>
+      <seealso cref="P:PostSharp.Extensibility.MulticastAttribute.AttributeInheritance" />
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.AllowExternalAssemblies">
+      <summary>
+            Determines whether this attribute can be applied to declaration of external assemblies
+            (i.e. to other assemblies than the one in which the custom attribute is instanciated).
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.PersistMetaData">
+      <summary>
+            Determines whether the custom attribute should be persisted in metadata, so that
+            it would be available for <b>System.Reflection</b>.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.TargetMemberAttributes">
+      <summary>
+            Gets or sets the attributes of the members (fields or methods) to which
+            the custom attribute can be applied.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.TargetParameterAttributes">
+      <summary>
+            Gets or sets the attributes of the parameter to which
+            the custom attribute can be applied.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.MulticastAttributeUsageAttribute.TargetTypeAttributes">
+      <summary>
+            Gets or sets the attributes of the types to which
+            the custom attribute can be applied. If the custom attribute relates to
+            fields or methods, this property specifies which attributes
+            of the declaring type are acceptable.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.MulticastTargets">
+      <summary>
+            Kinds of targets to which multicast custom attributes (<see cref="T:PostSharp.Extensibility.MulticastAttribute" />)
+            can apply.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Default">
+      <summary>
+            Specifies that the set of target elements is inherited from
+            the parent custom attribute.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Class">
+      <summary>
+            Class.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Struct">
+      <summary>
+            Structure.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Enum">
+      <summary>
+            Enumeration.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Delegate">
+      <summary>
+            Delegate.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Interface">
+      <summary>
+            Interface.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.AnyType">
+      <summary>
+            Any type (<see cref="F:PostSharp.Extensibility.MulticastTargets.Class" />, <see cref="F:PostSharp.Extensibility.MulticastTargets.Struct" />, <see cref="F:PostSharp.Extensibility.MulticastTargets.Enum" />,
+            <see cref="F:PostSharp.Extensibility.MulticastTargets.Delegate" /> or <see cref="F:PostSharp.Extensibility.MulticastTargets.Interface" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Field">
+      <summary>
+            Field.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Method">
+      <summary>
+            Method (but not constructor).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Constructor">
+      <summary>
+            Constructor.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.InstanceConstructor">
+      <summary>
+            Instance constructor.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.StaticConstructor">
+      <summary>
+            Static constructor.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Property">
+      <summary>
+            Property (but not methods inside the property).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Event">
+      <summary>
+            Event (but not methods inside the event).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.AnyMember">
+      <summary>
+            Any member (<see cref="F:PostSharp.Extensibility.MulticastTargets.Field" />, <see cref="F:PostSharp.Extensibility.MulticastTargets.Method" />, <see cref="F:PostSharp.Extensibility.MulticastTargets.InstanceConstructor" />,
+            <see cref="F:PostSharp.Extensibility.MulticastTargets.StaticConstructor" />,
+            <see cref="F:PostSharp.Extensibility.MulticastTargets.Property" />, <see cref="F:PostSharp.Extensibility.MulticastTargets.Event" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Assembly">
+      <summary>
+            Assembly.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.Parameter">
+      <summary>
+            Method or property parameter.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.ReturnValue">
+      <summary>
+            Method or property return value.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastTargets.All">
+      <summary>
+            All element kinds.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.MulticastAttributes">
+      <summary>
+            Attributes of elements to which multicast custom attributes (<see cref="T:PostSharp.Extensibility.MulticastAttribute" />)
+            apply.
+            </summary>
+      <remarks>
+            When specifying attributes of target members or types, do not forget to provide
+            <i>all</i> categories of flags, not only the category on which you want to put
+            a restriction. If you want to limit, for instance, a custom attribute to be
+            applied on public members, a good pratice is to set 
+            <c>TargetMemberAttributes = MulticastAttributes.Public | ~MulticastAttributes.AnyVisibility</c>,
+            unless the parent is more restrictive, in which case you should specify attributes
+            explicitely.
+            </remarks>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Default">
+      <summary>
+            Specifies that the set of target attributes is inherited from
+            the parent custom attribute.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Private">
+      <summary>
+            Private (visible inside the current type).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Protected">
+      <summary>
+            Protected (visible inside derived types).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Internal">
+      <summary>
+            Internal (visible inside the current assembly).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.InternalAndProtected">
+      <summary>
+            Internal <i>and</i> protected (visible inside derived types that are defined in the current assembly).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.InternalOrProtected">
+      <summary>
+            Internal <i>or</i> protected (visible inside all derived types and in the current assembly).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Public">
+      <summary>
+            Public (visible everywhere).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyVisibility">
+      <summary>
+            Any visibility.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Static">
+      <summary>
+            Static scope.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Instance">
+      <summary>
+            Instance scope.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyScope">
+      <summary>
+            Any scope (<see cref="F:PostSharp.Extensibility.MulticastAttributes.Static" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.Instance" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Abstract">
+      <summary>
+            Abstract methods.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.NonAbstract">
+      <summary>
+            Concrete (non-abstract) methods. 
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyAbstraction">
+      <summary>
+            Any abstraction (<see cref="F:PostSharp.Extensibility.MulticastAttributes.Abstract" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.NonAbstract" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Virtual">
+      <summary>
+            Virtual methods. 
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.NonVirtual">
+      <summary>
+            Non-virtual methods.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyVirtuality">
+      <summary>
+            Any virtuality (<see cref="F:PostSharp.Extensibility.MulticastAttributes.Virtual" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.NonVirtual" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Managed">
+      <summary>
+            Managed code implemetation.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.NonManaged">
+      <summary>
+            Non-managed code implementation (external or system).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyImplementation">
+      <summary>
+            Any implementation (<see cref="F:PostSharp.Extensibility.MulticastAttributes.Managed" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.NonManaged" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.Literal">
+      <summary>
+            Literal fields.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.NonLiteral">
+      <summary>
+            Non-literal fields.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyLiterality">
+      <summary>
+            Any field literality (<see cref="F:PostSharp.Extensibility.MulticastAttributes.Literal" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.NonLiteral" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.InParameter">
+      <summary>
+            Input parameters.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.CompilerGenerated">
+      <summary>
+            Compiler-generated code (for instance closure types of anonymous method, iterator type, ...).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.UserGenerated">
+      <summary>
+            User-generated code (anything expected <see cref="F:PostSharp.Extensibility.MulticastAttributes.CompilerGenerated" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyGeneration">
+      <summary>
+            Any code generation (<see cref="F:PostSharp.Extensibility.MulticastAttributes.CompilerGenerated" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.UserGenerated" />)l
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.OutParameter">
+      <summary>
+            Output (<b>out</b> in C#) parameters.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.RefParameter">
+      <summary>
+            Input/Output (<b>ref</b> in C#) parameters.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.AnyParameter">
+      <summary>
+            Any kind of parameter passing (<see cref="F:PostSharp.Extensibility.MulticastAttributes.InParameter" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.OutParameter" /> | <see cref="F:PostSharp.Extensibility.MulticastAttributes.RefParameter" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastAttributes.All">
+      <summary>
+            All members.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.MulticastInheritance">
+      <summary>
+            Kind of inheritance of <see cref="T:PostSharp.Extensibility.MulticastAttribute" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastInheritance.None">
+      <summary>
+            No inheritance.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastInheritance.Strict">
+      <summary>
+            The instance is inherited to children of the original element,
+            but multicasting is not applied to members of children.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Extensibility.MulticastInheritance.Multicast">
+      <summary>
+            The instance is inherited to children of the original element
+            and multicasting is applied to members of children.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Extensibility.HasInheritedAttributeAttribute">
+      <summary>
+        <b>Internal Only.</b> Custom attribute used internally by PostSharp to mark
+            elements having inherited custom attributes. This custom attribute should not
+            be used in custom code, otherwise PostSharp may not work properly.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.HasInheritedAttributeAttribute.#ctor(System.Int64[])">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.HasInheritedAttributeAttribute" />.
+            </summary>
+      <param name="ids">List of pooled inherited instances present on the target element
+            of the current <see cref="T:PostSharp.Extensibility.HasInheritedAttributeAttribute" /> instance.</param>
+    </member>
+    <member name="T:PostSharp.Extensibility.IProject">
+      <summary>
+            Provides information about the currently executing project.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.IProject.EvaluateExpression(System.String)">
+      <summary>
+            Evaluates an expression (that is, replace parameters by their actual value).
+            </summary>
+      <param name="expression">An expression.</param>
+      <returns>The evaluated expression, or <b>null</b> if one parameter could not be
+            resolved.</returns>
+    </member>
+    <member name="M:PostSharp.Extensibility.IProject.GetFrameworkVariant">
+      <summary>
+            Gets the variant of the .NET Framework against which the .NET assembly
+            currently processed is linked.
+            </summary>
+      <returns>A string uniquely identifying the framework variant, to be compared
+            to the constants defined in the <see cref="T:PostSharp.Extensibility.FrameworkVariants" /> class.
+            Actually, the public key token of <b>mscorlib</b> is returned.</returns>
+    </member>
+    <member name="T:PostSharp.Extensibility.IPostSharpEnvironment">
+      <summary>
+            Provides information about the current PostSharp environment.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.IPostSharpEnvironment.CurrentProject">
+      <summary>
+            Gets the currently executing project.
+            </summary>
+      <value>
+            The current project, or <b>null</b> if there is no current project.
+            </value>
+    </member>
+    <member name="T:PostSharp.Extensibility.PostSharpEnvironment">
+      <summary>
+            Provides access to the current PostSharp environment (<see cref="T:PostSharp.Extensibility.IPostSharpEnvironment" />).
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.PostSharpEnvironment.Current">
+      <summary>
+            Gets the current PostSharp environment, or <b>null</b>
+            if the PostSharp Platform is not loaded in the current
+            context.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.PostSharpEnvironment.IsPostSharpRunning">
+      <summary>
+            Determines whether the PostSharp Platform is currently loaded.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Post">
+      <summary>
+            Provides some methods that are transformed during post-compilation.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Post.Cast``2(``0)">
+      <summary>
+            At post-compile time, casts an instance of a type into another.
+            A post-compile time error is reported if the source type cannot be
+            assigned to the target type.
+            </summary>
+      <typeparam name="SourceType">Source type.</typeparam>
+      <typeparam name="TargetType">Target type.</typeparam>
+      <param name="o">Instance to be casted.</param>
+      <returns>The object <paramref name="o" /> casted as <typeparamref name="TargetType" />.</returns>
+      <remarks>
+            The purpose of this method is to make a source code compilable even when
+            an interface will be implemented at post-compile time.
+            PostSharp ensures that <typeparamref name="TargetType" /> is assignable from
+            <typeparamref name="SourceType" />. If yes, the call to this method is
+            simply suppressed. If types are not assignable, a build error is issued.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Post.GetValue``1(``0)">
+      <summary>
+            When used to retrieve the value of a field, forces the compiler to retrieve a copy
+            of the field value instead of an address to this field. This allows to call
+            instance methods of value-type fields without loading the field address.
+            </summary>
+      <typeparam name="T">Type of the value to retrieve (this type parameter can generally be omitted).</typeparam>
+      <param name="value">Value.</param>
+      <returns>
+        <paramref name="value" />, exactly.</returns>
+    </member>
+    <member name="P:PostSharp.Post.IsTransformed">
+      <summary>
+            Determines whether the calling program has been transformed by PostSharp.
+            </summary>
+      <value>
+        <b>true</b> if the calling program has been transformed by PostSharp, otherwise
+            <b>false</b>.
+            </value>
+    </member>
+    <member name="T:PostSharp.Reflection.CustomReflectionBinder">
+      <summary>
+            Custom implementation of a reflection <see cref="T:System.Reflection.Binder" /> that select
+            methods based on exact matches using the <see cref="T:PostSharp.Reflection.ReflectionTypeComparer" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Reflection.CustomReflectionBinder.Instance">
+      <summary>
+            Singleton instance.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Reflection.CustomReflectionBinder.BindToField(System.Reflection.BindingFlags,System.Reflection.FieldInfo[],System.Object,System.Globalization.CultureInfo)" />
+    <member name="M:PostSharp.Reflection.CustomReflectionBinder.BindToMethod(System.Reflection.BindingFlags,System.Reflection.MethodBase[],System.Object[]@,System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[],System.Object@)" />
+    <member name="M:PostSharp.Reflection.CustomReflectionBinder.ChangeType(System.Object,System.Type,System.Globalization.CultureInfo)" />
+    <member name="M:PostSharp.Reflection.CustomReflectionBinder.ReorderArgumentArray(System.Object[]@,System.Object)" />
+    <member name="M:PostSharp.Reflection.CustomReflectionBinder.SelectMethod(System.Reflection.BindingFlags,System.Reflection.MethodBase[],System.Type[],System.Reflection.ParameterModifier[])" />
+    <member name="M:PostSharp.Reflection.CustomReflectionBinder.SelectProperty(System.Reflection.BindingFlags,System.Reflection.PropertyInfo[],System.Type,System.Type[],System.Reflection.ParameterModifier[])" />
+    <member name="T:PostSharp.Reflection.GenericArg">
+      <summary>
+            Classes derived from <see cref="T:PostSharp.Reflection.GenericArg" /> represent unbound generic arguments.
+            It is a 'trick' to create unbound generic instances, because C# and <b>System.Reflection</b>
+            does not make it possible. Use the <see cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" /> method to bind the unbound
+            generic arguments to concrete types.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])">
+      <summary>
+            Binds unbound generic arguments to concrete types.
+            </summary>
+      <param name="type">A <see cref="T:System.Type" /> containing unbound generic arguments
+            (derived from <see cref="T:PostSharp.Reflection.GenericArg" />).</param>
+      <param name="genericTypeParameters">Array of types to which
+            the unbound generic type arguments should be bound.</param>
+      <param name="genericMethodParameters">Array of types to which
+            the unbound generic method parameters should be bound.</param>
+      <returns>A <see cref="T:System.Type" /> where unbound generic arguments have been replaced
+            by <paramref name="genericTypeParameters" /> and <paramref name="genericMethodParameters" />.</returns>
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg">
+      <summary>
+            Classes derived from <see cref="T:PostSharp.Reflection.GenericTypeArg" /> represent unbound generic type parameters.
+            </summary>
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg">
+      <summary>
+            Classes derived from <see cref="T:PostSharp.Reflection.GenericMethodArg" /> represent unbound generic method parameters.
+            </summary>
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg0">
+      <summary>
+            Unbound generic type argument. Reference to the 0-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg1">
+      <summary>
+            Unbound generic type argument. Reference to the 1-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg2">
+      <summary>
+            Unbound generic type argument. Reference to the 2-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg3">
+      <summary>
+            Unbound generic type argument. Reference to the 3-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg4">
+      <summary>
+            Unbound generic type argument. Reference to the 4-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg5">
+      <summary>
+            Unbound generic type argument. Reference to the 5-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg6">
+      <summary>
+            Unbound generic type argument. Reference to the 6-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg7">
+      <summary>
+            Unbound generic type argument. Reference to the 7-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg8">
+      <summary>
+            Unbound generic type argument. Reference to the 8-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericTypeArg9">
+      <summary>
+            Unbound generic type argument. Reference to the 9-th generic type argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg0">
+      <summary>
+            Unbound generic method argument. Reference to the 0-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg1">
+      <summary>
+            Unbound generic method argument. Reference to the 1-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg2">
+      <summary>
+            Unbound generic method argument. Reference to the 2-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg3">
+      <summary>
+            Unbound generic method argument. Reference to the 3-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg4">
+      <summary>
+            Unbound generic method argument. Reference to the 4-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg5">
+      <summary>
+            Unbound generic method argument. Reference to the 5-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg6">
+      <summary>
+            Unbound generic method argument. Reference to the 6-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg7">
+      <summary>
+            Unbound generic method argument. Reference to the 7-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg8">
+      <summary>
+            Unbound generic method argument. Reference to the 8-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.Reflection.GenericMethodArg9">
+      <summary>
+            Unbound generic method argument. Reference to the 9-th generic method argument.
+            </summary>
+      <seealso cref="M:PostSharp.Reflection.GenericArg.Map(System.Type,System.Type[],System.Type[])" />
+      <seealso cref="T:PostSharp.Reflection.GenericArg" />
+    </member>
+    <member name="T:PostSharp.CodeModel.ReflectionWrapper.IAssemblyWrapper">
+      <summary>
+            Represents an <see cref="T:System.Reflection.Assembly" /> without giving directly the <see cref="T:System.Reflection.Assembly" />
+            object. The object allows browsing of contained types and of custom attributes.
+            </summary>
+    </member>
+    <member name="M:PostSharp.CodeModel.ReflectionWrapper.IAssemblyWrapper.GetTypes">
+      <summary>
+            Gets the list of types defined in this assembly.
+            </summary>
+      <returns>The list of types defined in this assembly.</returns>
+      <remarks>
+            This method does not return nested types.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.CodeModel.ReflectionWrapper.IAssemblyWrapper.UnderlyingSystemAssembly">
+      <summary>
+            Gets the system <see cref="T:System.Reflection.Assembly" /> corresponding to the current object.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Reflection.IObjectConstruction">
+      <summary>
+            Specifies a simple way to build an object by specifying its type,
+            the parameters of its constructor, and values of fields or properties.
+            </summary>
+      <remarks>
+            This interface has similar semantics as the <see cref="T:System.Reflection.CustomAttributeData" />
+            class.
+            </remarks>
+      <seealso cref="T:PostSharp.Reflection.ObjectConstruction" />
+    </member>
+    <member name="M:PostSharp.Reflection.IObjectConstruction.GetConstructorArgument(System.Int32)">
+      <summary>
+            Gets a constructor argument.
+            </summary>
+      <param name="index">Ordinal of the constructor argument.</param>
+      <returns>The constructor argument at position <paramref name="index" />.</returns>
+    </member>
+    <member name="M:PostSharp.Reflection.IObjectConstruction.GetPropertyNames">
+      <summary>
+            Gets an array containing the name of initialized properties of fields.
+            </summary>
+      <returns>An array containing the name of initialized properties of fields</returns>
+    </member>
+    <member name="M:PostSharp.Reflection.IObjectConstruction.GetPropertyValue(System.String)">
+      <summary>
+            Gets the value to which a given property of field is initialized.
+            </summary>
+      <param name="name">Name of the property or field.</param>
+      <returns>The value to which the property or field named <paramref name="name" />
+            is initialized.</returns>
+    </member>
+    <member name="P:PostSharp.Reflection.IObjectConstruction.TypeName">
+      <summary>
+            Gets the assembly-qualified type name of the object.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Reflection.IObjectConstruction.ConstructorArgumentCount">
+      <summary>
+            Gets the number of constructor arguments.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Reflection.ObjectConstruction">
+      <summary>
+            Specifies how an object should be constructed, i.e. specifies the constructor to be
+            used, the arguments to be passed to this constructor, and the fields or properties to
+            be set.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Reflection.ObjectConstruction.#ctor(System.String,System.Object[])">
+      <summary>
+            Initializes a new type-unsafe <see cref="T:PostSharp.Reflection.ObjectConstruction" />.
+            </summary>
+      <param name="typeName">Name of the object type.</param>
+      <param name="constructorArguments">Arguments passed to the constructor.</param>
+    </member>
+    <member name="M:PostSharp.Reflection.ObjectConstruction.#ctor(System.Reflection.ConstructorInfo,System.Object[])">
+      <summary>
+            Initializes a new type-safe <see cref="T:PostSharp.Reflection.ObjectConstruction" /> from a <see cref="T:System.Reflection.ConstructorInfo" />.
+            </summary>
+      <param name="constructor">Constructor.</param>
+      <param name="constructorArguments">Arguments passed to the constructor.</param>
+    </member>
+    <member name="P:PostSharp.Reflection.ObjectConstruction.Constructor">
+      <summary>
+            Gets the custom attribute constructor.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Reflection.ObjectConstruction.ConstructorArguments">
+      <summary>
+            Gets the arguments passed to the custom attribute constructor.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Reflection.ObjectConstruction.NamedArguments">
+      <summary>
+            Gets the collection of named arguments.
+            </summary>
+      <remarks>
+            This collection is a dictionary associating the name of public a field or property of the
+            custom attributes to the value that should be assigned to it.
+            </remarks>
+    </member>
+    <member name="P:PostSharp.Reflection.ObjectConstruction.TypeName">
+      <summary>
+            Gets the assembly-qualified type name of the object.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Reflection.ReflectionHelper">
+      <summary>
+            Provides helper methods for work with <see cref="N:System.Reflection" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Reflection.ReflectionHelper.GetMethod(System.Type,System.String,System.String)">
+      <summary>
+            Identifies and gets a method in a type given its complete string-serialized signature.
+            </summary>
+      <param name="type">Type to which the method belong.</param>
+      <param name="methodName">Method name.</param>
+      <param name="methodSignature">Method signature (from <c>Method.ToString()</c>).</param>
+      <returns>The method (or constructor) with signature <paramref name="methodSignature" />
+            in <paramref name="type" />, or <b>null</b> if such method was not found.</returns>
+    </member>
+    <member name="T:PostSharp.Reflection.ReflectionTypeComparer">
+      <summary>
+            Comparer of reflection types (<see cref="T:System.Type" />) based on content, not reference.
+            Supports the unbound generic parameters derived from the <see cref="T:PostSharp.Reflection.GenericArg" /> class. 
+            </summary>
+      <remarks>
+            Used by the <see cref="T:PostSharp.Reflection.CustomReflectionBinder" /> class.
+            </remarks>
+    </member>
+    <member name="M:PostSharp.Reflection.ReflectionTypeComparer.GetInstance">
+      <summary>
+            Gets an instance of <see cref="T:PostSharp.Reflection.ReflectionTypeComparer" /> that does not perform
+            substitution of generic parameters.
+            </summary>
+      <returns>An instance of <see cref="T:PostSharp.Reflection.ReflectionTypeComparer" />.</returns>
+    </member>
+    <member name="M:PostSharp.Reflection.ReflectionTypeComparer.GetInstance(System.Type[],System.Type[],System.Type[],System.Type[])">
+      <summary>
+            Gets an instance of <see cref="T:PostSharp.Reflection.ReflectionTypeComparer" /> that performs
+            substitution of generic parameters.
+            </summary>
+      <param name="leftGenericMethodParameters">Array of types to be substituded to the
+            generic method parameters of the left member.</param>
+      <param name="leftGenericTypeParameters">Array of types to be substituded to the
+            generic type parameters of the left member.</param>
+      <param name="rightGenericMethodParameters">Array of types to be substituded to the
+            generic method parameters of the right member.</param>
+      <param name="rightGenericTypeParameters">Array of types to be substituded to the
+            generic type parameters of the right member.</param>
+      <returns>An instance of <see cref="T:PostSharp.Reflection.ReflectionTypeComparer" />.</returns>
+    </member>
+    <member name="M:PostSharp.Reflection.ReflectionTypeComparer.Equals(System.Type,System.Type)" />
+    <member name="M:PostSharp.Reflection.ReflectionTypeComparer.GetHashCode(System.Type)" />
+    <member name="M:PostSharp.Reflection.ReflectionTypeComparer.Equals(System.Type[],System.Type[])" />
+    <member name="M:PostSharp.Reflection.ReflectionTypeComparer.GetHashCode(System.Type[])" />
+    <member name="T:PostSharp.Extensibility.RequirePostSharpAttribute">
+      <summary>
+            Custom attribute that, when applied on another custom attribute (a class derived 
+            from <see cref="T:System.Attribute" />), means that assemblies with elements
+            annotated with that custom attribute should be processed by PostSharp.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Extensibility.RequirePostSharpAttribute.#ctor(System.String,System.String)">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Extensibility.RequirePostSharpAttribute" />.
+            </summary>
+      <param name="plugIn">Name of the required plug-in (file name without extension).</param>
+      <param name="task">Name of the required task (should be defined in <paramref name="plugIn" />).</param>
+    </member>
+    <member name="P:PostSharp.Extensibility.RequirePostSharpAttribute.PlugIn">
+      <summary>
+            Gets the name of the required plug-in (file name without the extension).
+            </summary>
+    </member>
+    <member name="P:PostSharp.Extensibility.RequirePostSharpAttribute.Task">
+      <summary>
+            Gets the name of the required task (should be defined in <see cref="P:PostSharp.Extensibility.RequirePostSharpAttribute.PlugIn" />).
+            </summary>
+    </member>
+  </members>
+</doc>
