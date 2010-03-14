@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace BlackBox.Recorder
 {
@@ -7,11 +8,13 @@ namespace BlackBox.Recorder
     {
         private readonly IFile _file;
         private readonly RecordingXmlWriter _xmlWriter;
+        private readonly HashSet<string> _savedFiles;
         
         public SaveRecordingToDisk(IFile file)
         {
             _file = file;
             _xmlWriter = new RecordingXmlWriter();
+            _savedFiles = new HashSet<string>();
         }
 
         public void SaveMethodRecording(MethodRecording recording)
@@ -44,14 +47,17 @@ namespace BlackBox.Recorder
 
         private string CreateRecordingPath(string methodDirectory, MethodRecording recording)
         {
-            int counter = 1;
             string recordingPathWithoutExtension = Path.Combine(methodDirectory, recording.RecordingName);
             string recordingPath = recordingPathWithoutExtension + ".xml";
-            while (_file.FileExists(recordingPath))
+
+            int counter = 1;            
+            while (_savedFiles.Contains(recordingPath))
             {
                 counter++;
                 recordingPath = recordingPathWithoutExtension + "_" + counter + ".xml";
             }
+            _savedFiles.Add(recordingPath);
+            
             return recordingPath;            
         }
 

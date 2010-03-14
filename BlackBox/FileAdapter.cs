@@ -20,6 +20,11 @@ namespace BlackBox
             return Directory.CreateDirectory(path).FullName;
         }
 
+        public string GetCurrentDirectory()
+        {
+            return Directory.GetCurrentDirectory();
+        }
+
         public void Save(XDocument xml, string path)
         {
             xml.Save(path);            
