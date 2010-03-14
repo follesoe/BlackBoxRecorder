@@ -57,11 +57,6 @@
     <Compile Include="CodeGeneration\TestGenerator.cs" />
     <Compile Include="CodeGeneration\TestWriter.cs" />
     <Compile Include="FileAdapter.cs" />
-    <Compile Include="FluentPath\DirectoryExtensions.cs" />
-    <Compile Include="FluentPath\Path.cs" />
-    <Compile Include="FluentPath\PathCollection.cs" />
-    <Compile Include="FluentPath\PathConverter.cs" />
-    <Compile Include="FluentPath\PathEnumerator.cs" />
     <Compile Include="IFile.cs" />
     <Compile Include="Recorder\CallStackRecordingNamer.cs" />
     <Compile Include="Recorder\DefaultRecorder.cs" />

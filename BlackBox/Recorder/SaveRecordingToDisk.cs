@@ -27,7 +27,7 @@ namespace BlackBox.Recorder
 
         private string CreateTypeDirectory(MethodRecording recording)
         {
-            string typeDirectory = Path.Combine("Recordings", recording.CalledOnType.FullName);
+            string typeDirectory = Path.Combine("RecordedInputFiles", recording.CalledOnType.FullName);
             if (!_file.DirectoryExists(typeDirectory))
             {
                 _file.CreateDirectory(typeDirectory);

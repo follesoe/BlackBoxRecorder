@@ -57,6 +57,7 @@ namespace BlackBox.Tests.Recorder
 
         private void there_is_no_directory_for_recording_on_type()
         {
+            fileMock.Setup(file => file.GetCurrentDirectory()).Returns(@"C:\code\BlackBox\BlackBox.Tests\bin\Debug");
             fileMock.Setup(file => file.DirectoryExists(TypeFolder)).Returns(false);
             fileMock.Setup(file => file.CreateDirectory(TypeFolder)).Returns("");
         }
@@ -73,8 +74,8 @@ namespace BlackBox.Tests.Recorder
             simpleMath.Add(10, 10);
         }
         
-        private const string TypeFolder = @"Recordings\BlackBox.Tests.Fakes.SimpleMath";
-        private const string MethodFolder = @"Recordings\BlackBox.Tests.Fakes.SimpleMath\Int32 Add(Int32, Int32)";
+        private const string TypeFolder = @"RecordedInputFiles\BlackBox.Tests.Fakes.SimpleMath";
+        private const string MethodFolder = @"RecordedInputFiles\BlackBox.Tests.Fakes.SimpleMath\Int32 Add(Int32, Int32)";
         private const string RecordingPath = MethodFolder + @"\Int32_Add_Int32_Int32.xml";
         private const string RecordingPath2 = MethodFolder + @"\Int32_Add_Int32_Int32_2.xml";
    
