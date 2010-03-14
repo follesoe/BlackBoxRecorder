@@ -12,6 +12,14 @@ namespace BlackBox.Tests.Recorder
     public class SaveRecordingToDiskTest : BDD<SaveRecordingToDiskTest>
     {
         [Fact]
+        public void TestBla()
+        {
+
+  
+        }
+
+
+        [Fact]
         public void Creates_directory_for_the_type_beeing_recoreded()
         {
             Given.there_is_no_directory_for_recording_on_type();

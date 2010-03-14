@@ -11,16 +11,18 @@ using System.IO;
 using System.Security.AccessControl;
 
 namespace BlackBox.FluentPath {
-    public class PathCollection : IEnumerable<Path> {
-        private IEnumerable<string> _paths;
-        private PathCollection _previousPaths;
+    public class PathCollection : IEnumerable<Path> 
+    {
+        private readonly IEnumerable<string> _paths;
+        private readonly PathCollection _previousPaths;
 
         /// <summary>
         /// Creates a collection of paths from a list of path strings.
         /// Avoid using directly, and use one of the methods on Path instead.
         /// </summary>
         /// <param name="paths">The list of path strings.</param>
-        public PathCollection(IEnumerable<string> paths) : this(paths, null) {
+        public PathCollection(IEnumerable<string> paths) : this(paths, null) 
+        {
         }
 
         /// <summary>
@@ -29,16 +31,19 @@ namespace BlackBox.FluentPath {
         /// </summary>
         /// <param name="paths">The list of path strings in the set.</param>
         /// <param name="previousPaths">The list of path strings in the previous set.</param>
-        public PathCollection(IEnumerable<string> paths, PathCollection previousPaths) {
+        public PathCollection(IEnumerable<string> paths, PathCollection previousPaths) 
+        {
             _paths = paths;
             _previousPaths = previousPaths;
         }
 
-        public IEnumerator<Path> GetEnumerator() {
+        public IEnumerator<Path> GetEnumerator() 
+        {
             return new PathEnumerator(_paths);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator() 
+        {
             return new PathEnumerator(_paths);
         }
 
@@ -48,12 +53,13 @@ namespace BlackBox.FluentPath {
         /// </summary>
         /// <param name="extensionTransformation">A function that maps each path to an extension.</param>
         /// <returns>The set</returns>
-        public PathCollection ChangeExtension(Func<Path, string> extensionTransformation) {
+        public PathCollection ChangeExtension(Func<Path, string> extensionTransformation) 
+        {
             var result = new HashSet<string>();
-            foreach (var path in _paths) {
+            foreach (var path in _paths) 
+            {
                 var p = new Path(path);
-                result.Add(
-                    p.ChangeExtension(extensionTransformation(p)).ToString());
+                result.Add(p.ChangeExtension(extensionTransformation(p)).ToString());
             }
             return new PathCollection(result, this);
         }
@@ -64,7 +70,8 @@ namespace BlackBox.FluentPath {
         /// </summary>
         /// <param name="newExtension">The new extension.</param>
         /// <returns>The set</returns>
-        public PathCollection ChangeExtension(string newExtension) {
+        public PathCollection ChangeExtension(string newExtension) 
+        {
             return ChangeExtension(p => newExtension);
         }
 
@@ -74,13 +81,15 @@ namespace BlackBox.FluentPath {
         /// </summary>
         /// <param name="directoryNameGenerator">A function that maps each path to a file or directory name.</param>
         /// <returns>The set</returns>
-        public PathCollection Combine(Func<Path, string> directoryNameGenerator) {
+        public PathCollection Combine(Func<Path, string> directoryNameGenerator) 
+        {
             var result = new HashSet<string>();
-            foreach (var path in _paths) {
+            foreach (var path in _paths) 
+            {
                 var p = new Path(path);
-                if (p.IsDirectory) {
-                    result.Add(
-                        p.Combine(directoryNameGenerator(p)).ToString());
+                if (p.IsDirectory) 
+                {
+                    result.Add(p.Combine(directoryNameGenerator(p)).ToString());
                 }
             }
             return new PathCollection(result, this);
@@ -92,8 +101,22 @@ namespace BlackBox.FluentPath {
         /// </summary>
         /// <param name="directoryName">A file or directory name.</param>
         /// <returns>The set</returns>
-        public PathCollection Combine(string directoryName) {
+        public PathCollection Combine(string directoryName) 
+        {
             return Combine(p => directoryName);
+        }
+
+                /// <summary>
+        /// Does a copy of all files and directories in the set.
+        /// </summary>
+        /// <param name="pathMapping">
+        /// A function that determines the destination path for each source path.
+        /// If the function returns a null path, the file or directory is not copied.
+        /// </param>
+        /// <returns>The set</returns>
+        public PathCollection Copy(Func<Path, Path> pathMapping)
+        {
+            return Copy(pathMapping, false, false);    
         }
 
         /// <summary>
@@ -103,18 +126,20 @@ namespace BlackBox.FluentPath {
         /// A function that determines the destination path for each source path.
         /// If the function returns a null path, the file or directory is not copied.
         /// </param>
-        /// <param name="overwrite">True if destination files should be overwritten. Default is false.</param>
-        /// <param name="recursive">True if the copy should be deep and go into subdirectories recursively. Default is false.</param>
+        /// <param name="overwrite">True if destination files should be overwritten.</param>
+        /// <param name="recursive">True if the copy should be deep and go into subdirectories recursively.</param>
         /// <returns>The set</returns>
-        public PathCollection Copy(Func<Path, Path> pathMapping, bool overwrite, bool recursive) {
+        public PathCollection Copy(Func<Path, Path> pathMapping, bool overwrite, bool recursive) 
+        {
             var result = new HashSet<string>();
-            foreach (var path in _paths) {
+            foreach (var path in _paths) 
+            {
                 var source = new Path(path);
                 var dest = pathMapping(source);
-                if (dest != null) {
-                    source.Copy(dest, overwrite, recursive);
-                    result.Add(dest.ToString());
-                }
+                if (dest == null) continue;
+
+                source.Copy(dest, overwrite, recursive);
+                result.Add(dest.ToString());
             }
             return new PathCollection(result, this);
         }
