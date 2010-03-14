@@ -1,0 +1,29 @@
+[33mcommit 2c3b2309c622345da4360c1491b31d508dc1257b[m
+Author: Jonas Folleso <jonas@follesoe.no>
+Date:   Sat Mar 13 23:23:10 2010 +0100
+
+    Simplified the IRecordMethodCalls interface by passing a MethodRecording instead of multiple parameters.
+
+[33mcommit e72ca25b00e3b0deb38b069f9ccc7558dd423551[m
+Author: Jonas Folleso <jonas@follesoe.no>
+Date:   Sat Mar 13 23:11:42 2010 +0100
+
+    Fixed a recording naming test that was broken when executing the tests from the xUnit Console runner.
+
+[33mcommit d40be507cbd604d1e9ac62e8cce422a02712f54a[m
+Author: Jonas Folleso <jonas@follesoe.no>
+Date:   Sat Mar 13 22:26:03 2010 +0100
+
+    Renamed the test file for the Characterization Test Base Class.
+
+[33mcommit 9ade96badf387100726ddc4e11335ce119a26d47[m
+Author: Jonas Folleso <jonas@follesoe.no>
+Date:   Sat Mar 13 22:21:15 2010 +0100
+
+    Removed tests for code generation. This code needs to be cleaned up.
+
+[33mcommit fbfffba7dfe660a0f7d87dd3dbffcf296c5f0480[m
+Author: Jonas Folleso <jonas@follesoe.no>
+Date:   Sat Mar 13 19:10:14 2010 +0100
+
+    Initial commit of the BlackBox project.

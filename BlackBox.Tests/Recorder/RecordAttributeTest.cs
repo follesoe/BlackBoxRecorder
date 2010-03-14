@@ -70,7 +70,6 @@ namespace BlackBox.Tests.Recorder
 
         private readonly SimpleMath math;
         private readonly DefaultRecorder recorder;
-        private readonly ISaveRecordings saver;
         private readonly Mock<ISaveRecordings> saverMock;
     }
 }
