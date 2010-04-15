@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackBox", "BlackBox\BlackBox.csproj", "{11FA65CD-EBC2-41D2-8B12-B2CA9EC2E846}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackBox.Tests", "BlackBox.Tests\BlackBox.Tests.csproj", "{76B393CF-FB8E-4B6C-A9D6-BB28C9247C62}"

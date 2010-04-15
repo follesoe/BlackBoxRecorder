@@ -44,7 +44,7 @@
     <PostSharpSignAssembly Condition="'$(PostSharpSignAssembly)'=='' AND '$(SignAssembly)'!=''">$(SignAssembly)</PostSharpSignAssembly>
     <PostSharpSignAssembly Condition="'$(PostSharpSignAssembly)'==''">False</PostSharpSignAssembly>
     <PostSharpAttachDebugger Condition="'$(PostSharpAttachDebugger)'==''">False</PostSharpAttachDebugger>
-    <PostSharpUseCommandLine Condition="'$(PostSharpUseCommandLine)'==''">False</PostSharpUseCommandLine>
+    <PostSharpUseCommandLine Condition="'$(PostSharpUseCommandLine)'==''">True</PostSharpUseCommandLine>
     <PostSharpVerbose Condition="'$(PostSharpVerbose)'==''">False</PostSharpVerbose>
     <_PostSharpVerboseCmdLine Condition="'$(PostSharpVerbose)'=='true'">/v</_PostSharpVerboseCmdLine>
     <_PostSharpAttachDebuggerCmdLine Condition="'$(PostSharpAttachDebugger)'=='True' Or '$(PostSharpAttachDebugger)'=='true'">/Attach</_PostSharpAttachDebuggerCmdLine>

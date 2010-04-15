@@ -1,6 +1,7 @@
 obj
 bin
 _ReSharper.*
+BlackBox.Tests/PostSharp 1.5
 *.csproj.user
 *.resharper.user
 *.ReSharper.user
