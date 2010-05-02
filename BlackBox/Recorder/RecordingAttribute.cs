@@ -15,8 +15,8 @@ namespace BlackBox.Recorder
         }
 
         public override void OnExit(MethodExecutionEventArgs eventArgs)
-        {            
-            RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.ReturnValue);
+        {
+            RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.GetReadOnlyArgumentArray(), eventArgs.ReturnValue);
         }
     }
 }

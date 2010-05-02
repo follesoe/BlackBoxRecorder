@@ -14,7 +14,7 @@ namespace BlackBox
                              new XElement("Type", new XCData(recording.CalledOnType.GetCodeDefinition())),
                              new XElement("FullyQualifiedType", new XCData(recording.CalledOnType.AssemblyQualifiedName)),
                              new XElement("Parameters",
-                                          from parameter in recording.Parameters
+                                          from parameter in recording.InputParameters
                                           select new XElement("Parameter",
                                                               new XElement("Name", parameter.Name),
                                                               new XElement("Type", new XCData(parameter.Value.GetType().GetCodeDefinition())),

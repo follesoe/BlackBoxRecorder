@@ -35,15 +35,25 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Records_the_method_parameters_and_return_value()
+        public void Records_the_method_input_parameters_and_return_value()
         {
-            var parameter1 = (int)recorder.MethodRecordings[0].Parameters[0].Value;
-            var parameter2 = (int)recorder.MethodRecordings[0].Parameters[1].Value;
+            var inputParameter1 = (int)recorder.MethodRecordings[0].InputParameters[0].Value;
+            var inputParameter2 = (int)recorder.MethodRecordings[0].InputParameters[1].Value;
             var returnValue = (int)recorder.MethodRecordings[0].ReturnValue;
 
-            parameter1.ShouldEqual(5);
-            parameter2.ShouldEqual(5);
+            inputParameter1.ShouldEqual(5);
+            inputParameter2.ShouldEqual(5);
             returnValue.ShouldEqual(10);
+        }
+
+        [Fact]
+        public void Record_the_method_output_parameters()
+        {
+            var outputParameter1 = (int) recorder.MethodRecordings[0].OutputParameters[0].Value;
+            var outputParameter2 = (int)recorder.MethodRecordings[0].OutputParameters[1].Value;
+            
+            outputParameter1.ShouldEqual(5);
+            outputParameter2.ShouldEqual(5);
         }
 
         [Fact]

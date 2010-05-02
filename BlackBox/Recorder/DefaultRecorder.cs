@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using OX.Copyable;
-
 namespace BlackBox.Recorder
 {
     public class DefaultRecorder : IRecordMethodCalls    
@@ -22,13 +20,15 @@ namespace BlackBox.Recorder
             _notExited.Add(callGuid, recording);
         }
 
-        public void RecordExit(Guid callGuid, object returnValue)
+        public void RecordExit(Guid callGuid, object[] outputParameters, object returnValue)
         {
             MethodRecording recording = _notExited[callGuid];
-            recording.ReturnValue = returnValue.Copy();
+
+            recording.AddReturnValues(outputParameters, returnValue);
+
             MethodRecordings.Add(recording);
             _notExited.Remove(callGuid);
-            
+
             RecordingServices.RecordingSaver.SaveMethodRecording(recording);
         }
 
