@@ -23,7 +23,7 @@ namespace BlackBox.Tests.Testing
         {
             Given.we_have_a_test_recording_as_xml();
             testClass.LoadRecording(recording);
-            testClass.GetParameterValue("contact").ShouldNotBeNull();
+            testClass.GetInputParameterValue("contact").ShouldNotBeNull();
         }
 
         [Fact]

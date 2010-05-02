@@ -1,11 +1,11 @@
 ﻿using System.Xml.Linq;
+using System.Collections.Generic;
 
 using BlackBox.Recorder;
 using BlackBox.Tests.Fakes;
 
 using Xunit;
 using Xunit.Extensions;
-using System.Collections.Generic;
 
 namespace BlackBox.Tests.Recorder
 {
@@ -68,13 +68,23 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Can_read_the_parameter_details_for_the_recored_method()
+        public void Can_read_the_input_parameter_details_for_the_recored_method()
         {
             Given.we_have_an_xml_recording();
             When.we_load_the_recording_into_the_reader();
             reader.GetInputParameters()[0].Name.ShouldEqual("contact");
-            reader.GetInputParameters()[0].Type.ShouldEqual(typeof (Contact));
+            reader.GetInputParameters()[0].Type.ShouldEqual(typeof(Contact));
             reader.GetInputParameters()[0].Value.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void Can_read_the_output_parameter_details_for_the_recored_method()
+        {
+            Given.we_have_an_xml_recording();
+            When.we_load_the_recording_into_the_reader();
+            reader.GetOutputParameters()[0].Name.ShouldEqual("contact");
+            reader.GetOutputParameters()[0].Type.ShouldEqual(typeof(Contact));
+            reader.GetOutputParameters()[0].Value.ShouldNotBeNull();
         }
 
         [Fact]

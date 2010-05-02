@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using System.Collections.Generic;
 
 namespace BlackBox.CodeGeneration
 {
@@ -34,7 +34,7 @@ namespace BlackBox.CodeGeneration
             TestWriter writer;
             if (!_writers.ContainsKey(key))
             {
-                writer = new TestWriter(inputDirectory);
+                writer = new TestWriter();
                 _writers.Add(key, writer);
                 
             }

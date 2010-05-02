@@ -11,7 +11,7 @@ namespace BlackBox.Tests.Recorder
     public class SaveRecordingToDiskTest : BDD<SaveRecordingToDiskTest>
     {
         [Fact]
-        public void Creates_directory_for_the_type_beeing_recoreded()
+        public void Creates_directory_for_the_type_being_recoreded()
         {
             Given.there_is_no_directory_for_recording_on_type();
             When.we_call_the_method_beeing_recorded();
@@ -19,7 +19,7 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Creates_directory_for_the_method_beeing_recorded()
+        public void Creates_directory_for_the_method_being_recorded()
         {
             Given.there_is_no_directory_for_recording_of_method();
             When.we_call_the_method_beeing_recorded();
@@ -56,8 +56,7 @@ namespace BlackBox.Tests.Recorder
         }
 
         private void there_is_no_directory_for_recording_on_type()
-        {
-            fileMock.Setup(file => file.GetCurrentDirectory()).Returns(@"C:\code\BlackBox\BlackBox.Tests\bin\Debug");
+        {            
             fileMock.Setup(file => file.DirectoryExists(TypeFolder)).Returns(false);
             fileMock.Setup(file => file.CreateDirectory(TypeFolder)).Returns("");
         }

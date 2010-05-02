@@ -8,34 +8,34 @@ namespace BlackBox
 {
     public class RecordingXmlReader
     {
-        private XDocument _xml;
+        protected XDocument CurrentRecording { get; set; }
 
-        public void LoadRecording(string path)
+        public virtual void LoadRecording(string path)
         {
             using(var sr = new StreamReader(path))
             {
-                _xml = XDocument.Load(sr);
+                CurrentRecording = XDocument.Load(sr);
             }
         }
 
         public void LoadRecording(XDocument xml)
         {
-            _xml = xml;
+            CurrentRecording = xml;
         }
 
         public string GetRecordingName()
         {
-            return _xml.XPathSelectElement("/Recording/Name").Value;
+            return CurrentRecording.XPathSelectElement("/Recording/Name").Value;
         }
 
         public string GetTypeRecordingWasMadeOn()
         {
-            return _xml.XPathSelectElement("/Recording/Type").Value;
+            return CurrentRecording.XPathSelectElement("/Recording/Type").Value;
         }
 
         public string GetMethodName()
         {
-            return _xml.XPathSelectElement("/Recording/Method").Value;
+            return CurrentRecording.XPathSelectElement("/Recording/Method").Value;
         }
 
         public List<ParameterRecording> GetInputParametersMetadata()
@@ -53,6 +53,11 @@ namespace BlackBox
             return GetParameters("//InputParameters/Parameter", deserializeParameter);
         }
 
+        public List<ParameterRecording> GetOutputParametersMetadata()
+        {
+            return GetOutputParameters(false);
+        }
+
         public List<ParameterRecording> GetOutputParameters()
         {
             return GetOutputParameters(true);
@@ -66,7 +71,7 @@ namespace BlackBox
         private List<ParameterRecording> GetParameters(string xpath, bool deserializeParameter)
         {
             var parameters = new List<ParameterRecording>();
-            foreach(var parameterNode in _xml.XPathSelectElements(xpath))
+            foreach(var parameterNode in CurrentRecording.XPathSelectElements(xpath))
             {
                 var parameter = new ParameterRecording();
                 parameter.Name = parameterNode.Element("Name").Value;
@@ -85,14 +90,14 @@ namespace BlackBox
 
         public string GetTypeOfReturnValue()
         {
-            return _xml.XPathSelectElement("/Recording/Return/Type").Value;
+            return CurrentRecording.XPathSelectElement("/Recording/Return/Type").Value;
         }
 
         public object GetReturnValue()
         {
-            string fullyQualifiedType = _xml.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;
+            string fullyQualifiedType = CurrentRecording.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;
             var type = Type.GetType(fullyQualifiedType);
-            return _xml.XPathSelectElement("/Recording/Return/Value").Value.Deserialize(type);
+            return CurrentRecording.XPathSelectElement("/Recording/Return/Value").Value.Deserialize(type);
         }
     }
 }

@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDD.cs" />
+    <Compile Include="CodeGeneration\TestWriterTest.cs" />
     <Compile Include="Recorder\TypeAndMethodNamerTest.cs" />
     <Compile Include="Fakes\SimpleAddressBook.cs" />
     <Compile Include="Fakes\SimpleMath.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Recorder\RecordingOfComplexTypesTest.cs" />
     <Compile Include="Recorder\SaveRecordingToDiskTest.cs" />
     <Compile Include="SerializationExtensionTest.cs" />
+    <Compile Include="TestExtensions.cs" />
     <Compile Include="Testing\CharacterizationTestBaseClassTest.cs" />
     <Compile Include="TypeExtensionTest.cs" />
   </ItemGroup>

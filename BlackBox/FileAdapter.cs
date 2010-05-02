@@ -29,5 +29,13 @@ namespace BlackBox
         {
             xml.Save(path);            
         }
+
+        public void Save(string testClass, string path)
+        {
+            using (var sw = new StreamWriter(path))
+            {
+                sw.WriteLine(testClass);
+            }
+        }
     }
 }

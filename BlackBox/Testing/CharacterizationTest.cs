@@ -29,7 +29,7 @@ namespace BlackBox.Testing
             _reader.LoadRecording(recording);
         }
 
-        public object GetParameterValue(string parameterName)
+        public object GetInputParameterValue(string parameterName)
         {
             if (_parameters.Count == 0)
             {

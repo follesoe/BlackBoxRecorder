@@ -9,5 +9,6 @@ namespace BlackBox
         string CreateDirectory(string path);
         string GetCurrentDirectory();
         void Save(XDocument xml, string path);
+        void Save(string testClass, string path);
     }
 }
