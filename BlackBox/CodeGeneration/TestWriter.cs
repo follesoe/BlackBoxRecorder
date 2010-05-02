@@ -37,7 +37,7 @@ namespace BlackBox.CodeGeneration
             _stringWriter.WriteLine("\tpublic partial class {0} : CharacterizationTest", testFixtureName);
             _stringWriter.WriteLine("\t{");
 
-            foreach (var parameter in _recordingReader.GetParametersMetadata())
+            foreach (var parameter in _recordingReader.GetInputParametersMetadata())
             {
                 _stringWriter.WriteLine("\t\tprivate {0} {1};", parameter.TypeName, parameter.Name);
             }
@@ -58,7 +58,7 @@ namespace BlackBox.CodeGeneration
             _stringWriter.WriteLine("\t\t\ttarget = new {0}();", _recordingReader.GetTypeRecordingWasMadeOn());
 
             string parameterList = "";
-            var parameters = _recordingReader.GetParametersMetadata();
+            var parameters = _recordingReader.GetInputParametersMetadata();
             for(int i = 0; i < parameters.Count; ++i)
             {
                 var parameter = parameters[0];

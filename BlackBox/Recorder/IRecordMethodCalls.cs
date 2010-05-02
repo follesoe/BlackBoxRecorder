@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Reflection;
 
 namespace BlackBox.Recorder
 {
     public interface IRecordMethodCalls
-    {
-        void RecordEntry(Guid callGuid, MethodRecording recording);
+    {        
+        void RecordEntry(Guid callGuid, MethodBase methodBase, object instance, object[] inputParameters);
         void RecordExit(Guid callGuid, object[] outputParameters, object returnValue);
     }
 }

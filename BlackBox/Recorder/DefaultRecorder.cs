@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace BlackBox.Recorder
 {
-    public class DefaultRecorder : IRecordMethodCalls    
+    public class DefaultRecorder : IRecordMethodCalls   
     {
         public List<MethodRecording> MethodRecordings { get; private set; }
 
@@ -15,8 +16,9 @@ namespace BlackBox.Recorder
             _notExited = new Dictionary<Guid, MethodRecording>();
         }
 
-        public void RecordEntry(Guid callGuid, MethodRecording recording)
+        public void RecordEntry(Guid callGuid, MethodBase methodBase, object instance, object[] inputParameters)
         {
+            var recording = new MethodRecording(methodBase, instance, inputParameters);
             _notExited.Add(callGuid, recording);
         }
 

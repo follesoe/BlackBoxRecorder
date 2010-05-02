@@ -33,7 +33,7 @@ namespace BlackBox.Testing
         {
             if (_parameters.Count == 0)
             {
-                _parameters.AddRange(_reader.GetParameters());
+                _parameters.AddRange(_reader.GetInputParameters());
             }
             return _parameters.Where(p => p.Name == parameterName).SingleOrDefault().Value;
         }

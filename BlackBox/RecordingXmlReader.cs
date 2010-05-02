@@ -38,20 +38,35 @@ namespace BlackBox
             return _xml.XPathSelectElement("/Recording/Method").Value;
         }
 
-        public List<ParameterRecording> GetParametersMetadata()
+        public List<ParameterRecording> GetInputParametersMetadata()
         {
-            return GetParameters(false);
+            return GetInputParameters(false);
         }
 
-        public List<ParameterRecording> GetParameters()
+        public List<ParameterRecording> GetInputParameters()
         {
-            return GetParameters(true);
+            return GetInputParameters(true);
         }
 
-        public List<ParameterRecording> GetParameters(bool deserializeParameter)
+        public List<ParameterRecording> GetInputParameters(bool deserializeParameter)
+        {
+            return GetParameters("//InputParameters/Parameter", deserializeParameter);
+        }
+
+        public List<ParameterRecording> GetOutputParameters()
+        {
+            return GetOutputParameters(true);
+        }
+
+        public List<ParameterRecording> GetOutputParameters(bool deserializeParameter)
+        {
+            return GetParameters("//OutputParameters/Parameter", deserializeParameter);
+        }
+
+        private List<ParameterRecording> GetParameters(string xpath, bool deserializeParameter)
         {
             var parameters = new List<ParameterRecording>();
-            foreach(var parameterNode in _xml.XPathSelectElements("//Parameter"))
+            foreach(var parameterNode in _xml.XPathSelectElements(xpath))
             {
                 var parameter = new ParameterRecording();
                 parameter.Name = parameterNode.Element("Name").Value;

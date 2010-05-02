@@ -10,8 +10,7 @@ namespace BlackBox.Recorder
         {
             Guid callGuid = Guid.NewGuid();
             eventArgs.MethodExecutionTag = callGuid;
-            var recording = new MethodRecording(eventArgs.Method, eventArgs.Instance, eventArgs.GetReadOnlyArgumentArray());
-            RecordingServices.Recorder.RecordEntry(callGuid, recording);
+            RecordingServices.Recorder.RecordEntry(callGuid, eventArgs.Method, eventArgs.Instance, eventArgs.GetReadOnlyArgumentArray());
         }
 
         public override void OnExit(MethodExecutionEventArgs eventArgs)

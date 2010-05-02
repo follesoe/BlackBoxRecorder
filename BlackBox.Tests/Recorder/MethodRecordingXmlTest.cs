@@ -52,11 +52,19 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Can_read_the_parameters_for_the_recored_method()
+        public void Can_read_the_input_parameters_for_the_recored_method()
         {
             Given.we_have_an_xml_recording();
             When.we_load_the_recording_into_the_reader();
-            reader.GetParameters().ShouldNotBeEmpty();
+            reader.GetInputParameters().ShouldNotBeEmpty();
+        }
+
+        [Fact]
+        public void Can_read_the_output_parameters_for_the_recorded_method()
+        {
+            Given.we_have_an_xml_recording();
+            When.we_load_the_recording_into_the_reader();
+            reader.GetOutputParameters().ShouldNotBeEmpty();
         }
 
         [Fact]
@@ -64,9 +72,9 @@ namespace BlackBox.Tests.Recorder
         {
             Given.we_have_an_xml_recording();
             When.we_load_the_recording_into_the_reader();
-            reader.GetParameters()[0].Name.ShouldEqual("contact");
-            reader.GetParameters()[0].Type.ShouldEqual(typeof (Contact));
-            reader.GetParameters()[0].Value.ShouldNotBeNull();
+            reader.GetInputParameters()[0].Name.ShouldEqual("contact");
+            reader.GetInputParameters()[0].Type.ShouldEqual(typeof (Contact));
+            reader.GetInputParameters()[0].Value.ShouldNotBeNull();
         }
 
         [Fact]

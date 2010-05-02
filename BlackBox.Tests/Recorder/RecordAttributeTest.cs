@@ -49,7 +49,7 @@ namespace BlackBox.Tests.Recorder
         [Fact]
         public void Record_the_method_output_parameters()
         {
-            var outputParameter1 = (int) recorder.MethodRecordings[0].OutputParameters[0].Value;
+            var outputParameter1 = (int)recorder.MethodRecordings[0].OutputParameters[0].Value;
             var outputParameter2 = (int)recorder.MethodRecordings[0].OutputParameters[1].Value;
             
             outputParameter1.ShouldEqual(5);
