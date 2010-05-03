@@ -7,7 +7,7 @@ namespace BlackBox
 {
     public class MethodRecording
     {
-        public List<object> DependencyRecordings { get; private set; }
+        public List<DependencyRecording> DependencyRecordings { get; private set; }
         public List<ParameterRecording> InputParameters { get; private set; }
         public List<ParameterRecording> OutputParameters { get; private set; }
         public string RecordingName { get; private set; }
@@ -25,7 +25,7 @@ namespace BlackBox
             RecordingName = RecordingServices.RecordingNamer.GetNameForRecording(method);
             InputParameters = new List<ParameterRecording>();
             OutputParameters = new List<ParameterRecording>();
-            DependencyRecordings = new List<object>();
+            DependencyRecordings = new List<DependencyRecording>();
 
             AddMethod(method, instance, parameterValues);
         }
@@ -42,6 +42,12 @@ namespace BlackBox
         {
             ReturnValue = returnValue.Copy();
             AddParameters(parameterValues, OutputParameters);
+        }
+
+        public void AddDependency(object dependencyInstance, MethodInfo method, object returnValue)
+        {
+            var dependencyRecording = new DependencyRecording(dependencyInstance, method, returnValue);
+            DependencyRecordings.Add(dependencyRecording);
         }
 
         private void AddParameters(object[] sourceParameters, List<ParameterRecording> targetParameters)

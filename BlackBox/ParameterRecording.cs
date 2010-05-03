@@ -19,6 +19,7 @@ namespace BlackBox
             Name = name;
             Value = value;
             Type = value.GetType();
+            TypeName = Type.GetCodeDefinition();
         }
     }
 }

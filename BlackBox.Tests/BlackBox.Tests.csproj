@@ -93,6 +93,7 @@
     <Compile Include="BDD.cs" />
     <Compile Include="CodeGeneration\TestWriterTest.cs" />
     <Compile Include="Recorder\DependencyAttributeTest.cs" />
+    <Compile Include="Recorder\MethodRecordingTest.cs" />
     <Compile Include="Recorder\TypeAndMethodNamerTest.cs" />
     <Compile Include="Fakes\SimpleAddressBook.cs" />
     <Compile Include="Fakes\SimpleMath.cs" />
