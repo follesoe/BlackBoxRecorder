@@ -25,6 +25,26 @@ namespace BlackBox.Tests.Fakes
                     where c != contact
                     select c).ToList();
         }
+
+        [Recording]
+        public List<Contact> GetAllContacts()
+        {
+            var db = new SimpleAddressBookDb();
+            return db.GetContacts();
+        }
+    }
+
+    [Dependency]
+    public class SimpleAddressBookDb
+    {
+        public List<Contact> GetContacts()
+        {
+            return new List<Contact>
+                       {
+                           new Contact("Jonas Follesø", "jonas@follesoe.no"),
+                           new Contact("John Doe", "john@doe.com")
+                       };
+        }
     }
 
     public class Contact

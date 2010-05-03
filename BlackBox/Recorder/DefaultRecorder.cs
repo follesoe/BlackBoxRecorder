@@ -34,6 +34,12 @@ namespace BlackBox.Recorder
             RecordingServices.RecordingSaver.SaveMethodRecording(recording);
         }
 
+        public void RecordDependency(Guid callGuid, object instance, MethodInfo method, object returnValue)
+        {           
+            MethodRecording recording = _notExited[callGuid];
+            recording.DependencyRecordings.Add(returnValue);
+        }
+
         public void ClearRecordings()
         {
             MethodRecordings.Clear();

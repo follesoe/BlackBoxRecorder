@@ -7,6 +7,7 @@ namespace BlackBox
 {
     public class MethodRecording
     {
+        public List<object> DependencyRecordings { get; private set; }
         public List<ParameterRecording> InputParameters { get; private set; }
         public List<ParameterRecording> OutputParameters { get; private set; }
         public string RecordingName { get; private set; }
@@ -24,6 +25,7 @@ namespace BlackBox
             RecordingName = RecordingServices.RecordingNamer.GetNameForRecording(method);
             InputParameters = new List<ParameterRecording>();
             OutputParameters = new List<ParameterRecording>();
+            DependencyRecordings = new List<object>();
 
             AddMethod(method, instance, parameterValues);
         }

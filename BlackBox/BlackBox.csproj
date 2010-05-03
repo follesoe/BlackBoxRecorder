@@ -81,6 +81,8 @@
     <Compile Include="IFile.cs" />
     <Compile Include="Recorder\CallStackRecordingNamer.cs" />
     <Compile Include="Recorder\DefaultRecorder.cs" />
+    <Compile Include="Recorder\DependencyAttribute.cs" />
+    <Compile Include="Recorder\RecordingStack.cs" />
     <Compile Include="Recorder\SaveRecordingToDisk.cs" />
     <Compile Include="Recorder\TypeAndMethodNamer.cs" />
     <Compile Include="Recorder\DoNotSaveRecordings.cs" />

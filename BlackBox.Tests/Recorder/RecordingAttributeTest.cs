@@ -8,7 +8,7 @@ using Moq;
 
 namespace BlackBox.Tests.Recorder
 {
-    public class RecordAttributeTest
+    public class RecordingAttributeTest
     {    
         [Fact]
         public void Records_each_call_to_the_method()
@@ -62,7 +62,7 @@ namespace BlackBox.Tests.Recorder
             saverMock.Verify();
         }
 
-        public RecordAttributeTest()
+        public RecordingAttributeTest()
         {
             saverMock = new Mock<ISaveRecordings>();
             saverMock.Setup(saver => saver.SaveMethodRecording(It.IsAny<MethodRecording>())).Verifiable();
