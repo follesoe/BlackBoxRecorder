@@ -74,7 +74,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeGeneration\RecordingLoader.cs" />
     <Compile Include="CodeGeneration\TestGenerator.cs" />
     <Compile Include="CodeGeneration\TestWriter.cs" />
     <Compile Include="Configuration.cs" />

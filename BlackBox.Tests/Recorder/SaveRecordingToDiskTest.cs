@@ -72,11 +72,11 @@ namespace BlackBox.Tests.Recorder
         {
             simpleMath.Add(10, 10);
         }
-        
-        private const string TypeFolder = @"RecordedInputFiles\BlackBox.Tests.Fakes.SimpleMath";
-        private const string MethodFolder = @"RecordedInputFiles\BlackBox.Tests.Fakes.SimpleMath\Int32 Add(Int32, Int32)";
-        private const string RecordingPath = MethodFolder + @"\Int32_Add_Int32_Int32.xml";
-        private const string RecordingPath2 = MethodFolder + @"\Int32_Add_Int32_Int32_2.xml";
+
+        private const string TypeFolder = @"CharacterizationTests\BlackBox.Tests.Fakes.SimpleMath";
+        private const string MethodFolder = @"CharacterizationTests\BlackBox.Tests.Fakes.SimpleMath\Add(a, b)";
+        private const string RecordingPath = MethodFolder + @"\Add(a, b).xml";
+        private const string RecordingPath2 = MethodFolder + @"\Add(a, b)_2.xml";
    
         public SaveRecordingToDiskTest()
         {

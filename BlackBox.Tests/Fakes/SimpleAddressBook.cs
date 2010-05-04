@@ -41,6 +41,13 @@ namespace BlackBox.Tests.Fakes
         }
 
         [Recording]
+        public List<Contact> GetAllContacts(List<string> filters)
+        {
+            var db = new SimpleAddressBookDb();
+            return db.GetContacts(filters.First());
+        }
+
+        [Recording]
         public List<Contact> GetAllContactsViaStatic()
         {
             return SimpleAddressBookDb.GetContactsStatic("Anything");
