@@ -23,7 +23,7 @@ namespace BlackBox.Tests.Testing
         {
             Given.we_have_a_test_recording_as_xml();
             testClass.LoadRecording(recording);
-            testClass.GetInputParameterValue("contact").ShouldNotBeNull();
+            testClass.GetInputParameterValue("filter").ShouldNotBeNull();
         }
 
         [Fact]
@@ -33,8 +33,15 @@ namespace BlackBox.Tests.Testing
             testClass.LoadRecording(recording);
             testClass.GetReturnValue().ShouldNotBeNull();
         }
+
+        [Fact]
+        public void Can_change_from_recording_to_playback_mode()
+        {
+            testClass.Initialize();
+            RecordingServices.Configuration.RecordingMode.ShouldEqual(RecordingMode.Playback);
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+        }
         
-        private Contact contact1, contact2;
         private readonly CharacterizationTest testClass;
         private readonly SimpleAddressBook addressBook;                
         private readonly RecordingXmlWriter writer;
@@ -52,13 +59,7 @@ namespace BlackBox.Tests.Testing
         private void we_have_a_test_recording_as_xml()
         {
             recorder.ClearRecordings();
-
-            contact1 = new Contact("Jonas Follesø", "jonas@follesoe.no");
-            contact2 = new Contact("Hege Røkenes", "hege@rokenes.com");
-
-            addressBook.AddContact(contact1);
-            addressBook.AddContact(contact2);
-            addressBook.AllExcept(contact1);
+            addressBook.GetAllContacts("some filter");
 
             recording = writer.CreateXml(recorder.MethodRecordings[0]);
         }

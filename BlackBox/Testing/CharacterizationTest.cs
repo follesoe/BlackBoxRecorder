@@ -44,5 +44,10 @@ namespace BlackBox.Testing
         {
 
         }
+
+        public void Initialize()
+        {
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
+        }
     }
 }

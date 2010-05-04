@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using OX.Copyable;
+using System.Collections.Generic;
 
 namespace BlackBox
 {

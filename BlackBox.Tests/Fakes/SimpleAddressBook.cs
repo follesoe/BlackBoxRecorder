@@ -30,7 +30,14 @@ namespace BlackBox.Tests.Fakes
         public List<Contact> GetAllContacts()
         {
             var db = new SimpleAddressBookDb();
-            return db.GetContacts("SomeName");
+            return db.GetContacts("anything");
+        }
+
+        [Recording]
+        public List<Contact> GetAllContacts(string filter)
+        {
+            var db = new SimpleAddressBookDb();
+            return db.GetContacts(filter);
         }
 
         [Recording]

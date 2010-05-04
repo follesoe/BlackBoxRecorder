@@ -24,5 +24,10 @@ namespace BlackBox
             var serializer = new XmlSerializer(type);
             return serializer.Deserialize(new StringReader(xml));
         }
+
+        public static object Copy(this object obj)
+        {
+            return obj.ToXml().ToString().Deserialize(obj.GetType());
+        }
     }
 }

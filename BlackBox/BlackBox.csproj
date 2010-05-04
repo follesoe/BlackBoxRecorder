@@ -105,12 +105,6 @@
     <Compile Include="TypeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OX.Copyable\OX.Copyable\OX.Copyable.csproj">
-      <Project>{44974FCD-7B84-425D-B8F1-8FF029335B89}</Project>
-      <Name>OX.Copyable</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
