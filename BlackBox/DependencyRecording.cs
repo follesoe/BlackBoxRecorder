@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace BlackBox
@@ -9,19 +10,25 @@ namespace BlackBox
         public string TypeName { get; set; }
         public Type CalledOnType { get; set; }
         public MethodInfo Method { get; set; }
-        public object ReturnValue { get; set; }
+        public List<object> ReturnValues { get; set; }
 
         public DependencyRecording()
         {
-            
+            ReturnValues = new List<object>();
         }
 
-        public DependencyRecording(object instance, MethodInfo method, object returnValue)
+        public DependencyRecording(object instance, MethodInfo method)
         {
             Method = method;
-            ReturnValue = returnValue;
+            ReturnValues = new List<object>();
+            
             CalledOnType = method.IsStatic ? method.DeclaringType : instance.GetType();
             IsStatic = method.IsStatic;
+        }
+
+        public void AddReturnValue(object returnValue)
+        {
+            ReturnValues.Add(returnValue);
         }
     }
 }

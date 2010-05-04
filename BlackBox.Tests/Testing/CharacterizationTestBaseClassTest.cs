@@ -37,9 +37,25 @@ namespace BlackBox.Tests.Testing
         [Fact]
         public void Can_change_from_recording_to_playback_mode()
         {
+            Given.we_have_a_test_recording_as_xml();
+            testClass.LoadRecording(recording);
             testClass.Initialize();
+
             RecordingServices.Configuration.RecordingMode.ShouldEqual(RecordingMode.Playback);
             RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+        }
+
+        [Fact]
+        public void Loads_return_values_for_external_dependencies_on_initialize()
+        {
+            Given.we_have_a_test_recording_as_xml();
+            testClass.LoadRecording(recording);
+            testClass.Initialize();
+
+            var externalMethod = typeof (SimpleAddressBookDb).GetMethod("GetContacts");
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+
+            RecordingServices.DependencyPlayback.HasReturnValue(externalMethod).ShouldBeTrue();
         }
         
         private readonly CharacterizationTest testClass;
@@ -50,10 +66,12 @@ namespace BlackBox.Tests.Testing
 
         public CharacterizationTestBaseClassTest()
         {
-            testClass = new CharacterizationTest();
-            writer = new RecordingXmlWriter();
+            RecordingServices.RecordingSaver = new DoNotSaveRecordings();
             recorder = (DefaultRecorder)RecordingServices.Recorder;
-            addressBook = new SimpleAddressBook();
+
+            testClass = new CharacterizationTest();
+            writer = new RecordingXmlWriter();            
+            addressBook = new SimpleAddressBook();            
         }        
 
         private void we_have_a_test_recording_as_xml()

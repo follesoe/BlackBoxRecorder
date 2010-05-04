@@ -21,24 +21,15 @@ namespace BlackBox.Recorder
             }
             else
             {
-                var publicMethod = GetInterceptedMethod(eventArgs.Method);
-                if (RecordingServices.DependencyPlayback.HasReturnValue(publicMethod))
+                if (RecordingServices.DependencyPlayback.HasReturnValue(eventArgs.Method))
                 {
-                    eventArgs.ReturnValue = RecordingServices.DependencyPlayback.GetReturnValue(publicMethod);
+                    eventArgs.ReturnValue = RecordingServices.DependencyPlayback.GetReturnValue(eventArgs.Method);
                 }
                 else
                 {
                     eventArgs.ReturnValue = eventArgs.Method.Invoke(eventArgs.Instance, eventArgs.GetArgumentArray());
                 }
             }
-        }
-
-        private static MethodInfo GetInterceptedMethod(MethodInfo interceptionMethod)
-        {
-            var parameterTypes = from parameter in interceptionMethod.GetParameters()
-                                 select parameter.ParameterType;
-
-            return interceptionMethod.DeclaringType.GetMethod(interceptionMethod.GetMethodNameWithoutTilde(), parameterTypes.ToArray());
         }
     }
 }

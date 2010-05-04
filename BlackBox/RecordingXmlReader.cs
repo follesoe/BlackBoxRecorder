@@ -88,7 +88,7 @@ namespace BlackBox
             return parameters;
         }
 
-        public List<DependencyRecording> GetDependencies(bool deserializeReturnValues)
+        public List<DependencyRecording> GetDependencies()
         {
             var dependencies = new List<DependencyRecording>();
             foreach(var dependencyNode in CurrentRecording.XPathSelectElements("//Dependency"))
@@ -104,6 +104,13 @@ namespace BlackBox
                 foreach (var parameterNode in dependencyNode.XPathSelectElements("Method//Parameters"))
                 {
                     methodParameters.Add(Type.GetType(parameterNode.Value));
+                }
+
+                foreach(var returnNode in dependencyNode.XPathSelectElements("Method//ReturnValue"))
+                {
+                    Type returnType = Type.GetType(returnNode.Element("FullyQualifiedType").Value);
+                    object returnValue = returnNode.Element("Value").Value.Deserialize(returnType);
+                    dependency.AddReturnValue(returnValue);
                 }
 
                 dependency.Method = dependency.CalledOnType.GetMethod(methodName, methodParameters.ToArray());                

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -11,27 +12,45 @@ namespace BlackBox.Recorder
 
         public void RegisterExpectedReturnValue(MethodInfo method, object returnValue)
         {
-            if (_playbackValues == null)
-            {
-                _playbackValues = new Dictionary<MethodInfo, Stack<object>>();
-            }
+            InitializeStore();
+            var interceptedMethod = GetInterceptedMethod(method);
 
-            if(!_playbackValues.ContainsKey(method))
+            if (!_playbackValues.ContainsKey(interceptedMethod))
             {
                 _playbackValues.Add(method, new Stack<object>());
             }
 
-            _playbackValues[method].Push(returnValue);
+            _playbackValues[interceptedMethod].Push(returnValue);         
         }
 
         public bool HasReturnValue(MethodInfo method)
         {
-            return _playbackValues.ContainsKey(method) && _playbackValues[method].Count > 0;
+            InitializeStore();
+            var interceptedMethod = GetInterceptedMethod(method);
+            return _playbackValues.ContainsKey(interceptedMethod) && _playbackValues[interceptedMethod].Count > 0;
         }
 
         public object GetReturnValue(MethodInfo method)
         {
-            return _playbackValues[method].Pop();
+            InitializeStore();
+            var interceptedMethod = GetInterceptedMethod(method);
+            return _playbackValues[interceptedMethod].Pop();
+        }
+
+        private static void InitializeStore()
+        {
+            if (_playbackValues == null)
+            {
+                _playbackValues = new Dictionary<MethodInfo, Stack<object>>();
+            }
+        }
+
+        private static MethodInfo GetInterceptedMethod(MethodInfo interceptionMethod)
+        {
+            var parameterTypes = from parameter in interceptionMethod.GetParameters()
+                                 select parameter.ParameterType;
+
+            return interceptionMethod.DeclaringType.GetMethod(interceptionMethod.GetMethodNameWithoutTilde(), parameterTypes.ToArray());
         }
     }
 }

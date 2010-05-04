@@ -44,7 +44,12 @@ namespace BlackBox
                                            new XElement("IsStatic", dependency.Method.IsStatic),
                                            new XElement("Parameters",
                                                from parameter in dependency.Method.GetParameters()
-                                               select new XElement("FullyQualifiedType", parameter.ParameterType.AssemblyQualifiedName))));                                          
+                                               select new XElement("FullyQualifiedType", parameter.ParameterType.AssemblyQualifiedName)),
+                                           new XElement("ReturnValues",
+                                               from returnValue in dependency.ReturnValues
+                                               select new XElement("ReturnValue",
+                                                   new XElement("FullyQualifiedType", returnValue.GetType().AssemblyQualifiedName),
+                                                   new XElement("Value", new XCData(returnValue.ToXml().ToString()))))));
         }
     }
 }
