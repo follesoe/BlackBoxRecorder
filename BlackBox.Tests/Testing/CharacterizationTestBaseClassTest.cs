@@ -50,11 +50,8 @@ namespace BlackBox.Tests.Testing
         {
             Given.we_have_a_test_recording_as_xml();
             testClass.LoadRecording(recording);
-            testClass.Initialize();
-
             var externalMethod = typeof (SimpleAddressBookDb).GetMethod("GetContacts");
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
-
+            
             RecordingServices.DependencyPlayback.HasReturnValue(externalMethod).ShouldBeTrue();
         }
         

@@ -54,6 +54,13 @@ namespace BlackBox.Tests.CodeGeneration
             generatedCode.ShouldContain("[TestMethod]", 2);
         }
 
+        [Fact]
+        public void Test_class_should_generate_setup_method()
+        {
+            generatedCode.ShouldContain("[TestInitialize]");
+            generatedCode.ShouldContain("Initialize();");
+        }
+
         public TestWriterTest()
         {
             var saveRecordings = new SaveRecordingsToMemory();

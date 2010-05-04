@@ -24,6 +24,20 @@ namespace BlackBox.Testing
         {
             _parameters.Clear();
             _reader.LoadRecording(recording);
+            LoadDependenyReturnValues();
+        }
+
+        private void LoadDependenyReturnValues()
+        {
+            List<DependencyRecording> recordedDependencies = _reader.GetDependencies();
+
+            foreach (var dependency in recordedDependencies)
+            {
+                foreach (var returnValue in dependency.ReturnValues)
+                {
+                    RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(dependency.Method, returnValue);
+                }
+            }
         }
 
         public object GetInputParameterValue(string parameterName)
@@ -48,16 +62,6 @@ namespace BlackBox.Testing
         public void Initialize()
         {
             RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
-
-            List<DependencyRecording> recordedDependencies = _reader.GetDependencies();
-
-            foreach(var dependency in recordedDependencies)
-            {
-                foreach(var returnValue in dependency.ReturnValues)
-                {
-                    RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(dependency.Method, returnValue);    
-                }                
-            }
         }
     }
 }

@@ -66,6 +66,7 @@ namespace BlackBox.CodeGeneration
             _stringWriter.WriteLine();
 
             WriteRunMethod();
+            WriteSetupMethod();            
         }
 
         private void DecelareOutputParameters()
@@ -107,6 +108,16 @@ namespace BlackBox.CodeGeneration
             
             _stringWriter.WriteLine("\t\t\tCompareObjects(expected, actual);");
 
+            _stringWriter.WriteLine("\t\t}");
+            _stringWriter.WriteLine();
+        }
+
+        private void WriteSetupMethod()
+        {
+            _stringWriter.WriteLine("\t\t[TestInitialize]");
+            _stringWriter.WriteLine("\t\tpublic void Setup()");
+            _stringWriter.WriteLine("\t\t{");
+            _stringWriter.WriteLine("\t\t\tInitialize();");
             _stringWriter.WriteLine("\t\t}");
             _stringWriter.WriteLine();
         }
