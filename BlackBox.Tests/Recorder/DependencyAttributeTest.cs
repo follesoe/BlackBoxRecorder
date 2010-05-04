@@ -19,7 +19,7 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Returns_recorded_value_if_on_playback_mode()
+        public void Returns_recorded_value_if_in_playback_mode()
         {           
             MethodInfo method = typeof (SimpleAddressBookDb).GetMethod("GetContacts");
             var contactsToReturn = new List<Contact> {new Contact("BlackBox", "blackbox@gmail.com")};
@@ -29,6 +29,20 @@ namespace BlackBox.Tests.Recorder
             var contacts = addressBook.GetAllContacts();
             RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
             
+            contacts.ShouldContain(contactsToReturn[0]);
+        }
+
+        [Fact]
+        public void Returns_recorded_value_if_in_playback_mode_on_static_methods()
+        {
+            MethodInfo method = typeof(SimpleAddressBookDb).GetMethod("GetContactsStatic");
+            var contactsToReturn = new List<Contact> { new Contact("BlackBoxStatic", "blackbox@gmail.com") };
+            RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(method, contactsToReturn);
+
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
+            var contacts = addressBook.GetAllContactsViaStatic();
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+
             contacts.ShouldContain(contactsToReturn[0]);
         }
 
@@ -42,7 +56,7 @@ namespace BlackBox.Tests.Recorder
                  
         }
 
-        private SimpleAddressBook addressBook;
-        private DefaultRecorder recorder;
+        private readonly SimpleAddressBook addressBook;
+        private readonly DefaultRecorder recorder;
     }
 }
