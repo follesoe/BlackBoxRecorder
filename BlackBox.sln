@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackBox.Tests", "BlackBox.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackBox.Demo.App", "BlackBox.Demo.App\BlackBox.Demo.App.csproj", "{41C4CF7B-1518-4423-91DC-2850CD7507B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackBox.Demo.Tests", "BlackBox.Demo.Tests\BlackBox.Demo.Tests.csproj", "{54D37F67-65AA-495C-B4F5-A6C52A2A568B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{41C4CF7B-1518-4423-91DC-2850CD7507B5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{41C4CF7B-1518-4423-91DC-2850CD7507B5}.Release|x86.ActiveCfg = Release|x86
 		{41C4CF7B-1518-4423-91DC-2850CD7507B5}.Release|x86.Build.0 = Release|x86
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{54D37F67-65AA-495C-B4F5-A6C52A2A568B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

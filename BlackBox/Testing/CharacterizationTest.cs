@@ -7,12 +7,14 @@ namespace BlackBox.Testing
     public class CharacterizationTest
     {
         private readonly RecordingXmlReader _reader;
-        private readonly List<ParameterRecording> _parameters;
+        private readonly List<ParameterRecording> _inputParameters;
+        private readonly List<ParameterRecording> _outputParameters;
        
         public CharacterizationTest()
         {
             _reader = new RecordingXmlReader();
-            _parameters = new List<ParameterRecording>();
+            _inputParameters = new List<ParameterRecording>();
+            _outputParameters = new List<ParameterRecording>();
         }
 
         public void LoadRecording(string path)
@@ -22,7 +24,7 @@ namespace BlackBox.Testing
 
         public void LoadRecording(XDocument recording)
         {
-            _parameters.Clear();
+            _inputParameters.Clear();
             _reader.LoadRecording(recording);
             LoadDependenyReturnValues();
         }
@@ -42,11 +44,21 @@ namespace BlackBox.Testing
 
         public object GetInputParameterValue(string parameterName)
         {
-            if (_parameters.Count == 0)
+            if (_inputParameters.Count == 0)
             {
-                _parameters.AddRange(_reader.GetInputParameters());
+                _inputParameters.AddRange(_reader.GetInputParameters());
             }
-            return _parameters.Where(p => p.Name == parameterName).SingleOrDefault().Value;
+            return _inputParameters.Where(p => p.Name == parameterName).SingleOrDefault().Value;
+        }
+
+        public object GetOutputParameterValue(string parameterName)
+        {
+            if(_outputParameters.Count == 0)
+            {
+                _outputParameters.AddRange(_reader.GetOutputParameters());
+            }
+
+            return _outputParameters.Where(p => p.Name == parameterName).SingleOrDefault().Value;
         }
 
         public object GetReturnValue()

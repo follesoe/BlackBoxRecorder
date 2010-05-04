@@ -108,7 +108,10 @@ namespace BlackBox
 
                 foreach (var parameterNode in dependencyNode.XPathSelectElements("Method//Parameters"))
                 {
-                    methodParameters.Add(Type.GetType(parameterNode.Value));
+                    if (!string.IsNullOrEmpty(parameterNode.Value))
+                    {
+                        methodParameters.Add(Type.GetType(parameterNode.Value));
+                    }
                 }
 
                 foreach(var returnNode in dependencyNode.XPathSelectElements("Method//ReturnValue"))
