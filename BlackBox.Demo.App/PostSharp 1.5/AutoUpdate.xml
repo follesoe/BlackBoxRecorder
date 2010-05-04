@@ -1,0 +1,5 @@
+<Updates xmlns="http://schemas.postsharp.org/1.0/autoupdate">
+	<Application id="postsharp10" Name="PostSharp 1.0" Version="1.0.13.630" Url="http://www.sharpcrafters.com/postsharp/download"/>
+	<Application id="PostSharp-1.0" Name="PostSharp 1.0" Version="1.0.13.630" Url="http://www.sharpcrafters.com/postsharp/download"/>
+	<Application id="PostSharp-1.5" Name="PostSharp 1.5" Version="1.5.6.629" Url="http://www.sharpcrafters.com/postsharp/download"/>
+</Updates>
