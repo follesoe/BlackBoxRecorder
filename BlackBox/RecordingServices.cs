@@ -8,12 +8,15 @@ namespace BlackBox
         public static INameRecordings RecordingNamer { get; set; }
         public static ISaveRecordings RecordingSaver { get; set; }
         public static Configuration Configuration { get; private set; }
+        public static DependencyPlayback DependencyPlayback { get; private set; }
 
         static RecordingServices()
         {
             Recorder = new DefaultRecorder();
             RecordingNamer = new CallStackRecordingNamer();
             RecordingSaver = new SaveRecordingToDisk(new FileAdapter());
+            
+            DependencyPlayback = new DependencyPlayback();
             Configuration = new Configuration();
         }
     }

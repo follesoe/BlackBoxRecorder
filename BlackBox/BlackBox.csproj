@@ -81,6 +81,7 @@
     <Compile Include="DependencyRecording.cs" />
     <Compile Include="FileAdapter.cs" />
     <Compile Include="IFile.cs" />
+    <Compile Include="Recorder\DependencyPlayback.cs" />
     <Compile Include="RecordingMode.cs" />
     <Compile Include="Recorder\CallStackRecordingNamer.cs" />
     <Compile Include="Recorder\DefaultRecorder.cs" />
