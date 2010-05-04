@@ -19,7 +19,7 @@ namespace BlackBox.Tests.Recorder
         [Fact]
         public void Records_each_call_to_static_methods()
         {
-            recorder.MethodRecordings[2].RecordingName.ShouldEqual("Int32_AddStatic_Int32_Int32");
+            recorder.MethodRecordings[2].RecordingName.ShouldEqual("AddStatic(a, b)");
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace BlackBox.Tests.Recorder
         [Fact]
         public void Creates_a_full_name_of_the_recorded_method()
         {
-            recorder.MethodRecordings[0].MethodName.ShouldEqual("Int32 Add(Int32, Int32)");
+            recorder.MethodRecordings[0].MethodName.ShouldEqual("Add(a, b)");
         }
 
         [Fact]

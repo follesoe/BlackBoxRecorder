@@ -17,7 +17,7 @@ namespace BlackBox
 
         public string MethodName 
         {
-            get { return Method.Name; }
+            get { return Method.GetMethodNameWithParameters(); }
         }        
 
         public MethodRecording(MethodBase method, object instance, object[] parameterValues)
