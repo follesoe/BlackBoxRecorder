@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using BlackBox.CodeGeneration;
 
 namespace BlackBox.Recorder
 {
@@ -9,12 +10,14 @@ namespace BlackBox.Recorder
         private readonly IFile _file;
         private readonly RecordingXmlWriter _xmlWriter;
         private readonly HashSet<string> _savedFiles;
+        private readonly TestGenerator _testGenerator;
         
         public SaveRecordingToDisk(IFile file)
         {
             _file = file;
             _xmlWriter = new RecordingXmlWriter();
             _savedFiles = new HashSet<string>();
+            _testGenerator = new TestGenerator();
         }
 
         public void SaveMethodRecording(MethodRecording recording)
@@ -23,6 +26,7 @@ namespace BlackBox.Recorder
             string methodDirectory = CreateMethodDirectory(typeDirectory, recording);
             string recordingPath = CreateRecordingPath(methodDirectory, recording);
             SaveRecording(recordingPath, recording);
+            _testGenerator.GenerateTest(recordingPath);
         }
 
         private string CreateTypeDirectory(MethodRecording recording)

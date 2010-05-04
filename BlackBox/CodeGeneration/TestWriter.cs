@@ -177,7 +177,7 @@ namespace BlackBox.CodeGeneration
             _sb.AppendLine();
         }
 
-        private string CreateNameOfTestFixture(string method)
+        private static string CreateNameOfTestFixture(string method)
         {
             method = method.Replace("(", " ");
             method = method.Replace(",", "");
