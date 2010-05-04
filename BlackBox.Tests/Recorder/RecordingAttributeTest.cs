@@ -55,6 +55,18 @@ namespace BlackBox.Tests.Recorder
             outputParameter1.ShouldEqual(5);
             outputParameter2.ShouldEqual(5);
         }
+        
+        [Fact]
+        public void Do_not_record_if_in_playback_mode()
+        {
+            recorder.ClearRecordings();
+
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
+            math.Add(5, 5);
+            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+
+            recorder.MethodRecordings.ShouldBeEmpty();            
+        }
 
         [Fact]
         public void Saves_the_recording()
