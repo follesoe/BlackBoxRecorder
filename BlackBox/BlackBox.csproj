@@ -99,6 +99,7 @@
     <Compile Include="RecordingServices.cs" />
     <Compile Include="Recorder\RecordingAttribute.cs" />
     <Compile Include="SerializationExtension.cs" />
+    <Compile Include="StringBuilderExtension.cs" />
     <Compile Include="Testing\CharacterizationTest.cs" />
     <Compile Include="TypeExtension.cs" />
   </ItemGroup>

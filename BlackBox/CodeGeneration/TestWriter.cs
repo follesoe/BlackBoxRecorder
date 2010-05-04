@@ -1,12 +1,16 @@
 ﻿using System.IO;
+using System.Text;
 
 namespace BlackBox.CodeGeneration
 {
     public class TestWriter
     {
-        private readonly StringWriter _stringWriter;
+        private readonly StringBuilder _sb;
         private readonly RecordingXmlReader _recordingReader;
         private readonly IFile _fileAccess;
+               
+        private bool _isSaved;
+        private bool _isFirstTestMethod = true;
         private string _filename;
 
         public TestWriter() : this(new RecordingXmlReader(), new FileAdapter())
@@ -17,10 +21,8 @@ namespace BlackBox.CodeGeneration
         {
             _recordingReader = reader;
             _fileAccess = fileAccess;
-            _stringWriter = new StringWriter();            
+            _sb = new StringBuilder();            
         }
-
-        private bool _isFirstTestMethod = true;
 
         public void WriteTestMethod(string path)
         {
@@ -30,14 +32,21 @@ namespace BlackBox.CodeGeneration
             {
                 WriteStartClass();
                 _isFirstTestMethod = false;
-            }            
+            }    
+        
+            var methodBuilder = new StringBuilder();
+            methodBuilder.AppendFormatLine("\t\t[TestMethod]");
+            methodBuilder.AppendFormatLine("\t\tpublic void {0}()", Path.GetFileNameWithoutExtension(path));
+            methodBuilder.AppendLine("\t\t{");
+            methodBuilder.AppendFormatLine("\t\t\tRun(@\"{0}\");", path);
+            methodBuilder.AppendLine("\t\t}");
+            methodBuilder.AppendLine();
 
-            _stringWriter.WriteLine("\t\t[TestMethod]");
-            _stringWriter.WriteLine("\t\tpublic void {0}()", Path.GetFileNameWithoutExtension(path));
-            _stringWriter.WriteLine("\t\t{");
-            _stringWriter.WriteLine("\t\t\tRun(@\"{0}\");", path);
-            _stringWriter.WriteLine("\t\t}");
-            _stringWriter.WriteLine();
+            if (_isSaved)
+            {
+                _sb.Remove(_sb.Length - 8, 8);
+            }
+            _sb.Append(methodBuilder.ToString());
         }
 
         private void WriteStartClass()
@@ -46,29 +55,29 @@ namespace BlackBox.CodeGeneration
             string testFixtureName = CreateNameOfTestFixture(method);
             _filename = testFixtureName + ".cs";
 
-            _stringWriter.WriteLine("using BlackBox;");
-            _stringWriter.WriteLine("using BlackBox.Testing;");
-            _stringWriter.WriteLine("using Microsoft.VisualStudio.TestTools.UnitTesting;");
-            _stringWriter.WriteLine();
+            _sb.AppendFormatLine("using BlackBox;");
+            _sb.AppendFormatLine("using BlackBox.Testing;");
+            _sb.AppendFormatLine("using Microsoft.VisualStudio.TestTools.UnitTesting;");
+            _sb.AppendLine();
 
-            _stringWriter.WriteLine("namespace CharacterizationTests");
-            _stringWriter.WriteLine("{");
-            _stringWriter.WriteLine("\t[TestClass]");
-            _stringWriter.WriteLine("\tpublic partial class {0} : CharacterizationTest", testFixtureName);
-            _stringWriter.WriteLine("\t{");
+            _sb.AppendFormatLine("namespace CharacterizationTests");
+            _sb.AppendLine("{");
+            _sb.AppendFormatLine("\t[TestClass]");
+            _sb.AppendFormatLine("\tpublic partial class {0} : CharacterizationTest", testFixtureName);
+            _sb.AppendLine("\t{");
 
             DeclareInputParameters();
             DecelareOutputParameters();
 
-            _stringWriter.WriteLine("\t\tprivate {0} expected;", _recordingReader.GetTypeOfReturnValue());
-            _stringWriter.WriteLine("\t\tprivate {0} actual;", _recordingReader.GetTypeOfReturnValue());
+            _sb.AppendFormatLine("\t\tprivate {0} expected;", _recordingReader.GetTypeOfReturnValue());
+            _sb.AppendFormatLine("\t\tprivate {0} actual;", _recordingReader.GetTypeOfReturnValue());
 
             if (!_recordingReader.GetMethodIsStatic())
             {
-                _stringWriter.WriteLine("\t\tprivate {0} target;", _recordingReader.GetTypeRecordingWasMadeOn());
+                _sb.AppendFormatLine("\t\tprivate {0} target;", _recordingReader.GetTypeRecordingWasMadeOn());
             }
 
-            _stringWriter.WriteLine();
+            _sb.AppendLine();
 
             WriteRunMethod();
             WriteSetupMethod();            
@@ -78,67 +87,67 @@ namespace BlackBox.CodeGeneration
         {
             foreach (var outputParameter in _recordingReader.GetOutputParametersMetadata())
             {
-                _stringWriter.WriteLine("\t\tprivate {0} {1}Output;", outputParameter.TypeName, outputParameter.Name);
+                _sb.AppendFormatLine("\t\tprivate {0} {1}Output;", outputParameter.TypeName, outputParameter.Name);
             }
-            _stringWriter.WriteLine();
+            _sb.AppendLine();
         }
 
         private void DeclareInputParameters()
         {
             foreach (var inputParameter in _recordingReader.GetInputParametersMetadata())
             {
-                _stringWriter.WriteLine("\t\tprivate {0} {1}Input;", inputParameter.TypeName, inputParameter.Name);
+                _sb.AppendFormatLine("\t\tprivate {0} {1}Input;", inputParameter.TypeName, inputParameter.Name);
             }
-            _stringWriter.WriteLine();
+            _sb.AppendLine();
         }
 
         private void WriteRunMethod()
         {
             string recordingWasMadeOn = _recordingReader.GetTypeRecordingWasMadeOn();
-            _stringWriter.WriteLine("\t\tprivate void Run(string filename)");
-            _stringWriter.WriteLine("\t\t{");
+            _sb.AppendFormatLine("\t\tprivate void Run(string filename)");
+            _sb.AppendLine("\t\t{");
 
-            _stringWriter.WriteLine("\t\t\tLoadRecording(filename);");
+            _sb.AppendFormatLine("\t\t\tLoadRecording(filename);");
 
             if(!_recordingReader.GetMethodIsStatic())
             {
-                _stringWriter.WriteLine("\t\t\ttarget = new {0}();", recordingWasMadeOn);
-                _stringWriter.WriteLine();
+                _sb.AppendFormatLine("\t\t\ttarget = new {0}();", recordingWasMadeOn);
+                _sb.AppendLine();
             }                       
 
             string parameterList = WriteInputParameters();
             WriteOutputParameters();
 
-            _stringWriter.WriteLine("\t\t\texpected = ({0})GetReturnValue();", _recordingReader.GetTypeOfReturnValue());
+            _sb.AppendFormatLine("\t\t\texpected = ({0})GetReturnValue();", _recordingReader.GetTypeOfReturnValue());
 
             if(_recordingReader.GetMethodIsStatic())
             {
-                _stringWriter.WriteLine("\t\t\tactual = {0}.{1}({2});", recordingWasMadeOn, _recordingReader.GetMethodName(), parameterList);
+                _sb.AppendFormatLine("\t\t\tactual = {0}.{1}({2});", recordingWasMadeOn, _recordingReader.GetMethodName(), parameterList);
             }
             else
             {
-                _stringWriter.WriteLine("\t\t\tactual = target.{0}({1});", _recordingReader.GetMethodName(), parameterList);    
+                _sb.AppendFormatLine("\t\t\tactual = target.{0}({1});", _recordingReader.GetMethodName(), parameterList);    
             }
             
-            _stringWriter.WriteLine();
+            _sb.AppendLine();
 
             var parameters = _recordingReader.GetInputParametersMetadata();
-            parameters.ForEach(p => _stringWriter.WriteLine("\t\t\tCompareObjects({0}Input, {0}Output);", p.Name));
+            parameters.ForEach(p => _sb.AppendFormatLine("\t\t\tCompareObjects({0}Input, {0}Output);", p.Name));
             
-            _stringWriter.WriteLine("\t\t\tCompareObjects(expected, actual);");
+            _sb.AppendFormatLine("\t\t\tCompareObjects(expected, actual);");
 
-            _stringWriter.WriteLine("\t\t}");
-            _stringWriter.WriteLine();
+            _sb.AppendLine("\t\t}");
+            _sb.AppendLine();
         }
 
         private void WriteSetupMethod()
         {
-            _stringWriter.WriteLine("\t\t[TestInitialize]");
-            _stringWriter.WriteLine("\t\tpublic void Setup()");
-            _stringWriter.WriteLine("\t\t{");
-            _stringWriter.WriteLine("\t\t\tInitialize();");
-            _stringWriter.WriteLine("\t\t}");
-            _stringWriter.WriteLine();
+            _sb.AppendFormatLine("\t\t[TestInitialize]");
+            _sb.AppendFormatLine("\t\tpublic void Setup()");
+            _sb.AppendLine("\t\t{");
+            _sb.AppendFormatLine("\t\t\tInitialize();");
+            _sb.AppendLine("\t\t}");
+            _sb.AppendLine();
         }
 
         private string WriteInputParameters()
@@ -151,9 +160,9 @@ namespace BlackBox.CodeGeneration
                 var parameter = parameters[i];
                 parameterList += parameter.Name + "Input";
                 if (i < parameters.Count - 1) parameterList += ", ";
-                _stringWriter.WriteLine("\t\t\t{0}Input = ({1})GetInputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
+                _sb.AppendFormatLine("\t\t\t{0}Input = ({1})GetInputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
             }
-            _stringWriter.WriteLine();
+            _sb.AppendLine();
             return parameterList;
         }
 
@@ -163,9 +172,9 @@ namespace BlackBox.CodeGeneration
             for (int i = 0; i < outputParameters.Count; i++)
             {
                 var parameter = outputParameters[i];
-                _stringWriter.WriteLine("\t\t\t{0}Output = ({1})GetOutputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
+                _sb.AppendFormatLine("\t\t\t{0}Output = ({1})GetOutputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
             }
-            _stringWriter.WriteLine();
+            _sb.AppendLine();
         }
 
         private string CreateNameOfTestFixture(string method)
@@ -180,11 +189,12 @@ namespace BlackBox.CodeGeneration
 
         public void SaveTest(string outputDirectory)
         {
-            _stringWriter.WriteLine("\t}");
-            _stringWriter.WriteLine("}");
+            _sb.AppendLine("\t}");
+            _sb.AppendLine("}");
 
             string path = Path.Combine(outputDirectory, _filename);
-            _fileAccess.Save(_stringWriter.ToString(), path);            
+            _fileAccess.Save(_sb.ToString(), path);
+            _isSaved = true;
         }
     }
 }
