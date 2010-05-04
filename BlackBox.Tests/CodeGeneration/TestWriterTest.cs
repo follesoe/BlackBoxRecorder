@@ -83,69 +83,8 @@ namespace BlackBox.Tests.CodeGeneration
         }
 
         private string generatedCode;
-        private CodeGenerationFileSystem fileSystem;
-        private TestWriter testWriter;
-        private SimpleMath math;
-    }
-
-    public class CodeGenerationFileSystem : IFile
-    {
-        public string GeneratedCode;
-        public string CodeSavedToPath;
-
-        public void Save(string testClass, string path)
-        {
-            GeneratedCode = testClass;
-            CodeSavedToPath = path;
-        }
-
-        #region Unimplemented members
-        public bool FileExists(string path)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DirectoryExists(string path)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CreateDirectory(string path)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetCurrentDirectory()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save(XDocument xml, string path)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-    }
-
-    public class SaveRecordingsToMemory : RecordingXmlReader, ISaveRecordings
-    {
-        private readonly Stack<XDocument> _recordings;
-        private readonly RecordingXmlWriter _xmlWriter;
-
-        public SaveRecordingsToMemory()
-        {
-            _recordings = new Stack<XDocument>();
-            _xmlWriter = new RecordingXmlWriter();
-        }
-
-        public void SaveMethodRecording(MethodRecording recording)
-        {
-            _recordings.Push(_xmlWriter.CreateXml(recording));
-        }
-
-        public override void LoadRecording(string path)
-        {
-            CurrentRecording = _recordings.Pop();
-        }
+        private readonly CodeGenerationFileSystem fileSystem;
+        private readonly TestWriter testWriter;
+        private readonly SimpleMath math;
     }
 }

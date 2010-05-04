@@ -92,6 +92,8 @@
   <ItemGroup>
     <Compile Include="BDD.cs" />
     <Compile Include="CodeGeneration\TestWriterTest.cs" />
+    <Compile Include="Fakes\CodeGenerationFileSystem.cs" />
+    <Compile Include="Fakes\SaveRecordingsToMemory.cs" />
     <Compile Include="Recorder\DependencyAttributeTest.cs" />
     <Compile Include="Recorder\MethodRecordingTest.cs" />
     <Compile Include="Recorder\TypeAndMethodNamerTest.cs" />
