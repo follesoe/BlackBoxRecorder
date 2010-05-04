@@ -10,15 +10,15 @@ namespace BlackBox.Recorder
         private readonly IFile _file;
         private readonly RecordingXmlWriter _xmlWriter;
         private readonly HashSet<string> _savedFiles;
-        private readonly TestGenerator _testGenerator;
+        private readonly IGenerateTests _testGenerator;
         
-        public SaveRecordingToDisk(IFile file)
+        public SaveRecordingToDisk(IFile file, IGenerateTests testGenerator)
         {
             _file = file;
             _xmlWriter = new RecordingXmlWriter();
             _savedFiles = new HashSet<string>();
-            _testGenerator = new TestGenerator();
-        }
+            _testGenerator = testGenerator;
+        }       
 
         public void SaveMethodRecording(MethodRecording recording)
         {

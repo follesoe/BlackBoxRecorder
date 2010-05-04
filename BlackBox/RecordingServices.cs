@@ -1,3 +1,4 @@
+using BlackBox.CodeGeneration;
 using BlackBox.Recorder;
 
 namespace BlackBox
@@ -14,7 +15,7 @@ namespace BlackBox
         {
             Recorder = new DefaultRecorder();
             RecordingNamer = new CallStackRecordingNamer();
-            RecordingSaver = new SaveRecordingToDisk(new FileAdapter());
+            RecordingSaver = new SaveRecordingToDisk(new FileAdapter(), new TestGenerator());
             
             DependencyPlayback = new DependencyPlayback();
             Configuration = new Configuration();

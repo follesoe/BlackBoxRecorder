@@ -1,5 +1,5 @@
 ﻿using System.Xml.Linq;
-
+using BlackBox.CodeGeneration;
 using Moq;
 using Xunit;
 
@@ -83,7 +83,7 @@ namespace BlackBox.Tests.Recorder
             simpleMath = new SimpleMath();
           
             fileMock = new Mock<IFile>();
-            saveRecording = new SaveRecordingToDisk(fileMock.Object);
+            saveRecording = new SaveRecordingToDisk(fileMock.Object, new DoNotGenerateTests());
             RecordingServices.RecordingSaver = saveRecording;
             RecordingServices.RecordingNamer = new TypeAndMethodNamer();
         }

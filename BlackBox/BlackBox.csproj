@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\DoNotGenerateTests.cs" />
+    <Compile Include="CodeGeneration\IGenerateTests.cs" />
     <Compile Include="CodeGeneration\TestGenerator.cs" />
     <Compile Include="CodeGeneration\TestWriter.cs" />
     <Compile Include="Configuration.cs" />

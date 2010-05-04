@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlackBox.CodeGeneration
 {
-    public class TestGenerator
+    public class TestGenerator : IGenerateTests
     {
         private readonly Dictionary<string, TestWriter> _writers;
 
