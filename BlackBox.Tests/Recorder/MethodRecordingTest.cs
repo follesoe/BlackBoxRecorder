@@ -18,7 +18,7 @@ namespace BlackBox.Tests.Recorder
         public void Can_add_dependency_recordings()
         {
             var method = db.GetType().GetMethod("GetContacts");
-            recording.AddDependency(db, method, db.GetContacts());
+            recording.AddDependency(db, method, db.GetContacts("SomeString"));
             recording.DependencyRecordings.Count.ShouldEqual(1);
         }
 

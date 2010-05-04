@@ -41,6 +41,7 @@ namespace BlackBox
                                        new XElement("FullyQualifiedType", new XCData(dependency.CalledOnType.AssemblyQualifiedName)),
                                        new XElement("Method",
                                            new XElement("Name", dependency.Method.GetMethodNameWithoutTilde()),
+                                           new XElement("IsStatic", dependency.Method.IsStatic),
                                            new XElement("Parameters",
                                                from parameter in dependency.Method.GetParameters()
                                                select new XElement("FullyQualifiedType", parameter.ParameterType.AssemblyQualifiedName))));                                          

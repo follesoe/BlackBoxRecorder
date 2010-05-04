@@ -30,14 +30,29 @@ namespace BlackBox.Tests.Fakes
         public List<Contact> GetAllContacts()
         {
             var db = new SimpleAddressBookDb();
-            return db.GetContacts();
+            return db.GetContacts("SomeName");
+        }
+
+        [Recording]
+        public List<Contact> GetAllContactsViaStatic()
+        {
+            return SimpleAddressBookDb.GetContactsStatic("Anything");
         }
     }
 
     [Dependency]
     public class SimpleAddressBookDb
     {
-        public List<Contact> GetContacts()
+        public List<Contact> GetContacts(string filter)
+        {
+            return new List<Contact>
+                       {
+                           new Contact("Jonas Follesø", "jonas@follesoe.no"),
+                           new Contact("John Doe", "john@doe.com")
+                       };
+        }
+
+        public static List<Contact> GetContactsStatic(string filter)
         {
             return new List<Contact>
                        {

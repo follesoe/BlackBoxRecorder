@@ -10,11 +10,10 @@ namespace BlackBox.Tests.Recorder
     {
         [Fact]
         public void Records_dependencies_if_called_inside_method_recording()
-        {                       
+        {
+            addressBook.GetAllContacts();            
             recorder.MethodRecordings[0].DependencyRecordings.ShouldNotBeEmpty();
         }
-
-
 
         public DependencyAttributeTest()
         {
@@ -23,7 +22,7 @@ namespace BlackBox.Tests.Recorder
             recorder.ClearRecordings();
 
             addressBook = new SimpleAddressBook();
-            addressBook.GetAllContacts();         
+                 
         }
 
         private SimpleAddressBook addressBook;

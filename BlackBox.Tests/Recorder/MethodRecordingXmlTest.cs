@@ -119,6 +119,17 @@ namespace BlackBox.Tests.Recorder
             dependencies[0].Method.ShouldBeSameAs(typeof(SimpleAddressBookDb).GetMethod("GetContacts"));
         }
 
+        [Fact]
+        public void Can_read_external_dependency_on_static_methods()
+        {
+            Given.we_have_an_xml_recording_with_static_external_dependency();
+            When.we_load_the_recording_into_the_reader();
+
+            var dependencies = reader.GetDependencies(true);
+            dependencies[0].Method.ShouldBeSameAs(typeof(SimpleAddressBookDb).GetMethod("GetContactsStatic"));
+            dependencies[0].IsStatic.ShouldBeTrue();
+        }
+
         private Contact contact1, contact2;
         private readonly SimpleAddressBook addressBook;        
         private readonly RecordingXmlReader reader;
@@ -144,9 +155,14 @@ namespace BlackBox.Tests.Recorder
         private void we_have_an_xml_recording_with_external_dependency()
         {
             recorder.ClearRecordings();
-
             addressBook.GetAllContacts();
+            we_should_be_able_to_format_the_recording_as_XML();
+        }
 
+        private void we_have_an_xml_recording_with_static_external_dependency()
+        {
+            recorder.ClearRecordings();
+            addressBook.GetAllContactsViaStatic();
             we_should_be_able_to_format_the_recording_as_XML();
         }
 

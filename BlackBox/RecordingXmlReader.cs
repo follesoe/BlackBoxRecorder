@@ -97,8 +97,16 @@ namespace BlackBox
                 dependency.TypeName = dependencyNode.Element("Type").Value;
                 dependency.CalledOnType = Type.GetType(dependencyNode.Element("FullyQualifiedType").Value);
 
+                dependency.IsStatic = Convert.ToBoolean(dependencyNode.XPathSelectElement("Method/IsStatic").Value);                                
                 string methodName = dependencyNode.XPathSelectElement("Method/Name").Value;
-                dependency.Method = dependency.CalledOnType.GetMethod(methodName);
+                var methodParameters = new List<Type>();
+
+                foreach (var parameterNode in dependencyNode.XPathSelectElements("Method//Parameters"))
+                {
+                    methodParameters.Add(Type.GetType(parameterNode.Value));
+                }
+
+                dependency.Method = dependency.CalledOnType.GetMethod(methodName, methodParameters.ToArray());                
 
                 dependencies.Add(dependency);
             }
