@@ -6,6 +6,7 @@ namespace BlackBox
     public class DependencyRecording
     {
         public bool IsStatic { get; set; }
+        public string TypeName { get; set; }
         public Type CalledOnType { get; set; }
         public MethodInfo Method { get; set; }
         public object ReturnValue { get; set; }

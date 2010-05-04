@@ -78,7 +78,7 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Can_read_the_output_parameter_details_for_the_recored_method()
+        public void Can_read_the_output_parameter_details_for_the_recordrf_method()
         {
             Given.we_have_an_xml_recording();
             When.we_load_the_recording_into_the_reader();
@@ -105,6 +105,20 @@ namespace BlackBox.Tests.Recorder
             returnValue.ShouldBeType(typeof(List<Contact>));
         }
 
+        [Fact]
+        public void Can_read_external_dependencies()
+        {
+            Given.we_have_an_xml_recording_with_external_dependency();
+            When.we_load_the_recording_into_the_reader();
+
+            var dependencies = reader.GetDependencies(true);
+
+            dependencies.ShouldNotBeEmpty();
+            dependencies[0].TypeName.ShouldEqual(typeof(SimpleAddressBookDb).GetCodeDefinition());
+            dependencies[0].CalledOnType.ShouldBeSameAs(typeof(SimpleAddressBookDb));
+            dependencies[0].Method.ShouldBeSameAs(typeof(SimpleAddressBookDb).GetMethod("GetContacts"));
+        }
+
         private Contact contact1, contact2;
         private readonly SimpleAddressBook addressBook;        
         private readonly RecordingXmlReader reader;
@@ -127,6 +141,15 @@ namespace BlackBox.Tests.Recorder
             reader.LoadRecording(xml);
         }
 
+        private void we_have_an_xml_recording_with_external_dependency()
+        {
+            recorder.ClearRecordings();
+
+            addressBook.GetAllContacts();
+
+            we_should_be_able_to_format_the_recording_as_XML();
+        }
+
         private void we_have_an_xml_recording()
         {
             recorder.ClearRecordings();
@@ -147,7 +170,7 @@ namespace BlackBox.Tests.Recorder
         {
             var oneContact = addressBook.AllExcept(contact1);
             oneContact.ShouldContain(contact2); 
-        }
+        }        
 
         private void we_add_two_contacts()
         {

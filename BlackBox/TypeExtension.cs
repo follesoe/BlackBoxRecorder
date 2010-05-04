@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace BlackBox
@@ -33,6 +34,12 @@ namespace BlackBox
                 sb.Append(">");
             }
             return sb.ToString();
+        }
+
+        public static string GetMethodNameWithoutTilde(this MethodInfo method)
+        {
+            string name = method.Name;
+            return name.StartsWith("~") ? name.Substring(1) : name;
         }
     }
 }

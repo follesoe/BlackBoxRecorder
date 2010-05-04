@@ -88,6 +88,23 @@ namespace BlackBox
             return parameters;
         }
 
+        public List<DependencyRecording> GetDependencies(bool deserializeReturnValues)
+        {
+            var dependencies = new List<DependencyRecording>();
+            foreach(var dependencyNode in CurrentRecording.XPathSelectElements("//Dependency"))
+            {
+                var dependency = new DependencyRecording();
+                dependency.TypeName = dependencyNode.Element("Type").Value;
+                dependency.CalledOnType = Type.GetType(dependencyNode.Element("FullyQualifiedType").Value);
+
+                string methodName = dependencyNode.XPathSelectElement("Method/Name").Value;
+                dependency.Method = dependency.CalledOnType.GetMethod(methodName);
+
+                dependencies.Add(dependency);
+            }
+            return dependencies;
+        }
+
         public string GetTypeOfReturnValue()
         {
             return CurrentRecording.XPathSelectElement("/Recording/Return/Type").Value;

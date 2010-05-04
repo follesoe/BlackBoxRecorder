@@ -45,6 +45,11 @@ namespace BlackBox.Tests.Fakes
                            new Contact("John Doe", "john@doe.com")
                        };
         }
+
+        public int Test()
+        {
+            return 10;
+        }
     }
 
     public class Contact

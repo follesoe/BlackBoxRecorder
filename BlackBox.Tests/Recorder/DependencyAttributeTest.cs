@@ -9,10 +9,12 @@ namespace BlackBox.Tests.Recorder
     public class DependencyAttributeTest
     {
         [Fact]
-        public void Records_dependencies_if_inside_method_recording()
+        public void Records_dependencies_if_called_inside_method_recording()
         {                       
             recorder.MethodRecordings[0].DependencyRecordings.ShouldNotBeEmpty();
         }
+
+
 
         public DependencyAttributeTest()
         {

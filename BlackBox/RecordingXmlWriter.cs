@@ -19,8 +19,8 @@ namespace BlackBox
                              new XElement("Return",
                                           new XElement("Type", new XCData(recording.ReturnValue.GetType().GetCodeDefinition())),
                                           new XElement("FullyQualifiedType", new XCData(recording.ReturnValue.GetType().AssemblyQualifiedName)),
-                                          new XElement("Value", new XCData(recording.ReturnValue.ToXml().ToString()))
-                                 )));
+                                          new XElement("Value", new XCData(recording.ReturnValue.ToXml().ToString())),
+                            new XElement("Dependencies", CreateDependencyNodes(recording.DependencyRecordings)))));
         }
 
         private static IEnumerable<XElement> CreateParameterNodes(IEnumerable<ParameterRecording> parameterRecordings)
@@ -31,6 +31,19 @@ namespace BlackBox
                                        new XElement("Type", new XCData(parameter.Value.GetType().GetCodeDefinition())),
                                        new XElement("FullyQualifiedType", new XCData(parameter.Value.GetType().AssemblyQualifiedName)),
                                        new XElement("Value", new XCData(parameter.Value.ToXml().ToString())));
+        }
+
+        private static IEnumerable<XElement> CreateDependencyNodes(IEnumerable<DependencyRecording> dependencyRecordings)
+        {
+            return from dependency in dependencyRecordings
+                   select new XElement("Dependency",
+                                       new XElement("Type", new XCData(dependency.CalledOnType.GetCodeDefinition())),
+                                       new XElement("FullyQualifiedType", new XCData(dependency.CalledOnType.AssemblyQualifiedName)),
+                                       new XElement("Method",
+                                           new XElement("Name", dependency.Method.GetMethodNameWithoutTilde()),
+                                           new XElement("Parameters",
+                                               from parameter in dependency.Method.GetParameters()
+                                               select new XElement("FullyQualifiedType", parameter.ParameterType.AssemblyQualifiedName))));                                          
         }
     }
 }
