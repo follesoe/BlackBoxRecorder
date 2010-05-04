@@ -62,7 +62,12 @@ namespace BlackBox.CodeGeneration
 
             _stringWriter.WriteLine("\t\tprivate {0} expected;", _recordingReader.GetTypeOfReturnValue());
             _stringWriter.WriteLine("\t\tprivate {0} actual;", _recordingReader.GetTypeOfReturnValue());
-            _stringWriter.WriteLine("\t\tprivate {0} target;", _recordingReader.GetTypeRecordingWasMadeOn());
+
+            if (!_recordingReader.GetMethodIsStatic())
+            {
+                _stringWriter.WriteLine("\t\tprivate {0} target;", _recordingReader.GetTypeRecordingWasMadeOn());
+            }
+
             _stringWriter.WriteLine();
 
             WriteRunMethod();
@@ -89,18 +94,32 @@ namespace BlackBox.CodeGeneration
 
         private void WriteRunMethod()
         {
+            string recordingWasMadeOn = _recordingReader.GetTypeRecordingWasMadeOn();
             _stringWriter.WriteLine("\t\tprivate void Run(string filename)");
             _stringWriter.WriteLine("\t\t{");
 
             _stringWriter.WriteLine("\t\t\tLoadRecording(filename);");
-            _stringWriter.WriteLine("\t\t\ttarget = new {0}();", _recordingReader.GetTypeRecordingWasMadeOn());
-            _stringWriter.WriteLine();
+
+            if(!_recordingReader.GetMethodIsStatic())
+            {
+                _stringWriter.WriteLine("\t\t\ttarget = new {0}();", recordingWasMadeOn);
+                _stringWriter.WriteLine();
+            }                       
 
             string parameterList = WriteInputParameters();
             WriteOutputParameters();
 
             _stringWriter.WriteLine("\t\t\texpected = ({0})GetReturnValue();", _recordingReader.GetTypeOfReturnValue());
-            _stringWriter.WriteLine("\t\t\tactual = target.{0}({1});", _recordingReader.GetMethodName(), parameterList);
+
+            if(_recordingReader.GetMethodIsStatic())
+            {
+                _stringWriter.WriteLine("\t\t\tactual = {0}.{1}({2});", recordingWasMadeOn, _recordingReader.GetMethodName(), parameterList);
+            }
+            else
+            {
+                _stringWriter.WriteLine("\t\t\tactual = target.{0}({1});", _recordingReader.GetMethodName(), parameterList);    
+            }
+            
             _stringWriter.WriteLine();
 
             var parameters = _recordingReader.GetInputParametersMetadata();
@@ -130,7 +149,7 @@ namespace BlackBox.CodeGeneration
             for(int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                parameterList += parameter.Name;
+                parameterList += parameter.Name + "Input";
                 if (i < parameters.Count - 1) parameterList += ", ";
                 _stringWriter.WriteLine("\t\t\t{0}Input = ({1})GetInputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
             }

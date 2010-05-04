@@ -12,6 +12,7 @@ namespace BlackBox
                 new XElement("Recording",
                              new XElement("Name", recording.RecordingName),
                              new XElement("Method", recording.Method.Name),
+                             new XElement("IsStatic", recording.Method.IsStatic),
                              new XElement("Type", new XCData(recording.CalledOnType.GetCodeDefinition())),
                              new XElement("FullyQualifiedType", new XCData(recording.CalledOnType.AssemblyQualifiedName)),
                              new XElement("InputParameters", CreateParameterNodes(recording.InputParameters)),

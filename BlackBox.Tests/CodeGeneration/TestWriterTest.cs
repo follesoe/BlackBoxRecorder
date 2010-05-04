@@ -1,9 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
-using System.Collections.Generic;
-
-using BlackBox.Recorder;
-using BlackBox.CodeGeneration;
+﻿using BlackBox.CodeGeneration;
 
 using Xunit;
 using Xunit.Extensions;
@@ -39,6 +34,12 @@ namespace BlackBox.Tests.CodeGeneration
         {           
             generatedCode.ShouldContain("aOutput = (System.Int32)GetOutputParameterValue(\"a\");");
             generatedCode.ShouldContain("bOutput = (System.Int32)GetOutputParameterValue(\"b\");");
+        }
+
+        [Fact]
+        public void Test_class_has_assigned_actual_value()
+        {
+            generatedCode.ShouldContain("actual = target.Add(aInput, bInput);");
         }
 
         [Fact]

@@ -38,6 +38,11 @@ namespace BlackBox
             return CurrentRecording.XPathSelectElement("/Recording/Method").Value;
         }
 
+        public bool GetMethodIsStatic()
+        {
+            return Convert.ToBoolean(CurrentRecording.XPathSelectElement("/Recording/IsStatic").Value);
+        }
+
         public List<ParameterRecording> GetInputParametersMetadata()
         {
             return GetInputParameters(false);

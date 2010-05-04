@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDD.cs" />
+    <Compile Include="CodeGeneration\StaticMethodTestWriterTest.cs" />
     <Compile Include="CodeGeneration\TestWriterTest.cs" />
     <Compile Include="Fakes\CodeGenerationFileSystem.cs" />
     <Compile Include="Fakes\SaveRecordingsToMemory.cs" />
