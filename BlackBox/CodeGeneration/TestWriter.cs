@@ -74,14 +74,17 @@ namespace BlackBox.CodeGeneration
             _testFixtureName = CreateNameOfTestFixture();
             _filename = _testFixtureName + ".cs";
 
-            _sb.AppendFormatLine("using BlackBox;");
             _sb.AppendFormatLine("using BlackBox.Testing;");
             _sb.AppendFormatLine("using {0};", Configuration.TestFlavour.Namespace);
             _sb.AppendLine();
 
             _sb.AppendFormatLine("namespace CharacterizationTests");
             _sb.AppendLine("{");
-            _sb.AppendFormatLine("\t" + Configuration.TestFlavour.ClassAttribute);
+            if(!string.IsNullOrEmpty(Configuration.TestFlavour.ClassAttribute))
+            {
+                _sb.AppendFormatLine("\t[{0}]", Configuration.TestFlavour.ClassAttribute);
+            }
+            
             _sb.AppendFormatLine("\tpublic partial class {0} : CharacterizationTest", _testFixtureName);
             _sb.AppendLine("\t{");
 

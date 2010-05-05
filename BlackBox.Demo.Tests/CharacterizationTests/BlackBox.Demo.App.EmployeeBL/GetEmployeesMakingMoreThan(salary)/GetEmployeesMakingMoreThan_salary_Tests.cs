@@ -1,10 +1,8 @@
-using BlackBox;
 using BlackBox.Testing;
 using Xunit;
 
 namespace CharacterizationTests
 {
-	
 	public partial class GetEmployeesMakingMoreThan_salary_Tests : CharacterizationTest
 	{
 		private System.Double salaryInput;
@@ -40,6 +38,11 @@ namespace CharacterizationTests
 		public void GetEmployeesMakingMoreThan_salary()
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary.xml");
+		}
+		[Fact]
+		public void GetEmployeesMakingMoreThan_salary_2()
+		{
+			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary_2.xml");
 		}
 
 	}

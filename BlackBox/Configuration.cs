@@ -21,7 +21,7 @@ namespace BlackBox
         static Configuration()
         {
             RecordingMode = RecordingMode.Recording;
-            TestFlavour = new MSTestFlavour();
+            TestFlavour = TestFlavour.CreateMSTest();
         }
     }
 }

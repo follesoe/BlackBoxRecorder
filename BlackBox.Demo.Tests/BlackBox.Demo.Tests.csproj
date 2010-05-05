@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan%28salary%29\GetEmployeesMakingMoreThan_salary.xml" />
+    <Content Include="CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan%28salary%29\GetEmployeesMakingMoreThan_salary_2.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

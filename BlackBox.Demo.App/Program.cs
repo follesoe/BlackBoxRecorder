@@ -13,6 +13,7 @@ namespace BlackBox.Demo.App
 
             var bl = new EmployeeBL();
             var topPayedEmployees = bl.GetEmployeesMakingMoreThan(5000);
+            var topPayedEmployees2 = bl.GetEmployeesMakingMoreThan(7500);
 
             Console.WriteLine("Name\t\t\tSalary");
             foreach(var employee in topPayedEmployees)
@@ -26,7 +27,7 @@ namespace BlackBox.Demo.App
         private static void ConfigreBlackBox()
         {
             Configuration.OutputDirectory = @"..\..\..\BlackBox.Demo.Tests\";
-            Configuration.TestFlavour = new XunitFlavour();
+            Configuration.TestFlavour = TestFlavour.CreateXunit();
         }
     }
 }

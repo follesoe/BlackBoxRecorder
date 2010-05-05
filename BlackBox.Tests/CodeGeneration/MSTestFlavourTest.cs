@@ -28,7 +28,7 @@ namespace BlackBox.Tests.CodeGeneration
 
         public override TestFlavour GetFlavour()
         {
-            return new MSTestFlavour();
+            return TestFlavour.CreateMSTest();
         }
     }
 }

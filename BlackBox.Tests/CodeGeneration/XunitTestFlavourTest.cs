@@ -34,7 +34,7 @@ namespace BlackBox.Tests.CodeGeneration
 
         public override TestFlavour GetFlavour()
         {
-            return new XunitFlavour();
+            return TestFlavour.CreateXunit();
         }
     }
 }
