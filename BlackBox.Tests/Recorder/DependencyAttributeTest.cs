@@ -25,9 +25,9 @@ namespace BlackBox.Tests.Recorder
             var contactsToReturn = new List<Contact> {new Contact("BlackBox", "blackbox@gmail.com")};
             RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(method, contactsToReturn);
 
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
+            Configuration.RecordingMode = RecordingMode.Playback;
             var contacts = addressBook.GetAllContacts();
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+            Configuration.RecordingMode = RecordingMode.Recording;
             
             contacts.ShouldContain(contactsToReturn[0]);
         }
@@ -39,9 +39,9 @@ namespace BlackBox.Tests.Recorder
             var contactsToReturn = new List<Contact> { new Contact("BlackBoxStatic", "blackbox@gmail.com") };
             RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(method, contactsToReturn);
 
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
+            Configuration.RecordingMode = RecordingMode.Playback;
             var contacts = addressBook.GetAllContactsViaStatic();
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+            Configuration.RecordingMode = RecordingMode.Recording;
 
             contacts.ShouldContain(contactsToReturn[0]);
         }

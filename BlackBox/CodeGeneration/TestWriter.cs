@@ -35,7 +35,7 @@ namespace BlackBox.CodeGeneration
             }    
         
             var methodBuilder = new StringBuilder();
-            methodBuilder.AppendFormatLine("\t\t[TestMethod]");
+            methodBuilder.AppendFormatLine("\t\t[{0}]", Configuration.TestFlavour.TestAttribute);
             methodBuilder.AppendFormatLine("\t\tpublic void {0}()", Path.GetFileNameWithoutExtension(path));
             methodBuilder.AppendLine("\t\t{");
             methodBuilder.AppendFormatLine("\t\t\tRun(@\"{0}\");", path);
@@ -57,12 +57,12 @@ namespace BlackBox.CodeGeneration
 
             _sb.AppendFormatLine("using BlackBox;");
             _sb.AppendFormatLine("using BlackBox.Testing;");
-            _sb.AppendFormatLine("using Microsoft.VisualStudio.TestTools.UnitTesting;");
+            _sb.AppendFormatLine("using {0};", Configuration.TestFlavour.Namespace);
             _sb.AppendLine();
 
             _sb.AppendFormatLine("namespace CharacterizationTests");
             _sb.AppendLine("{");
-            _sb.AppendFormatLine("\t[TestClass]");
+            _sb.AppendFormatLine("\t" + Configuration.TestFlavour.ClassAttribute);
             _sb.AppendFormatLine("\tpublic partial class {0} : CharacterizationTest", testFixtureName);
             _sb.AppendLine("\t{");
 
@@ -142,7 +142,7 @@ namespace BlackBox.CodeGeneration
 
         private void WriteSetupMethod()
         {
-            _sb.AppendFormatLine("\t\t[TestInitialize]");
+            _sb.AppendFormatLine("\t\t[{0}]", Configuration.TestFlavour.SetupAttribute);
             _sb.AppendFormatLine("\t\tpublic void Setup()");
             _sb.AppendLine("\t\t{");
             _sb.AppendFormatLine("\t\t\tInitialize();");

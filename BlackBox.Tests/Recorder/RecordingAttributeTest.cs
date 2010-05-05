@@ -61,9 +61,9 @@ namespace BlackBox.Tests.Recorder
         {
             recorder.ClearRecordings();
 
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Playback;
+            Configuration.RecordingMode = RecordingMode.Playback;
             math.Add(5, 5);
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+            Configuration.RecordingMode = RecordingMode.Recording;
 
             recorder.MethodRecordings.ShouldBeEmpty();            
         }

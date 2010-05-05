@@ -41,8 +41,8 @@ namespace BlackBox.Tests.Testing
             testClass.LoadRecording(recording);
             testClass.Initialize();
 
-            RecordingServices.Configuration.RecordingMode.ShouldEqual(RecordingMode.Playback);
-            RecordingServices.Configuration.RecordingMode = RecordingMode.Recording;
+            Configuration.RecordingMode.ShouldEqual(RecordingMode.Playback);
+            Configuration.RecordingMode = RecordingMode.Recording;
         }
 
         [Fact]

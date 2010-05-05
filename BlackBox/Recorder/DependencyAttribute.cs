@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using PostSharp.Laos;
 
 namespace BlackBox.Recorder
@@ -10,7 +8,7 @@ namespace BlackBox.Recorder
     {
         public override void OnInvocation(MethodInvocationEventArgs eventArgs)
         {
-            if (RecordingServices.Configuration.IsRecording())
+            if (Configuration.IsRecording())
             {
                 eventArgs.ReturnValue = eventArgs.Method.Invoke(eventArgs.Instance, eventArgs.GetArgumentArray());
                 if (RecordingStack.Count > 0)

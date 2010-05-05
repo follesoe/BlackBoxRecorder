@@ -6,7 +6,7 @@ using BlackBox.Tests.Fakes;
 
 namespace BlackBox.Tests.CodeGeneration
 {
-    public class TestWriterTest : BDD<TestWriterTest>
+    public class TestWriterTest
     {
         [Fact]
         public void Test_class_has_declared_input_parameter_variables()
@@ -49,19 +49,6 @@ namespace BlackBox.Tests.CodeGeneration
             generatedCode.ShouldContain("CompareObjects(bInput, bOutput);");
         }
 
-        [Fact]
-        public void Test_class_should_generate_one_test_method_for_each_recording()
-        {
-            generatedCode.ShouldContain("[TestMethod]", 2);
-        }
-
-        [Fact]
-        public void Test_class_should_generate_setup_method()
-        {
-            generatedCode.ShouldContain("[TestInitialize]");
-            generatedCode.ShouldContain("Initialize();");
-        }
-
         public TestWriterTest()
         {
             var saveRecordings = new SaveRecordingsToMemory();
@@ -70,7 +57,7 @@ namespace BlackBox.Tests.CodeGeneration
             testWriter = new TestWriter(saveRecordings, fileSystem);
 
             math = new SimpleMath();
-            Given.we_have_generated_a_test_class();
+            we_have_generated_a_test_class();
         }
 
         private void we_have_generated_a_test_class()

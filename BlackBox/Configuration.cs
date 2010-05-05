@@ -1,22 +1,26 @@
-﻿namespace BlackBox
+﻿using BlackBox.CodeGeneration;
+
+namespace BlackBox
 {
     public class Configuration
     {
-        public RecordingMode RecordingMode { get; set; }
+        public static RecordingMode RecordingMode { get; set; }
+        public static TestFlavour TestFlavour { get; set; }
 
-        public bool IsRecording()
+        public static bool IsRecording()
         {
             return RecordingMode == RecordingMode.Recording;
         }
 
-        public bool IsPlayback()
+        public static bool IsPlayback()
         {
             return RecordingMode == RecordingMode.Playback;
         }
 
-        public Configuration()
+        static Configuration()
         {
             RecordingMode = RecordingMode.Recording;
+            TestFlavour = new MSTestFlavour();
         }
     }
 }

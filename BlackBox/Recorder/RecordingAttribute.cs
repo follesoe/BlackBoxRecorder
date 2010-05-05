@@ -8,7 +8,7 @@ namespace BlackBox.Recorder
     {
         public override void OnEntry(MethodExecutionEventArgs eventArgs)
         {
-            if (RecordingServices.Configuration.IsPlayback()) return;
+            if (Configuration.IsPlayback()) return;
 
             Guid callGuid = Guid.NewGuid();
             eventArgs.MethodExecutionTag = callGuid;
@@ -19,7 +19,7 @@ namespace BlackBox.Recorder
 
         public override void OnExit(MethodExecutionEventArgs eventArgs)
         {
-            if (RecordingServices.Configuration.IsPlayback()) return;
+            if (Configuration.IsPlayback()) return;
 
             RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.GetReadOnlyArgumentArray(), eventArgs.ReturnValue);
             RecordingStack.Pop();
