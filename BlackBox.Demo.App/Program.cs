@@ -1,4 +1,5 @@
 ﻿using System;
+using BlackBox.CodeGeneration;
 
 namespace BlackBox.Demo.App
 {
@@ -6,6 +7,7 @@ namespace BlackBox.Demo.App
     {
         public static void Main(string[] args)
         {
+            ConfigreBlackBox();
             Console.WriteLine("[BlackBox Recorder Demo Application]");
             Console.WriteLine();
 
@@ -19,6 +21,12 @@ namespace BlackBox.Demo.App
             }
 
             Console.ReadLine();
+        }
+
+        private static void ConfigreBlackBox()
+        {
+            Configuration.OutputDirectory = @"..\..\..\BlackBox.Demo.Tests\";
+            Configuration.TestFlavour = new XunitFlavour();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Recording>
-  <Name>GetEmployeesMakingMoreThan(salary)</Name>
+  <Name>GetEmployeesMakingMoreThan_salary</Name>
   <Method>GetEmployeesMakingMoreThan</Method>
   <IsStatic>false</IsStatic>
   <Type><![CDATA[BlackBox.Demo.App.EmployeeBL]]></Type>
