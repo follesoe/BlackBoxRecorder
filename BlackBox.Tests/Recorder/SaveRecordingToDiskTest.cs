@@ -75,8 +75,8 @@ namespace BlackBox.Tests.Recorder
 
         private const string TypeFolder = @"CharacterizationTests\BlackBox.Tests.Fakes.SimpleMath";
         private const string MethodFolder = @"CharacterizationTests\BlackBox.Tests.Fakes.SimpleMath\Add(a, b)";
-        private const string RecordingPath = MethodFolder + @"\Add(a, b).xml";
-        private const string RecordingPath2 = MethodFolder + @"\Add(a, b)_2.xml";
+        private const string RecordingPath = MethodFolder + @"\Add_a_b.xml";
+        private const string RecordingPath2 = MethodFolder + @"\Add_a_b_2.xml";
    
         public SaveRecordingToDiskTest()
         {

@@ -9,9 +9,11 @@ namespace BlackBox.Tests.CodeGeneration
         
         protected TestsWithFlavour()
         {
+            Configuration.TestFlavour = GetFlavour();
+
             var saveRecordings = new SaveRecordingsToMemory();
             RecordingServices.RecordingSaver = saveRecordings;
-            Configuration.TestFlavour = GetFlavour();
+            
             fileSystem = new CodeGenerationFileSystem();
             testWriter = new TestWriter(saveRecordings, fileSystem);
 

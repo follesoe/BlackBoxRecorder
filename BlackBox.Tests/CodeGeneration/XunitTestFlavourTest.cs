@@ -20,9 +20,16 @@ namespace BlackBox.Tests.CodeGeneration
         }
 
         [Fact]
+        public void Test_class_should_generate_unique_test_names()
+        {
+            generatedCode.ShouldContain("public void Add_a_b()");
+            generatedCode.ShouldContain("public void Add_a_b_2()");
+        }
+
+        [Fact]
         public void Test_class_should_generate_constructor_for_setup()
         {
-            generatedCode.ShouldContain("public Add()");
+            generatedCode.ShouldContain("public Add_a_b_Tests()");
         }
 
         public override TestFlavour GetFlavour()

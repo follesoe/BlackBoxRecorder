@@ -19,7 +19,7 @@ namespace BlackBox.Tests.Recorder
         [Fact]
         public void Records_each_call_to_static_methods()
         {
-            recorder.MethodRecordings[2].RecordingName.ShouldEqual("AddStatic(a, b)");
+            recorder.MethodRecordings[2].RecordingName.ShouldEqual("AddStatic_a_b");
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
 namespace BlackBox.CodeGeneration
 {
@@ -13,6 +14,7 @@ namespace BlackBox.CodeGeneration
         private bool _isFirstTestMethod = true;
         private string _filename;
         private string _testFixtureName;
+        private readonly Dictionary<string, int> _usedMethodNames;
 
         public TestWriter() : this(new RecordingXmlReader(), new FileAdapter())
         {
@@ -22,6 +24,7 @@ namespace BlackBox.CodeGeneration
         {
             _recordingReader = reader;
             _fileAccess = fileAccess;
+            _usedMethodNames = new Dictionary<string, int>();
             _sb = new StringBuilder();            
         }
 
@@ -41,7 +44,19 @@ namespace BlackBox.CodeGeneration
                 methodBuilder.AppendFormatLine("\t\t[{0}]", Configuration.TestFlavour.TestAttribute);
             }
 
-            methodBuilder.AppendFormatLine("\t\tpublic void {0}()", Path.GetFileNameWithoutExtension(path));
+            string recordingName = _recordingReader.GetRecordingName();
+            if(!_usedMethodNames.ContainsKey(recordingName))
+            {
+                _usedMethodNames.Add(recordingName, 1);
+            }
+            else
+            {
+                int usedTimes = _usedMethodNames[recordingName];
+                _usedMethodNames[recordingName] = usedTimes++;
+                recordingName += "_" + usedTimes;
+            }
+
+            methodBuilder.AppendFormatLine("\t\tpublic void {0}()", recordingName);
             methodBuilder.AppendLine("\t\t{");
             methodBuilder.AppendFormatLine("\t\t\tRun(@\"{0}\");", path);
             methodBuilder.AppendLine("\t\t}");
@@ -56,8 +71,7 @@ namespace BlackBox.CodeGeneration
 
         private void WriteStartClass()
         {
-            string method = _recordingReader.GetMethodName();
-            _testFixtureName = CreateNameOfTestFixture(method);
+            _testFixtureName = CreateNameOfTestFixture();
             _filename = _testFixtureName + ".cs";
 
             _sb.AppendFormatLine("using BlackBox;");
@@ -199,14 +213,16 @@ namespace BlackBox.CodeGeneration
             _sb.AppendLine();
         }
 
-        private static string CreateNameOfTestFixture(string method)
+        private string CreateNameOfTestFixture()
         {
-            method = method.Replace("(", " ");
-            method = method.Replace(",", "");
-            method = method.Replace(")", "");
-            method = method.Replace(".", "");
-            method = method.Replace(" ", "_");
-            return method;
+            string methodName = _recordingReader.GetMethodName();
+            
+            foreach(var parameter in _recordingReader.GetInputParametersMetadata())
+            {
+                methodName += "_" + parameter.Name;
+            }
+
+            return methodName + "_Tests";
         }
 
         public void SaveTest(string outputDirectory)

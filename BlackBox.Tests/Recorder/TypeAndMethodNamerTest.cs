@@ -16,7 +16,7 @@ namespace BlackBox.Tests.Recorder
         {
             recorder.ClearRecordings();
             simpleMath.Add(5, 5);
-            recorder.MethodRecordings[0].RecordingName.ShouldEqual("Add(a, b)");
+            recorder.MethodRecordings[0].RecordingName.ShouldEqual("Add_a_b");
         }
 
         [Fact]
