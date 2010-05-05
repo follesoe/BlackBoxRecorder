@@ -36,7 +36,11 @@ namespace BlackBox.CodeGeneration
             }    
         
             var methodBuilder = new StringBuilder();
-            methodBuilder.AppendFormatLine("\t\t[{0}]", Configuration.TestFlavour.TestAttribute);
+            if (!string.IsNullOrEmpty(Configuration.TestFlavour.TestAttribute))
+            {
+                methodBuilder.AppendFormatLine("\t\t[{0}]", Configuration.TestFlavour.TestAttribute);
+            }
+
             methodBuilder.AppendFormatLine("\t\tpublic void {0}()", Path.GetFileNameWithoutExtension(path));
             methodBuilder.AppendLine("\t\t{");
             methodBuilder.AppendFormatLine("\t\t\tRun(@\"{0}\");", path);
@@ -161,7 +165,7 @@ namespace BlackBox.CodeGeneration
 
         private void WriteConsturctor()
         {
-            _sb.AppendFormat("\t\tpublic {0}()", _testFixtureName);
+            _sb.AppendFormatLine("\t\tpublic {0}()", _testFixtureName);
             _sb.AppendLine("\t\t{");
             _sb.AppendLine("\t\t\tInitialize();");
             _sb.AppendLine("\t\t}");
