@@ -92,9 +92,11 @@
   <ItemGroup>
     <Compile Include="BDD.cs" />
     <Compile Include="CodeGeneration\AppendMethodToTestWriterTest.cs" />
-    <Compile Include="CodeGeneration\MSTestFlavour.cs" />
+    <Compile Include="CodeGeneration\MSTestFlavourTest.cs" />
     <Compile Include="CodeGeneration\StaticMethodTestWriterTest.cs" />
+    <Compile Include="CodeGeneration\TestsWithFlavour.cs" />
     <Compile Include="CodeGeneration\TestWriterTest.cs" />
+    <Compile Include="CodeGeneration\XunitTestFlavourTest.cs" />
     <Compile Include="Fakes\CodeGenerationFileSystem.cs" />
     <Compile Include="Fakes\SaveRecordingsToMemory.cs" />
     <Compile Include="Recorder\DependencyAttributeTest.cs" />

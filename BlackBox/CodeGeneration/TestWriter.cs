@@ -12,6 +12,7 @@ namespace BlackBox.CodeGeneration
         private bool _isSaved;
         private bool _isFirstTestMethod = true;
         private string _filename;
+        private string _testFixtureName;
 
         public TestWriter() : this(new RecordingXmlReader(), new FileAdapter())
         {
@@ -52,8 +53,8 @@ namespace BlackBox.CodeGeneration
         private void WriteStartClass()
         {
             string method = _recordingReader.GetMethodName();
-            string testFixtureName = CreateNameOfTestFixture(method);
-            _filename = testFixtureName + ".cs";
+            _testFixtureName = CreateNameOfTestFixture(method);
+            _filename = _testFixtureName + ".cs";
 
             _sb.AppendFormatLine("using BlackBox;");
             _sb.AppendFormatLine("using BlackBox.Testing;");
@@ -63,7 +64,7 @@ namespace BlackBox.CodeGeneration
             _sb.AppendFormatLine("namespace CharacterizationTests");
             _sb.AppendLine("{");
             _sb.AppendFormatLine("\t" + Configuration.TestFlavour.ClassAttribute);
-            _sb.AppendFormatLine("\tpublic partial class {0} : CharacterizationTest", testFixtureName);
+            _sb.AppendFormatLine("\tpublic partial class {0} : CharacterizationTest", _testFixtureName);
             _sb.AppendLine("\t{");
 
             DeclareInputParameters();
@@ -80,9 +81,17 @@ namespace BlackBox.CodeGeneration
             _sb.AppendLine();
 
             WriteRunMethod();
-            WriteSetupMethod();            
-        }
 
+            if(Configuration.TestFlavour.ConstructorAsSetup())
+            {
+                WriteConsturctor();
+            }
+            else
+            {
+                WriteSetupMethod();
+            }
+        }
+ 
         private void DecelareOutputParameters()
         {
             foreach (var outputParameter in _recordingReader.GetOutputParametersMetadata())
@@ -143,9 +152,18 @@ namespace BlackBox.CodeGeneration
         private void WriteSetupMethod()
         {
             _sb.AppendFormatLine("\t\t[{0}]", Configuration.TestFlavour.SetupAttribute);
-            _sb.AppendFormatLine("\t\tpublic void Setup()");
+            _sb.AppendLine("\t\tpublic void Setup()");
             _sb.AppendLine("\t\t{");
-            _sb.AppendFormatLine("\t\t\tInitialize();");
+            _sb.AppendLine("\t\t\tInitialize();");
+            _sb.AppendLine("\t\t}");
+            _sb.AppendLine();
+        }
+
+        private void WriteConsturctor()
+        {
+            _sb.AppendFormat("\t\tpublic {0}()", _testFixtureName);
+            _sb.AppendLine("\t\t{");
+            _sb.AppendLine("\t\t\tInitialize();");
             _sb.AppendLine("\t\t}");
             _sb.AppendLine();
         }

@@ -80,6 +80,7 @@
     <Compile Include="CodeGeneration\TestFlavour.cs" />
     <Compile Include="CodeGeneration\TestGenerator.cs" />
     <Compile Include="CodeGeneration\TestWriter.cs" />
+    <Compile Include="CodeGeneration\XunitFlavour.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DependencyRecording.cs" />
     <Compile Include="FileAdapter.cs" />

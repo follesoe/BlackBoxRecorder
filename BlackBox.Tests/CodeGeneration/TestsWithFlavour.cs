@@ -1,36 +1,17 @@
 ﻿using BlackBox.CodeGeneration;
 using BlackBox.Tests.Fakes;
 
-using Xunit;
-using Xunit.Extensions;
-
 namespace BlackBox.Tests.CodeGeneration
 {
-    public class MSTestFlavour
+    public abstract class TestsWithFlavour
     {
-        [Fact]
-        public void Generated_test_includes_correct_namespace()
-        {
-            generatedCode.ShouldContain("using Microsoft.VisualStudio.TestTools.UnitTesting;");
-        }
-
-        [Fact]
-        public void Test_class_should_generate_one_test_method_for_each_recording()
-        {
-            generatedCode.ShouldContain("[TestMethod]", 2);
-        }
-
-        [Fact]
-        public void Test_class_should_generate_setup_method()
-        {
-            generatedCode.ShouldContain("[TestInitialize]");
-            generatedCode.ShouldContain("Initialize();");
-        }
-
-        public MSTestFlavour()
+        public abstract TestFlavour GetFlavour();
+        
+        protected TestsWithFlavour()
         {
             var saveRecordings = new SaveRecordingsToMemory();
             RecordingServices.RecordingSaver = saveRecordings;
+            Configuration.TestFlavour = GetFlavour();
             fileSystem = new CodeGenerationFileSystem();
             testWriter = new TestWriter(saveRecordings, fileSystem);
 
@@ -48,7 +29,7 @@ namespace BlackBox.Tests.CodeGeneration
             generatedCode = fileSystem.GeneratedCode;
         }
 
-        private string generatedCode;
+        protected string generatedCode;
         private readonly CodeGenerationFileSystem fileSystem;
         private readonly TestWriter testWriter;
         private readonly SimpleMath math;
