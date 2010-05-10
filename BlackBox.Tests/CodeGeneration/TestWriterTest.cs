@@ -1,7 +1,7 @@
 ﻿using BlackBox.CodeGeneration;
-
 using Xunit;
 using Xunit.Extensions;
+
 using BlackBox.Tests.Fakes;
 
 namespace BlackBox.Tests.CodeGeneration
@@ -47,6 +47,12 @@ namespace BlackBox.Tests.CodeGeneration
         {
             generatedCode.ShouldContain("CompareObjects(aInput, aOutput);");
             generatedCode.ShouldContain("CompareObjects(bInput, bOutput);");
+        }
+
+        [Fact]
+        public void Test_class_should_be_indented_properly()
+        {
+            generatedCode.ShouldContain("\t\tprivate void Run(string filename)");
         }
 
         public TestWriterTest()
