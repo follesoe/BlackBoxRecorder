@@ -1,4 +1,4 @@
-﻿using BlackBox.CodeGeneration;
+﻿using BlackBox.CodeGeneration.Writer;
 using Xunit;
 using Xunit.Extensions;
 
@@ -70,8 +70,8 @@ namespace BlackBox.Tests.CodeGeneration
         {
             math.Add(5, 5);
             math.Add(10, 10);
-            testWriter.WriteTestMethod("foo");
-            testWriter.WriteTestMethod("foo2");
+            testWriter.WriteTest("foo");
+            testWriter.WriteTest("foo2");
             testWriter.SaveTest("bar");
             generatedCode = fileSystem.GeneratedCode;
         }

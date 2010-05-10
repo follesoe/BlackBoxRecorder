@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using BlackBox.CodeGeneration.Writer;
 
 namespace BlackBox.CodeGeneration
 {
@@ -21,7 +22,7 @@ namespace BlackBox.CodeGeneration
                 _writers.Add(directory, new TestWriter());
             }
 
-            _writers[directory].WriteTestMethod(recordingPath);
+            _writers[directory].WriteTest(recordingPath);
             _writers[directory].SaveTest(directory);
         }
     }

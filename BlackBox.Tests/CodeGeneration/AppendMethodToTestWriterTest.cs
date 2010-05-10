@@ -1,4 +1,4 @@
-﻿using BlackBox.CodeGeneration;
+﻿using BlackBox.CodeGeneration.Writer;
 using BlackBox.Tests.Fakes;
 
 using Xunit;
@@ -25,12 +25,12 @@ namespace BlackBox.Tests.CodeGeneration
 
         private void we_have_generated_a_test_class()
         {
-            SimpleMath.AddStatic(5, 5);                        
-            testWriter.WriteTestMethod("AddStatic1");
+            SimpleMath.AddStatic(5, 5);
+            testWriter.WriteTest("AddStatic1");
             testWriter.SaveTest("bar");
 
             SimpleMath.AddStatic(10, 10);
-            testWriter.WriteTestMethod("AddStatic2");
+            testWriter.WriteTest("AddStatic2");
             testWriter.SaveTest("bar");
             
             generatedCode = fileSystem.GeneratedCode;

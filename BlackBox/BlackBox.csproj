@@ -78,7 +78,13 @@
     <Compile Include="CodeGeneration\IGenerateTests.cs" />
     <Compile Include="CodeGeneration\TestFlavour.cs" />
     <Compile Include="CodeGeneration\TestGenerator.cs" />
-    <Compile Include="CodeGeneration\TestWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\BodyWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\ParameterDeclarationWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\ParameterWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\RunMethodWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\SetupWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\TestMethodWriter.cs" />
+    <Compile Include="CodeGeneration\Writer\TestWriter.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DependencyRecording.cs" />
     <Compile Include="FileAdapter.cs" />
