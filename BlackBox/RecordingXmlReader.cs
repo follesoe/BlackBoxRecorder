@@ -139,5 +139,11 @@ namespace BlackBox
             var type = Type.GetType(fullyQualifiedType);
             return CurrentRecording.XPathSelectElement("/Recording/Return/Value").Value.Deserialize(type);
         }
+
+        public bool IsMethodVoid()
+        {
+            string fullyQualifiedType = CurrentRecording.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;
+            return fullyQualifiedType.Equals("void");
+        }
     }
 }

@@ -40,8 +40,8 @@ namespace BlackBox
 
         public void AddReturnValues(object[] parameterValues, object returnValue)
         {
-            ReturnValue = returnValue.Copy();
             AddParameters(parameterValues, OutputParameters);
+            ReturnValue = returnValue == null ? null : returnValue.Copy();
         }
 
         public void AddDependency(object dependencyInstance, MethodInfo method, object returnValue)

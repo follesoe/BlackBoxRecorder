@@ -13,6 +13,7 @@ namespace BlackBox.Demo.App
             Console.WriteLine();
             Console.WriteLine("  1. Simple Anemic Domain Model (BL, DAL, Entity)");
             Console.WriteLine("  2. Multiple calls to external web resource.");
+            Console.WriteLine("  3. Parameter serves as both input and output.");
             Console.WriteLine();
             Console.Write("Pick demo to run recording on: ");
 
@@ -26,6 +27,9 @@ namespace BlackBox.Demo.App
                     break;
                 case 2:
                     WebDependencies.Demo.Run();
+                    break;
+                case 3:
+                    InputOutputArgument.Demo.Run();
                     break;
             }            
 

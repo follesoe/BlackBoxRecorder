@@ -78,7 +78,7 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
-        public void Can_read_the_output_parameter_details_for_the_recordrf_method()
+        public void Can_read_the_output_parameter_details_for_the_recorded_method()
         {
             Given.we_have_an_xml_recording();
             When.we_load_the_recording_into_the_reader();
@@ -103,6 +103,14 @@ namespace BlackBox.Tests.Recorder
             object returnValue = reader.GetReturnValue();
             returnValue.ShouldNotBeNull();
             returnValue.ShouldBeType(typeof(List<Contact>));
+        }
+
+        [Fact]
+        public void Can_check_that_recording_returns_void()
+        {
+            Given.we_have_an_recording_of_method_returning_void();
+            When.we_load_the_recording_into_the_reader();
+            reader.IsMethodVoid().ShouldBeTrue();
         }
 
         [Fact]
@@ -182,6 +190,16 @@ namespace BlackBox.Tests.Recorder
 
             we_add_two_contacts();
             we_get_all_except_the_first_one();
+            we_should_be_able_to_format_the_recording_as_XML();
+        }
+
+        private void we_have_an_recording_of_method_returning_void()
+        {
+            recorder.ClearRecordings();
+
+            var contact = new Contact("Jonas Follesø", "jonas@follesoe.no");
+            addressBook.UpdateContact(contact);
+
             we_should_be_able_to_format_the_recording_as_XML();
         }
         

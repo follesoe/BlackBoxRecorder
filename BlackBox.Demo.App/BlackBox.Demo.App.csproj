@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputOutputArgument\Demo.cs" />
+    <Compile Include="InputOutputArgument\SomeBL.cs" />
+    <Compile Include="InputOutputArgument\SomeEntity.cs" />
     <Compile Include="SimpleAnemic\Demo.cs" />
     <Compile Include="SimpleAnemic\EmployeeBL.cs" />
     <Compile Include="SimpleAnemic\EmployeeDAL.cs" />
