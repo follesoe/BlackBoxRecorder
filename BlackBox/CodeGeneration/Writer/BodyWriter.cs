@@ -47,10 +47,13 @@ namespace BlackBox.CodeGeneration.Writer
             _parameterWriter.WriteInputParametersDeclaration();
             _parameterWriter.WriteOutputParametersDeclaration();
 
-            _output.AppendFormatLine("\t\tprivate {0} expected;", _reader.GetTypeOfReturnValue());
-            _output.AppendFormatLine("\t\tprivate {0} actual;", _reader.GetTypeOfReturnValue());
+            if (!_reader.IsVoidMethod())
+            {
+                _output.AppendFormatLine("\t\tprivate {0} expected;", _reader.GetTypeOfReturnValue());
+                _output.AppendFormatLine("\t\tprivate {0} actual;", _reader.GetTypeOfReturnValue());
+            }
 
-            if (!_reader.GetMethodIsStatic())
+            if (!_reader.IsStaticMethod())
             {
                 _output.AppendFormatLine("\t\tprivate {0} target;", _reader.GetTypeRecordingWasMadeOn());
             }

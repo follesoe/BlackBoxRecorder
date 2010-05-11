@@ -23,11 +23,14 @@
       <FullyQualifiedType><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
       <Value><![CDATA[<SomeEntity xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.InputOutputArgument" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
   <Income>1100</Income>
-  <Name> edited...</Name>
+  <Name>My name edited...</Name>
 </SomeEntity>]]></Value>
     </Parameter>
   </OutputParameters>
   <Return>
+    <Type>void</Type>
+    <FullyQualifiedType>void</FullyQualifiedType>
+    <Value>void</Value>
     <Dependencies />
   </Return>
 </Recording>

@@ -6,7 +6,7 @@ using Xunit.Extensions;
 
 namespace BlackBox.Tests.CodeGeneration
 {
-    public class StaticMethodTestWriterTest: BDD<StaticMethodTestWriterTest>
+    public class StaticMethodTestWriterTest
     {
         [Fact]
         public void Test_class_should_generate_setup_method()
@@ -33,7 +33,7 @@ namespace BlackBox.Tests.CodeGeneration
             fileSystem = new CodeGenerationFileSystem();
             testWriter = new TestWriter(saveRecordings, fileSystem);
 
-            Given.we_have_generated_a_test_class();
+            we_have_generated_a_test_class();
         }
 
         private void we_have_generated_a_test_class()

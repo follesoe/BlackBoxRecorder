@@ -7,7 +7,7 @@ namespace BlackBox.Demo.App.InputOutputArgument
         [Recording]
         public void DoSomething(SomeEntity entity)
         {
-            entity.Name = entity.Name = " edited...";
+            entity.Name = entity.Name + " edited...";
             entity.Income = entity.Income*1.1;
         }
     }

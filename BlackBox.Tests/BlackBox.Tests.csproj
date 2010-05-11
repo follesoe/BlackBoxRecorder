@@ -95,6 +95,7 @@
     <Compile Include="CodeGeneration\StaticMethodTestWriterTest.cs" />
     <Compile Include="CodeGeneration\TestsWithFlavour.cs" />
     <Compile Include="CodeGeneration\TestWriterTest.cs" />
+    <Compile Include="CodeGeneration\VoidMethodTestWriterTest.cs" />
     <Compile Include="CodeGeneration\XunitTestFlavourTest.cs" />
     <Compile Include="Fakes\CodeGenerationFileSystem.cs" />
     <Compile Include="Fakes\SaveRecordingsToMemory.cs" />

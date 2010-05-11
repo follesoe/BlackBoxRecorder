@@ -110,7 +110,7 @@ namespace BlackBox.Tests.Recorder
         {
             Given.we_have_an_recording_of_method_returning_void();
             When.we_load_the_recording_into_the_reader();
-            reader.IsMethodVoid().ShouldBeTrue();
+            reader.IsVoidMethod().ShouldBeTrue();
         }
 
         [Fact]
