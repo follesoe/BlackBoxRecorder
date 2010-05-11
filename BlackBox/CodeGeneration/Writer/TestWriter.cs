@@ -5,6 +5,7 @@ namespace BlackBox.CodeGeneration.Writer
 {
     public class TestWriter
     {
+        private const int CharacterToRemove = 8;
         private readonly RecordingXmlReader _reader;
         private readonly IFile _fileAccess;
 
@@ -32,13 +33,18 @@ namespace BlackBox.CodeGeneration.Writer
             _reader.LoadRecording(path);
 
             _bodyWriter.WriteBody();
-            
-            if(_isSaved)
-            {
-                _output.Remove(_output.Length - 8, 8);
-            }
+
+            RemoveClosingBrackets();
 
             _methodWriter.WriteTestMethod(path);
+        }
+
+        private void RemoveClosingBrackets()
+        {
+            if (_isSaved)
+            {
+                _output.Remove(_output.Length - CharacterToRemove, CharacterToRemove);
+            }
         }
 
         public void SaveTest(string outputDirectory)
