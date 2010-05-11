@@ -1,0 +1,78 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9ED6411-50D3-4537-8C94-235CD99FB6B2}"
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.BusinessProcesses", "Librarian.BusinessProcesses\Librarian.BusinessProcesses.csproj", "{9853CE99-7487-4F8F-AC4F-EFDD8B5CFACB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7565273E-5EB9-4BAB-9665-44372F03928B} = {7565273E-5EB9-4BAB-9665-44372F03928B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.Data", "Librarian.Data\Librarian.Data.csproj", "{1A21F22E-ED52-4B1D-8088-DC676A7D778D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7565273E-5EB9-4BAB-9665-44372F03928B} = {7565273E-5EB9-4BAB-9665-44372F03928B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.Framework", "Librarian.Framework\Librarian.Framework.csproj", "{4FEDC113-4399-4700-ACA3-F23A930A9160}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.Server", "Librarian.Server\Librarian.Server.csproj", "{63C468D4-A233-4EEB-951F-A9399702A551}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7565273E-5EB9-4BAB-9665-44372F03928B} = {7565273E-5EB9-4BAB-9665-44372F03928B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.ServiceDefinition", "Librarian.ServiceDefinition\Librarian.ServiceDefinition.csproj", "{30E32087-1DCF-4B32-A096-F4BD4C22EF2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7565273E-5EB9-4BAB-9665-44372F03928B} = {7565273E-5EB9-4BAB-9665-44372F03928B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.WinForms", "Librarian.WinForms\Librarian.WinForms.csproj", "{BE46892A-5843-48BA-BDC9-511384117A73}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7565273E-5EB9-4BAB-9665-44372F03928B} = {7565273E-5EB9-4BAB-9665-44372F03928B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Librarian.Weaver", "Librarian.Weaver\Librarian.Weaver.csproj", "{7565273E-5EB9-4BAB-9665-44372F03928B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9853CE99-7487-4F8F-AC4F-EFDD8B5CFACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9853CE99-7487-4F8F-AC4F-EFDD8B5CFACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9853CE99-7487-4F8F-AC4F-EFDD8B5CFACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9853CE99-7487-4F8F-AC4F-EFDD8B5CFACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A21F22E-ED52-4B1D-8088-DC676A7D778D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A21F22E-ED52-4B1D-8088-DC676A7D778D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A21F22E-ED52-4B1D-8088-DC676A7D778D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A21F22E-ED52-4B1D-8088-DC676A7D778D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FEDC113-4399-4700-ACA3-F23A930A9160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FEDC113-4399-4700-ACA3-F23A930A9160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FEDC113-4399-4700-ACA3-F23A930A9160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FEDC113-4399-4700-ACA3-F23A930A9160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C468D4-A233-4EEB-951F-A9399702A551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C468D4-A233-4EEB-951F-A9399702A551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C468D4-A233-4EEB-951F-A9399702A551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C468D4-A233-4EEB-951F-A9399702A551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E32087-1DCF-4B32-A096-F4BD4C22EF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E32087-1DCF-4B32-A096-F4BD4C22EF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E32087-1DCF-4B32-A096-F4BD4C22EF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E32087-1DCF-4B32-A096-F4BD4C22EF2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE46892A-5843-48BA-BDC9-511384117A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE46892A-5843-48BA-BDC9-511384117A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE46892A-5843-48BA-BDC9-511384117A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE46892A-5843-48BA-BDC9-511384117A73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7565273E-5EB9-4BAB-9665-44372F03928B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7565273E-5EB9-4BAB-9665-44372F03928B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7565273E-5EB9-4BAB-9665-44372F03928B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7565273E-5EB9-4BAB-9665-44372F03928B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- This file detects the PostSharp installation directory according to
+       deployment properties. It defines the PostSharpTargets property pointing
+       to the target file that should actually be imported after importing the
+       compiler.        -->
+
+  <!-- Use a special target file when we are in source tree -->
+  <Import Project="PostSharp-Samples-Src.targets" Condition="''!=''" />
+
+  <!-- When we are in a distribution, targets should be in the parent directory. -->
+  <Import Project="..\PostSharp.targets"  Condition="'$(PostSharp20Imported)'!='True' AND '$(OS)'=='Windows_NT'" />
+  <Import Project="..\PostSharp.XBuild.targets"  Condition="'$(PostSharp20Imported)'!='True' AND '$(OS)'!='Windows_NT'" />
+
+  
+</Project>

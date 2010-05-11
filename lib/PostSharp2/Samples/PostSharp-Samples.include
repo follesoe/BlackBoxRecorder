@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project>
+
+
+  <!-- Default values of properties -->
+  <property name="projectName" value="${path::get-file-name-without-extension( project::get-buildfile-uri())}"/>
+  <property name="assemblyName" value="${projectName}" overwrite="false"/>
+  <property name="configuration" value="Release" overwrite="false" />
+  <property name="dotNetPostsharp" value="false" overwrite="false"/>
+  <property name="excludeSource" value="do_not_exclude_anything" overwrite="false"/>
+  <property name="outputDir" value="bin/${nant.settings.currentframework}/${configuration}" overwrite="false"/>
+  <property name="intermediateDir" value="obj/${nant.settings.currentframework}/${configuration}" overwrite="false"/>
+  <property name="postsharpSearchPath" value="" overwrite="false"/>
+  <property name="postsharpPlatform" value="2.0-x86-cil" overwrite="false"/>
+
+ <property name="postsharpDir" value="${samplesDir}/../${configuration}"/>
+
+  <if test="${configuration=='Debug'}">
+    <property name="optimize" value="false"/>
+    <property name="debug" value="true"/>
+    <property name="defineSymbols" value="TRACE;ASSERT" />
+
+  </if>
+
+  <if test="${configuration=='Release'}">
+    <property name="optimize" value="true"/>
+    <property name="debug" value="false"/>
+    <property name="defineSymbols" value="" />
+  </if>
+
+  <if test="${configuration=='Diag'}">
+    <property name="optimize" value="true"/>
+    <property name="debug" value="false"/>
+    <property name="defineSymbols" value="TRACE;ASSERT" />
+  </if>
+
+  <if test="${dotNetPostsharp}">
+    <property name="buildPostsharpDisabled" value="true"/>
+  </if>
+
+  <property name="mono" value="${nant.settings.currentframework=='mono-2.0'}"/>
+  <property name="requirements" value="" overwrite="false"/>
+
+  <if test="${mono}">
+    <property name="defineSymbols" value="${defineSymbols};MONO"/>
+  </if>
+
+  <!-- Common targets -->
+  <target name="mkdir">
+    <mkdir dir="${outputDir}"/>
+    <mkdir dir="${intermediateDir}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${outputDir}"/>
+    <delete dir="${intermediateDir}"/>
+  </target>
+
+  <target name="clean-all" depends="clean">
+    <property name="build-target" value="clean"/>
+    <call target="call-dependencies"/>
+  </target>
+
+  <target name="rebuild-all" depends="clean-all">
+    <property name="build-target" value="_build" overwrite="false"/>
+    <call target="_build"/>
+  </target>
+
+  <target name="_rebuild" depends="clean">
+    <call target="_build"/>
+  </target>
+
+  <target name="rebuild" depends="clean">
+    <property name="build-target" value="_build"/>
+    <call target="_build"/>
+  </target>
+
+  <target name="build">
+    <property name="build-target" value="_build" overwrite="false"/>
+    <call target="${build-target}"/>
+  </target>
+
+
+  <!-- 
+  
+  Required properties:
+  
+    target
+    projectName
+    rootNamespace
+    delaysign
+  
+  Required sets:
+  
+    references
+    dependencies
+    outputfiles
+  
+  -->
+
+  <target name="call-dependencies">
+    <foreach item="File" property="dependency">
+      <in>
+        <items refid="dependencies"/>
+      </in>
+      <do>
+        <nant buildfile="${dependency}" inheritall="false">
+          <properties>
+            <property name="configuration" value="${configuration}"/>
+            <property name="build-target" value="${build-target}" />
+          </properties>
+        </nant>
+      </do>
+    </foreach>
+  </target>
+
+
+  <target name="standard-build" depends="mkdir">
+
+    <property name="build-target" value="_build"/>
+    <call target="call-dependencies"/>
+
+    <echo message="Now building project ${project::get-buildfile-uri()}."/>
+
+    <property name="rootNamespace" value="${projectName}" overwrite="false"/>
+    <property name="unsafe" value="false" overwrite="false"/>
+    <property name="target" value="library" overwrite="false"/>
+    <property name="extension" value=".dll" if="${target=='library'}"/>
+    <property name="extension" value=".exe" if="${target=='exe'}"/>
+    <property name="delaysign" value="false" overwrite="false"/>
+    <property name="keyfile" value="" overwrite="false"/>
+    <property name="postsharp" value="false" overwrite="false"/>
+
+
+    <!-- Copy outputs of dependencies -->
+    <foreach item="File" property="dependency">
+      <in>
+        <items refid="dependencies"/>
+      </in>
+      <do>
+        <echo message="Copying dependencies from ${path::get-directory-name(dependency)}/${outputDir} to ${intermediateDir}"/>
+        <copy todir="${intermediateDir}" flatten="true">
+          <fileset>
+            <include name="${path::get-directory-name(dependency)}/${intermediateDir}/*.*"/>
+          </fileset>
+        </copy>
+      </do>
+    </foreach>
+
+    <copy todir="${outputDir}" flatten="true">
+      <fileset>
+        <include name="${intermediateDir}/*.*"/>
+      </fileset>
+    </copy>
+
+    <!-- Build a file with the list of references -->
+    <delete file="${intermediateDir}/references.txt"/>
+    <echo message="Building the dependency file..."/>
+    <foreach item="String" property="reference" in="${references}" delim=";">
+      <do>
+        <echo message="Dependency: ${reference}"/>
+        <echo message="${reference}" file="${intermediateDir}/references.txt" append="true"/>
+      </do>
+    </foreach>
+    <foreach item="File" property="reference">
+      <in>
+        <items>
+          <include name="${intermediateDir}/*.dll"/>
+        </items>
+      </in>
+      <do>
+        <if test="${path::get-file-name-without-extension(reference)!=assemblyName}">
+          <echo message="Dependency: ${reference}"/>
+          <echo message="${reference}" file="${intermediateDir}/references.txt" append="true"/>
+        </if>
+      </do>
+    </foreach>
+    <echo message="" file="${intermediateDir}/references.txt"  append="true"/>
+
+    <!-- Compile -->
+    <csc target="${target}"
+         output="${intermediateDir}/${assemblyName}${extension}"
+         unsafe="${unsafe}"
+         define="${defineSymbols}"
+         debug="${debug}"
+         optimize="${optimize}"
+           >
+      <sources>
+        <include name="./**/*.cs"/>
+        <exclude name="${excludeSource}"/>
+      </sources>
+      <references>
+        <includesfile name="${intermediateDir}/references.txt"/>
+      </references>
+      <resources dynamicprefix="true" prefix="${rootNamespace}">
+        <include name="./**/*.resx"/>
+      </resources>
+      <arg value="-delaysign+" if="${delaysign}"/>
+      <arg value="-keyfile:${keyfile}" if="${keyfile!=''}"/>
+    </csc>
+
+    <copy todir="${outputDir}" flatten="true">
+      <fileset refid="outputfiles"/>
+    </copy>
+
+    <!-- Invoke PostSharp. -->
+    <if test="${postsharp}">
+      <loadtasks assembly="${postsharpDir}/PostSharp.NAntTasks.dll"/>
+
+      <postsharp input="${intermediateDir}/${assemblyName}${extension}"
+              project="${postsharpDir}/Default.psproj"
+              platform="${postsharpPlatform}"
+              properties="
+                  Output=${outputDir}/${assemblyName}${extension};
+                  ReferenceDirectory=.;
+ 	          Configuration=${configuration};
+   	          SearchPath=${intermediateDir},${postsharpSearchPath};
+	          IntermediateDirectory=${intermediateDir}/postsharp;
+	          CleanIntermediate=false;
+                  SignAssembly=${delaysign};
+                  PrivateKeyLocation=${keyfile};"
+	      />
+    </if>
+    <if test="${not postsharp}">
+      <copy file="${intermediateDir}/${assemblyName}${extension}"
+            tofile="${outputDir}/${assemblyName}${extension}"/>
+    </if>
+  </target>
+
+</project>

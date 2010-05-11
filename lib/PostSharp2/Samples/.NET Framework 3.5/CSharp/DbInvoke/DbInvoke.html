@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+
+
+  
+  
+  
+  <title>DB-Invoke Sample</title>
+  <link rel="stylesheet" type="text/css" href="../UserGuide.css">
+</head>
+
+
+<body>
+
+
+
+<h1>DB-Invoke Sample</h1>
+<span class="openfloat"><a href="PostSharp.Samples.DbInvoke.sln"><img src="../vs.png" border="0" alt="">Open this sample in Visual Studio</a> </span>
+
+
+<p>The <code>PostSharp.Samples.DbInvoke</code>
+project demonstrates the
+use of PostSharp Laos to implement a custom attribute that "imports"
+database stored procedures just like P-Invoke "imports" unmanaged
+APIes. It is not a production-grade solution but rather an inspiring
+proof of concept.</p>
+
+<p>Here is a usage example:</p>
+
+<pre>[DbInvoke("ConnectionString")]<br>internal static class DataLayer<br>{<br>#pragma warning disable 626<br>    extern static public void CreateCustomer(string customerName, out int customerId);<br>    extern static public void ModifyCustomer(int customerId, string customerName);<br>    extern static public void DeleteCustomer(int customerId);<br>    extern static public void ReadCustomer(int customerId, out string customerName);<br>#pragma warning restore 626<br>}</pre>
+
+<p>The connection string should be configured in the application configuration file in the <code>connectionString</code>
+sections. The pragma directive disables the warning that these external
+methods have no custom attribute on it (since the C# compiler is not
+aware of custom attribute multicasting).</p>
+
+<h2>Prerequisites</h2>
+
+<p>In order to execute this sample project, you need an MS SQL Database and the right to create objects. Execute the<code> CreateDatabaseObjects.sql</code> file in the C# project <code>PostSharp.Samples.DbInvoke.Test</code>. Then adapt the connection string in the file <code>app.config</code> so that it fits your settings.</p>
+
+<h2>Implementation</h2>
+
+<h3>Overview</h3>
+
+<p>The concept is really simple: we develop a custom attribute <code>DbInvokeAttribute</code> derived from <code>ImplementMethodAspect</code>, and its <code>OnExecution</code> method will be invoked whenever the method to which it is applied (the <i>external</i> method) is invoked.</p>
+
+<p>In the event arguments passed to the <code>OnExecution</code>
+method, we got information about the invoked method and the parameters
+it received. We simply call a stored procedure named exactly as the
+invoked method, and we pass the parameters. The only difficulty is to
+change the type of these parameters to database ones, but it is more an
+implementation issue than a conceptual one.</p>
+
+<p>In order to get a database connection, we use the Database Provider Factory facility from .NET 2.0.</p>
+
+<h3>Runtime Initialization</h3>
+
+When the aspect is initialized at runtime, we get the connection string and the <code>DbProviderFactory</code>
+from the application configuration file, and we store them as instance
+fields. Since these fields are not used at compile time, we mark them
+as non serialized.<br>
+
+<pre>[NonSerialized]<br>DbProviderFactory dbProviderFactory;<br><br>[NonSerialized]<br>string connectionString;<br><br>public override void RuntimeInitialize(MethodBase method)<br>{<br>    ConnectionStringSettings connectionStringSettings =<br>        ConfigurationManager.ConnectionStrings[this.connectionStringKey];<br><br>    this.dbProviderFactory = DbProviderFactories.GetFactory(
+                                connectionStringSettings.ProviderName);<br>    this.connectionString = connectionStringSettings.ConnectionString;<br>}<br></pre>
+
+<h3>Type Mapping</h3>
+
+<p>Since we do not want to bind ourself to a specific ADO.NET provider, we will use the types defined in <code>System.Data.DbType</code> and we need additionally to specify the proper size and scale of data types.</p>
+
+<p>In order to solve this problem, we use the classes <code>DbTypeMapping</code> and <code>DbCompactType</code>
+that we adapted from another project of us. They are not really
+interesting for our discussion of PostSharp but are necessary to solve
+the current sample. Basically, the method <code>DbTypeMapping.GetPreferredMapping</code> maps a .NET <code>Type</code> to the preferred database type. A complete description of the implementation is out of scope and is anyway relatively simple.</p>
+
+<h3>Invoking the Stored Procedure</h3>
+
+<p>The implementation of the <code>OnExecution</code> method is not very exciting (but I believe you get really productive while you get bored).&nbsp;</p>
+
+<pre>public override void OnExecution(MethodExecutionEventArgs eventArgs)<br>{<br>}</pre>
+
+<p>The first thing is to get a connection (<code>DbConnection</code>) from the factory (<code>DbProviderFactory</code>) that we initialized in the <code>RuntimeInitialize</code> method. Then we can create a new command (<code>DbCommand</code>).</p>
+
+<pre>// Get a connection.<br>DbConnection connection = dbProviderFactory.CreateConnection();<br>connection.ConnectionString = this.connectionString;<br><br>// Get a command and set it up.<br>DbCommand command = connection.CreateCommand();<br></pre>
+
+<p>For the sake of simplicity, we chose to constraint the name of the
+procedure to be strictly equal to the name of the external method.
+Other rules may of course be implemented.</p>
+
+<pre>command.CommandText = eventArgs.Method.Name;<br>command.CommandType = CommandType.StoredProcedure;</pre>
+
+<p>Then, for each parameter of this method, we create a database
+parameter (DbParameter) of the proper type and we assign it (unless the
+parameter is <i>out</i>).</p>
+
+<pre>ParameterInfo[] methodParameters = eventArgs.Method.GetParameters();<br>for ( int i = 0; i &lt; methodParameters.Length; i++ )<br>{<br>    ParameterInfo methodParameter = methodParameters[i];<br><br>    // If the parameter is ByRef, get the element type.<br>    Type parameterType = methodParameter.ParameterType;<br>    if (parameterType.IsByRef)<br>        parameterType = parameterType.GetElementType();<br><br>    // Create and set up the parameter.<br>    DbParameter commandParameter = dbProviderFactory.CreateParameter();<br>    commandParameter.ParameterName = methodParameter.Name;<br>    commandParameter.Direction = methodParameter.IsIn &amp;&amp; methodParameter.IsOut ? 
+        ParameterDirection.InputOutput :<br>        methodParameter.IsOut ? ParameterDirection.Output : ParameterDirection.Input;<br>    DbCompactType dbType = DbTypeMapping.GetPreferredMapping(parameterType).DbCompactType;<br>    commandParameter.DbType = dbType.DbType;<br>    commandParameter.Size = dbType.Size == DbTypeMapping.FreeSize ? 1000 : dbType.Size;<br><br>    // If the parameter is input, set its value.<br>    if (methodParameter.IsIn || methodParameter.Attributes == ParameterAttributes.None)<br>    {<br>        commandParameter.Value = arguments[i];<br><br>    }<br><br>    // Finally add the parameter to the command.<br>    command.Parameters.Add(commandParameter);<br>   <br>} </pre>
+
+<p>We execute the stored procedure.</p>
+
+<pre>command.ExecuteNonQuery();</pre>
+
+And finally we write back output parameters:<br>
+
+<pre>// Write back the output parameters.<br>for (int i = 0; i &lt; methodParameters.Length; i++)<br>{<br>    ParameterInfo methodParameter = methodParameters[i];<br>    if (methodParameter.IsOut)<br>    {<br>        arguments[i] = Convert.ChangeType(
+                            command.Parameters[i].Value, 
+                            methodParameter.ParameterType.GetElementType());<br>    }<br>}<br></pre>
+
+<p>For the consolidated code of the <code>OnExecution</code> method, please refer to the sample source code for the complete implementation.</p>
+
+<h3>Compile-time validation</h3>
+
+<p>It is always preferable to detect errors as soon as possible. That's
+why every aspect should validate its usage at compile time. This is
+done by implementing the <code>CompileTimeValidate</code> method.</p>
+
+<p>We have to check that:</p>
+
+<ul>
+
+  <li>The target method is not a constructor.</li>
+
+  <li>The target method&nbsp;return type is <code>void</code>.</li>
+
+  <li>All its parameters can be mapped to a database type.</li>
+
+</ul>
+
+<p>In order to achieve this, we use the standard <code>System.Reflection</code> API. The only difference is that our code is executed at compilation time.</p>
+
+<pre>public override bool CompileTimeValidate(MethodBase method)<br>{<br>    bool hasError = false;<br><br>    // Cannot be a constructor.<br>    MethodInfo methodInfo = method as MethodInfo;<br>    if (methodInfo == null)<br>    {<br>        DbInvokeMessageSource.Instance.Write(SeverityType.Error, "DBI0001", <br>            new object[] { method.DeclaringType.FullName } );<br>        return false;<br>    }<br><br>    // Should have void return type.<br>    if ( methodInfo.ReturnType != typeof(void) )<br>    {<br>        DbInvokeMessageSource.Instance.Write(SeverityType.Error, "DBI0002", <br>            new object[] { method.ToString() });<br>        hasError = true;<br>    }<br><br>    // All parameters should be mappable.<br>    foreach (ParameterInfo parameter in methodInfo.GetParameters())<br>    {<br>        Type parameterType = parameter.ParameterType;<br>        if (parameterType.IsByRef) parameterType = parameterType.GetElementType();<br><br>        if (DbTypeMapping.GetPreferredMapping(parameterType) == null)<br>        {<br>            DbInvokeMessageSource.Instance.Write(SeverityType.Error, "DBI0003", <br>                new object[] { method.ToString(), 
+                               parameter.ParameterType.FullName, 
+                               parameter.Name });<br>            hasError = true;<br>        }<br>    }<br><br>    return !hasError;   <br>}</pre>
+
+
+
+</body>
+</html>

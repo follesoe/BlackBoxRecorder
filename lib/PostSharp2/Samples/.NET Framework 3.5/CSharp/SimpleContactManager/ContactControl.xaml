@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="ContactManager.ContactControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="238" Width="300" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:ContactManager="clr-namespace:ContactManager" xmlns:Entities="clr-namespace:ContactManager.Entities">
+	<UserControl.Resources>
+		<ContactManager:CountryIdToPositionConverter x:Key="CountryIdToPositionConverter"/>
+		<ObjectDataProvider x:Key="CountrySourceDS" d:IsDataSource="True" ObjectType="{x:Type ContactManager:CountrySource}"/>
+	</UserControl.Resources>
+	<UserControl.Background>
+		<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
+	</UserControl.Background>
+	<UserControl.DataContext>
+		<Entities:Contact 
+            FirstName="Bill" 
+            LastName="Gates"
+            Company="Microsoft"
+            Position="Retired"
+            AddressLine1="Microsoft Way 1"
+            Zip="12345"
+            Town="Redmont"
+            CountryId="1"
+            />
+	</UserControl.DataContext>
+    <Grid>
+            
+    	<Label HorizontalAlignment="Left" Margin="12,8,0,0" VerticalAlignment="Top" Width="69" Height="24" Content="First Name"/>
+            
+    	<Label HorizontalAlignment="Left" Margin="12,31.277,0,0" VerticalAlignment="Top" Width="69" Height="24" Content="Last Name"/>
+            
+    	<Label HorizontalAlignment="Left" Margin="12,54.554,0,0" VerticalAlignment="Top" Width="69" Height="24" Content="Company"/>
+            
+    	<Label HorizontalAlignment="Left" Margin="12,80.554,0,0" VerticalAlignment="Top" Width="69" Height="24" Content="Position"/>
+            
+    	<Label HorizontalAlignment="Left" Margin="12,103.831,0,110.169" Width="69" Content="Address "/>
+
+        <TextBox Margin="81,12.723,8,0" VerticalAlignment="Top" TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="FirstName">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Margin="81,36,8,0" VerticalAlignment="Top" TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="LastName">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Margin="81,59.277,8,0" VerticalAlignment="Top" TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="Company">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Margin="81,82.554,8,0" VerticalAlignment="Top"  TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="Position">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+            <TextBox Margin="81,105.831,8,112.892" Text="{Binding Path=AddressLine1}" TextWrapping="Wrap" d:LayoutOverrides="Height"/>
+    	<TextBox Margin="81,0,8,89.615" Text="{Binding Path=AddressLine2}" TextWrapping="Wrap" VerticalAlignment="Bottom" d:LayoutOverrides="Height"/>
+    	<Label HorizontalAlignment="Left" Margin="12,0,0,61.615" Width="69" Content="Town" VerticalAlignment="Bottom" Height="24"/>
+
+        <TextBox Margin="81,0,0,66.339"  TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="59" d:LayoutOverrides="Height">
+            <TextBox.Text>
+                <Binding Path="Zip">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+            <TextBox Margin="144,0,8,66.339" Text="{Binding Path=Town}" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+    	<Label HorizontalAlignment="Left" Margin="12,0,0,33.615" Width="69" Content="Country" VerticalAlignment="Bottom" Height="24"/>
+            
+    	<ComboBox IsSynchronizedWithCurrentItem="True" Margin="81,0,8,41.062" VerticalAlignment="Bottom" SelectedIndex="{Binding Path=CountryId, Converter={StaticResource CountryIdToPositionConverter}, Mode=Default}" ItemsSource="{Binding Mode=OneWay, Source={StaticResource CountrySourceDS}}"/>
+        <Button Height="23" HorizontalAlignment="Left" Margin="70,0,0,4" Name="okButton" VerticalAlignment="Bottom" Width="75" Click="OnApplyClick">Apply</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,73,4" Name="deleteButton" VerticalAlignment="Bottom" Width="75" Click="OnDeleteClick">Delete</Button>
+    </Grid>
+</UserControl>

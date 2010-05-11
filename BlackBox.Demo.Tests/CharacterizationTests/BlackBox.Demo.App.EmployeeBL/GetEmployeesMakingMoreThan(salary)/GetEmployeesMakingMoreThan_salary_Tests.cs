@@ -1,3 +1,4 @@
+using BlackBox.Demo.App.SimpleAnemic;
 using BlackBox.Testing;
 using Xunit;
 
@@ -9,20 +10,20 @@ namespace CharacterizationTests
 
 		private System.Double salaryOutput;
 
-		private System.Collections.Generic.List<BlackBox.Demo.App.EmployeeEntity> expected;
-		private System.Collections.Generic.List<BlackBox.Demo.App.EmployeeEntity> actual;
-		private BlackBox.Demo.App.EmployeeBL target;
+		private System.Collections.Generic.List<EmployeeEntity> expected;
+		private System.Collections.Generic.List<EmployeeEntity> actual;
+		private EmployeeBL target;
 
 		private void Run(string filename)
 		{
 			LoadRecording(filename);
-			target = new BlackBox.Demo.App.EmployeeBL();
+			target = new EmployeeBL();
 
 			salaryInput = (System.Double)GetInputParameterValue("salary");
 
 			salaryOutput = (System.Double)GetOutputParameterValue("salary");
 
-			expected = (System.Collections.Generic.List<BlackBox.Demo.App.EmployeeEntity>)GetReturnValue();
+			expected = (System.Collections.Generic.List<EmployeeEntity>)GetReturnValue();
 			actual = target.GetEmployeesMakingMoreThan(salaryInput);
 
 			CompareObjects(salaryInput, salaryOutput);
@@ -39,7 +40,8 @@ namespace CharacterizationTests
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary.xml");
 		}
-		[Fact]
+
+		[Fact]
 		public void GetEmployeesMakingMoreThan_salary_2()
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary_2.xml");

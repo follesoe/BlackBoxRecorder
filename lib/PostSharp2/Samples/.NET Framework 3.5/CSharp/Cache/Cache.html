@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+
+
+  
+  
+  
+  <title>Cache Custom Attribute Sample</title>
+  <link rel="stylesheet" type="text/css" href="../UserGuide.css">
+</head>
+
+
+<body>
+
+
+
+<h1>Declarative Transactions Sample</h1>
+
+<span class="openfloat"><a href="PostSharp.Samples.Transactions.sln"><img src="../vs.png" border="0" alt="">Open this sample in Visual Studio</a> </span>
+
+
+<p>The <code>PostSharp.Samples.Cache</code> project demonstrates
+the use of PostSharp Laos to author a custom attribute that
+caches the results of the method to which it is applied. It supposes
+that the method is deterministic on its parameters, that is, it will
+always return the same value when the same parameters are provided.</p>
+
+<p> Like most of samples, it is rather a
+proof-of-concept than a production-ready implementation.&nbsp;</p>
+
+
+
+<p>This sample is written in Visual J#.</p>
+
+
+
+<h2>Implementation</h2>
+
+<p>Implementing caching may be very easy. Basically, we check the cache
+state before executing the method, return immediately if the value is
+already present in the cache, or continue with method execution
+otherwise. At the end of the method, we store the item in the cache.</p>
+
+<p>In order to add some logic at the beginning and at the end of methods, we can use the <code>OnMethodBoundary</code> aspect. Since we want our aspect to be usable as a custom attribute, we will derive the <code>OnMethodBoundaryAspect</code> class. We will override the <code>OnEntry</code> and <code>OnSuccess</code> methods.</p>
+
+<pre>/*  @attribute Serializable()  <br> *  @attribute AttributeUsage( AttributeTargets.Method ) */<br>public final class CacheAttribute extends OnMethodBoundaryAspect<br>{<br><br>   public void OnEntry(MethodExecutionEventArgs eventArgs)<br>   {<br>   }<br><br>   public void OnSuccess(MethodExecutionEventArgs eventArgs)<br>   {<br>   }<br>	<br>}</pre>
+
+<h3>The Cache Backend</h3>
+
+<p>We have to cache the method return value somewhere. In this sample,
+for simplicity, we chose a dictionary. It is of course possible to use
+cache implementation.</p>
+
+<pre>static Dictionary&lt;string,Object&gt; cache;</pre>
+
+<h3>The Cache Key</h3>
+
+<p>At method entry, we compute a cache key from
+the method name and the given parameters. This cache key uniquely
+identifies the piece of information provided by this method. In this
+sample, we chose to use a string composed of the method name and the
+string representation of its parameters (using the <code>ToString</code> method).&nbsp;</p>
+
+<p> Other approaches, like relying on <code>GetHashCode</code> and <code>Equal</code>, are of course possible.</p>
+
+<p>But let's continue with a string representation. We use a helper class named <code>Formatter</code>
+to compute formatting strings that represent methods. This formatting
+string represents placeholders for parameters and type parameters. Note
+that the formatting string in itself does not vary at runtime and is
+relatively expensive to compose. This is a good reason to compose it at
+compile-time and to serialize it into the aspect instance, so that it
+doesn't have to be computed again at runtime.</p>
+
+<p>The formatting string and its runtime logic are encapsulated in a class named <code>MethodFormatStrings</code>. For the implementation of <code>MethodFormatStrings</code> and <code>Formatter</code>, which is quite uninteresting, please refer to the source code.</p>
+
+<pre>MethodFormatStrings formatStrings;<br><br>public void CompileTimeInitialize(MethodBase method)<br>{<br>  this.formatStrings = Formatter.GetMethodFormatStrings(method);<br>}</pre>
+
+<h3>Cache Lookup</h3>
+
+<p>In order to implement caching on an existing method, we should
+first, at method entry, look in the cache whether an item with the
+computed cache key already exists. If yes, we can return immediately
+this value. We set to properties of the aspect event arguments: <code>ReturnValue</code>, obviously, to the value found in cache, and <code>FlowBehavior</code> to <code>Return</code>.</p>
+
+<p>Otherwise, we should continue the method execution. Since we will
+need the cache key on method exit as well (when we will store the
+method value in cache), we will store it in the <code>MethodExecutionTag</code>. It is a property of the aspect event arguments whose value is preserved across methods <code>OnEntry</code>, <code>OnExit</code>, <code>OnSuccess</code> and <code>OnException</code>.</p>
+
+<pre>public void OnEntry(MethodExecutionEventArgs eventArgs)<br>{<br>  // Compose the cache key.<br>  string key = this.formatStrings.Format(<br>    eventArgs.get_Instance(), eventArgs.get_Method(), eventArgs.GetArguments());<br><br>  // Test whether the cache contains the current method call.<br>  if (!cache.ContainsKey(key))<br>  {<br>    // If not, we will continue the execution as normally.<br>    // We store the key in a state variable to have it in the OnExit method.<br>    eventArgs.set_MethodExecutionTag(key);<br>  }<br>  else<br>  {<br>    // If it is in cache, we set the cached value as the return value<br>    // and we force the method to return immediately.<br>    eventArgs.set_ReturnValue(cache.get_Item(key));<br>    eventArgs.set_FlowBehavior(FlowBehavior.Return);<br>  }<br>}</pre>
+
+<h3>Cache Storage</h3>
+
+<p>If want to store the method return value in cache, we have to implement the <code>OnSuccess</code> method of <code>OnMethodBoundaryAspect</code>. As its name indicates, this method is invoked only when the aspected method is successful.</p>
+
+<p>We retrieve the cache key from the <code>MethodExecutionTag</code> of the aspect event arguments, where we have stored in in the <code>OnEntry</code> method.</p>
+
+<pre>public void OnSuccess(MethodExecutionEventArgs eventArgs)<br>{<br>	// Retrieve the key that has been computed in OnEntry.<br>	string key = (string)eventArgs.get_MethodExecutionTag();<br><br>	// Put the return value in the cache.<br>	cache.set_Item(key, eventArgs.get_ReturnValue());<br>}</pre>
+
+<h3>Validation of the custom attribute usage</h3>
+
+<p>There is still one important thing to do: validate, at compile-time,
+that our Cache custom attribute has been applied to a method where it
+makes sense.</p>
+
+<p>Clearly, it does <i>not</i> make sense to apply this custom attribute to constructors or to methods whose return type is <code>void</code>. Additionally, note that we do not support parameters passed by reference (<code>out</code> or <code>ref</code> in C#). It is not a limitation of PostSharp Laos but just a consequence of our laziness in this example.</p>
+
+<p>Compile-time validation is performed by the <code>CompileTimeValidate</code> method. In order to emit error messages, we have to create a resource file containing error messages and create an instance of <code>MessageSource</code>.</p>
+
+<pre>public bool CompileTimeValidate(MethodBase method)<br>{<br>  // Don't apply to constructors.<br>  if (method instanceof ConstructorInfo)<br>  {<br>    CacheMessageSource.Instance.Write(SeverityType.Error, "CX0001", null);<br>    return false;<br>  }<br><br>  MethodInfo methodInfo = (MethodInfo)method;<br><br>  // Don't apply to void methods.<br>  if (methodInfo.get_ReturnType().get_Name() == "Void")<br>  {<br>    CacheMessageSource.Instance.Write(SeverityType.Error, "CX0002", null);<br>    return false;<br>  }<br><br>  // Does not support out parameters.<br>  ParameterInfo[] parameters = method.GetParameters();<br>  for (int i = 0; i &lt; parameters.length; i++)<br>  {<br>    if (parameters[i].get_IsOut())<br>    {<br>      CacheMessageSource.Instance.Write(SeverityType.Error, "CX0003", null);<br>      return false;<br>    }<br>  }<br><br>  return true;<br>}</pre>
+
+<h2>Using the Cache custom attribute</h2>
+
+Now we can create a small program that demonstrates our Cache custom attribute. <br>
+
+<pre>public class Program<br>{<br>  public static void main(string[] args)<br>  {<br>    System.out.println("1 -&gt;" + GetDifficultResult(1));<br>    System.out.println("2 -&gt;" + GetDifficultResult(2));<br>    System.out.println("1 -&gt;" + GetDifficultResult(1));<br>    System.out.println("2 -&gt;" + GetDifficultResult(2));<br>  }<br><br>  /** @attribute Cache()  **/<br>  static int GetDifficultResult(int arg)<br>  {<br>    // If the following text is printed, the method was not cached.<br>    System.out.println("Some difficult work!");<br>    return arg;<br>  }<br>}</pre>
+
+Note that the "Some difficult work" text is printed only the first time that the method is called with that argument.
+<p></p>
+
+
+
+</body>
+</html>

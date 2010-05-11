@@ -1,0 +1,33 @@
+﻿<Window x:Class="ContactManager.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Contact Manager" Height="402" Width="615">
+    <DockPanel LastChildFill="False">
+        <ToolBarTray DockPanel.Dock="Top">
+	<ToolBar>
+                <Button Click="OnAddContactClick" ToolTip="Add Contact" >
+                    <Image Source="Resources/NewCardHS.png" Width="16" Height="16"/>
+                </Button>
+        <Button Click="OnUndoClick" ToolTip="Undo">
+            <Image Source="Resources/Edit_UndoHS.png" Width="16" Height="16"/>
+        </Button>
+        <Button Click="OnRedoClick" ToolTip="Redo">
+            <Image Source="Resources/Edit_RedoHS.png" Width="16" Height="16"/>
+        </Button>
+              <Button Click="OnRefreshClick" ToolTip="Refresh">
+              <Image Source="Resources/RefreshDocViewHS.png" Width="16" Height="16"/>
+              </Button>
+        <Button Click="OnRepopulateClick" ToolTip="Repopulate">
+            
+            <Image Source="Resources/SychronizeListHS.png" Width="16" Height="16"/>
+        </Button>
+        </ToolBar>
+            </ToolBarTray>
+        <StatusBar DockPanel.Dock="Bottom" Height="25" >
+            <StatusBarItem x:Name="pendingOperationStatusBarItem"  HorizontalAlignment="Right" Margin="0 0 5 0">Ready</StatusBarItem>
+        </StatusBar>
+        <ListBox Name="contactListBox" Width="188" SelectionChanged="ContactListBox_OnSelectionChanged" DockPanel.Dock="Left" DisplayMemberPath="DisplayName" />
+        <StackPanel Name="detailPanel"/>
+      
+    </DockPanel>
+</Window>

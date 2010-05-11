@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="ContactManager.ContactControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="201" Width="330" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:ContactManager="clr-namespace:ContactManager" xmlns:Entities="clr-namespace:ContactManager.Entities">
+	<UserControl.Resources>
+		<ContactManager:CountryIdToPositionConverter x:Key="CountryIdToPositionConverter"/>
+		<ObjectDataProvider x:Key="CountrySourceDS" d:IsDataSource="True" ObjectType="{x:Type ContactManager:CountrySource}"/>
+	</UserControl.Resources>
+	<UserControl.Background>
+		<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
+	</UserControl.Background>
+	<UserControl.DataContext>
+		<Entities:Contact 
+            FirstName="Bill" 
+            LastName="Gates"
+            />
+	</UserControl.DataContext>
+    <Grid Height="202" Width="315">
+            
+    	<Label HorizontalAlignment="Left" Margin="12,8,0,0" VerticalAlignment="Top" Width="69" Height="24" Content="First Name"/>
+            
+    	<Label HorizontalAlignment="Left" Margin="12,31.277,0,0" VerticalAlignment="Top" Width="69" Height="24" Content="Last Name"/>
+        <TextBox Margin="81,12.723,8,0" VerticalAlignment="Top" TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="FirstName">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Margin="81,36,8,0" VerticalAlignment="Top" TextWrapping="Wrap">
+            <TextBox.Text>
+                <Binding Path="LastName">
+                    <Binding.ValidationRules>
+                        <ExceptionValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Label HorizontalAlignment="Left" Margin="24,61,0,0" Width="51" Content="Country" VerticalAlignment="Top" Height="24"/>
+            
+    	<ComboBox IsSynchronizedWithCurrentItem="True" Margin="81,64,8,0" VerticalAlignment="Top" SelectedIndex="{Binding Path=CountryId, Converter={StaticResource CountryIdToPositionConverter}, Mode=Default}" ItemsSource="{Binding Mode=OneWay, Source={StaticResource CountrySourceDS}}" DisplayMemberPath="Name" Height="21.96" />
+        <Button HorizontalAlignment="Right" Margin="0,0,91,12" Name="okButton" Width="75" Click="OnApplyClick" Height="22" VerticalAlignment="Bottom">Apply</Button>
+        <Button Margin="0,0,10,12" Name="deleteButton" Click="OnDeleteClick" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75">Delete</Button>
+        <Label HorizontalAlignment="Left" Margin="29,99,0,79" Width="46">Status</Label>
+        <Label HorizontalAlignment="Left" Margin="81,99,0,79" Width="66" Content="{Binding Path=EntityStatus}"></Label>
+       
+    </Grid>
+</UserControl>

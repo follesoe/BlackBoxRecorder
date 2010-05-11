@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252">
+
+
+  
+
+
+  
+  
+  
+  <title>PostSharp Explorer Sample</title>
+  <link rel="stylesheet" type="text/css" href="../UserGuide.css">
+</head>
+
+
+<body dir="ltr" lang="en-US">
+
+
+
+<h1>PostSharp Explorer Sample</h1>
+<span class="openfloat"><a href="PostSharp.Samples.Explorer.sln"><img src="../vs.png" border="0" alt="">Open this sample in Visual Studio</a> </span>
+
+
+<p>The <code>PostSharp.Samples.Explorer</code>
+project is a WinForms application that allows
+to browse a .NET assembly. The concept is very similar to ildasm, Lutz
+Roeder's
+Reflector or Visual Studio Object Browser, but it is based on the
+PostSharp
+Class Library and does not have the ambition to compete with the
+mentioned
+tools.</p>
+
+
+
+<p>This project demonstrates the techniques of opening an
+assembly and browsing
+its content. When an element is selected, its properties are displayed
+in a Property Grid. Alternatively, the MSIL code can be visualized.</p>
+
+
+
+
+
+<p align="center"><img alt="Screenshot of PostSharp Explorer" src="explorer.png" height="473" width="681"></p>
+
+<h2>Concepts</h2>
+
+<p>The design of this application is very simple. The module is very
+classically represented as a tree. The tree uses a distributed design,
+i.e. the behaviors (like select, expand, click, double click, ...) are
+delegated to the nodes. Nodes should derive from the <code>AutonomousTreeNode</code>
+class (automous because they should implement their own behavior).
+Every declaration in the module is associated to a tree node.</p>
+
+<p>The <code>AssemblyResolver</code> class handles the <code>AppDomain.CurrentDomain.AssemblyResolve</code>
+event and allows to look in the directory containing already loaded
+assemblies when looking for a new assembly. It enables also
+version-tolerant links, which is useful when&nbsp;a precise version of
+assembly an assembly is required, but has been lost.</p>
+
+<p>All assemblies are loaded in a single <code>Domain</code> stored as a field instance in <code>MainForm</code>.</p>
+
+Loading an assembly in the module and then in the tree looks like this:<br>
+
+<pre>Assembly assembly = Assembly.LoadFrom(path);<br>ModuleDeclaration module = domain.LoadAssembly(assembly, true).ManifestModule;<br>this.treeView.Nodes.Add(new ModuleTreeNode(module, path));</pre>
+
+</body>
+</html>
