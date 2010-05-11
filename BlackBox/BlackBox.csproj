@@ -111,6 +111,13 @@
     <Compile Include="SerializationExtension.cs" />
     <Compile Include="StringBuilderExtension.cs" />
     <Compile Include="Testing\CharacterizationTest.cs" />
+    <Compile Include="Testing\Comparator.cs" />
+    <Compile Include="Testing\ObjectComparison\GraphNode.cs" />
+    <Compile Include="Testing\ObjectComparison\ObjectComparer.cs" />
+    <Compile Include="Testing\ObjectComparison\ObjectComparisonMismatch.cs" />
+    <Compile Include="Testing\ObjectComparison\ObjectComparisonMismatchType.cs" />
+    <Compile Include="Testing\ObjectComparison\ObjectGraphFactory.cs" />
+    <Compile Include="Testing\ObjectComparison\PublicPropertyObjectGraphFactory.cs" />
     <Compile Include="TypeExtension.cs" />
   </ItemGroup>
   <ItemGroup>

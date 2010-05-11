@@ -45,7 +45,6 @@ namespace CharacterizationTests
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary_2.xml");
 		}
-
 	}
 }
 

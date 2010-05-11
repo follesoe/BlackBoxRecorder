@@ -71,9 +71,15 @@ namespace BlackBox.Testing
 
         }
 
+        protected virtual void ConfigureComparsion()
+        {
+            
+        }
+
         public void Initialize()
         {
             Configuration.RecordingMode = RecordingMode.Playback;
+            ConfigureComparsion();
         }
     }
 }
