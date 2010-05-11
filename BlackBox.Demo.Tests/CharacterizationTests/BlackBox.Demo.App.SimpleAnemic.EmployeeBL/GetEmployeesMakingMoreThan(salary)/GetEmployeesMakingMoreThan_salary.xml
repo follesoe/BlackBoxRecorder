@@ -3,14 +3,14 @@
   <Name>GetEmployeesMakingMoreThan_salary</Name>
   <Method>GetEmployeesMakingMoreThan</Method>
   <IsStatic>false</IsStatic>
-  <Type><![CDATA[BlackBox.Demo.App.EmployeeBL]]></Type>
-  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.EmployeeBL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+  <Type><![CDATA[BlackBox.Demo.App.SimpleAnemic.EmployeeBL]]></Type>
+  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.SimpleAnemic.EmployeeBL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
   <InputParameters>
     <Parameter>
       <Name>salary</Name>
       <Type><![CDATA[System.Double]]></Type>
       <FullyQualifiedType><![CDATA[System.Double, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
-      <Value><![CDATA[<double>7500</double>]]></Value>
+      <Value><![CDATA[<double xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5000</double>]]></Value>
     </Parameter>
   </InputParameters>
   <OutputParameters>
@@ -18,13 +18,23 @@
       <Name>salary</Name>
       <Type><![CDATA[System.Double]]></Type>
       <FullyQualifiedType><![CDATA[System.Double, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
-      <Value><![CDATA[<double>7500</double>]]></Value>
+      <Value><![CDATA[<double xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5000</double>]]></Value>
     </Parameter>
   </OutputParameters>
   <Return>
-    <Type><![CDATA[System.Collections.Generic.List<BlackBox.Demo.App.EmployeeEntity>]]></Type>
-    <FullyQualifiedType><![CDATA[System.Collections.Generic.List`1[[BlackBox.Demo.App.EmployeeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
-    <Value><![CDATA[<ArrayOfEmployeeEntity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Type><![CDATA[System.Collections.Generic.List<BlackBox.Demo.App.SimpleAnemic.EmployeeEntity>]]></Type>
+    <FullyQualifiedType><![CDATA[System.Collections.Generic.List`1[[BlackBox.Demo.App.SimpleAnemic.EmployeeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+    <Value><![CDATA[<ArrayOfEmployeeEntity xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.SimpleAnemic" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <EmployeeEntity>
+    <Id>5</Id>
+    <Name>Employee number 5</Name>
+    <Salary>6000</Salary>
+  </EmployeeEntity>
+  <EmployeeEntity>
+    <Id>6</Id>
+    <Name>Employee number 6</Name>
+    <Salary>7000</Salary>
+  </EmployeeEntity>
   <EmployeeEntity>
     <Id>7</Id>
     <Name>Employee number 7</Name>
@@ -43,16 +53,16 @@
 </ArrayOfEmployeeEntity>]]></Value>
     <Dependencies>
       <Dependency>
-        <Type><![CDATA[BlackBox.Demo.App.EmployeeDAL]]></Type>
-        <FullyQualifiedType><![CDATA[BlackBox.Demo.App.EmployeeDAL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+        <Type><![CDATA[BlackBox.Demo.App.SimpleAnemic.EmployeeDAL]]></Type>
+        <FullyQualifiedType><![CDATA[BlackBox.Demo.App.SimpleAnemic.EmployeeDAL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
         <Method>
           <Name>GetAllEmployees</Name>
           <IsStatic>false</IsStatic>
           <Parameters />
           <ReturnValues>
             <ReturnValue>
-              <FullyQualifiedType>System.Collections.Generic.List`1[[BlackBox.Demo.App.EmployeeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<ArrayOfEmployeeEntity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+              <FullyQualifiedType>System.Collections.Generic.List`1[[BlackBox.Demo.App.SimpleAnemic.EmployeeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<ArrayOfEmployeeEntity xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.SimpleAnemic" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
   <EmployeeEntity>
     <Id>0</Id>
     <Name>Employee number 0</Name>
