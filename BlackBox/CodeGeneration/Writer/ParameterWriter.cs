@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace BlackBox.CodeGeneration.Writer
 {
@@ -18,10 +15,10 @@ namespace BlackBox.CodeGeneration.Writer
 
         public string WriteInputParameters()
         {
-            string parameterList = "";
+            var parameterList = "";
 
             var parameters = _reader.GetInputParametersMetadata();
-            for (int i = 0; i < parameters.Count; i++)
+            for (var i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
                 parameterList += parameter.Name + "Input";
@@ -35,9 +32,8 @@ namespace BlackBox.CodeGeneration.Writer
         public void WriteOutputParameters()
         {
             var outputParameters = _reader.GetOutputParametersMetadata();
-            for (int i = 0; i < outputParameters.Count; i++)
+            foreach (var parameter in outputParameters)
             {
-                var parameter = outputParameters[i];
                 _output.AppendFormatLine("\t\t\t{0}Output = ({1})GetOutputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
             }
             _output.AppendLine();

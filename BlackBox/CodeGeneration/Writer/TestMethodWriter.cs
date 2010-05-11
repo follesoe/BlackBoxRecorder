@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
+using System.Collections.Generic;
 
 namespace BlackBox.CodeGeneration.Writer
 {
@@ -9,7 +9,6 @@ namespace BlackBox.CodeGeneration.Writer
         private readonly RecordingXmlReader _recordingReader;
         private readonly StringBuilder _output;
        
-
         public TestMethodWriter(RecordingXmlReader reader, StringBuilder output)
         {
             _usedMethodNames = new Dictionary<string, int>();
