@@ -5,7 +5,7 @@ namespace BlackBox.CodeGeneration.Writer
 {
     public class TestWriter
     {
-        private const int CharacterToRemove = 8;
+        private const int CharacterToRemove = 9;
         private readonly RecordingXmlReader _reader;
         private readonly IFile _fileAccess;
 
@@ -53,7 +53,8 @@ namespace BlackBox.CodeGeneration.Writer
             _output.AppendLine("}");
 
             string path = Path.Combine(outputDirectory, _bodyWriter.TestFixtureName + ".cs");
-            _fileAccess.Save(_output.ToString(), path);
+            string outputString = _output.ToString();
+            _fileAccess.Save(outputString, path);
             _isSaved = true;
         }
     }

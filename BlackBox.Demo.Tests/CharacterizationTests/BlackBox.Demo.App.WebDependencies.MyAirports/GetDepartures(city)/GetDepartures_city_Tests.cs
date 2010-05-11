@@ -39,7 +39,7 @@ namespace CharacterizationTests
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.WebDependencies.MyAirports\GetDepartures(city)\GetDepartures_city.xml");
 		}
-		[Fact]
+		[Fact]
 		public void GetDepartures_city_2()
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.WebDependencies.MyAirports\GetDepartures(city)\GetDepartures_city_2.xml");

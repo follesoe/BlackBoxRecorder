@@ -11,8 +11,8 @@ namespace BlackBox.Demo.App
 
             Console.WriteLine("[BlackBox Recorder Examples]");
             Console.WriteLine();
-            Console.WriteLine("1. Simple Anemic Domain Model (BL, DAL, Entity)");
-            Console.WriteLine("2. Multiple calls to external web resource.");
+            Console.WriteLine("  1. Simple Anemic Domain Model (BL, DAL, Entity)");
+            Console.WriteLine("  2. Multiple calls to external web resource.");
             Console.WriteLine();
             Console.Write("Pick demo to run recording on: ");
 
