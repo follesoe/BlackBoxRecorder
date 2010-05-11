@@ -69,9 +69,6 @@ namespace BlackBox.Testing
 
         public void CompareObjects(object expected, object actual)
         {
-            IEnumerable<ObjectComparisonMismatch> mismatches;
-            new ObjectComparer(new PublicPropertyObjectGraphFactory()).Compare(expected, actual, out mismatches);
-            mismatches.ToList().ForEach(m => m.ToString());
         }
 
         protected virtual void ConfigureComparsion()
