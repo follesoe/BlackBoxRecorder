@@ -112,6 +112,7 @@
     <Compile Include="StringBuilderExtension.cs" />
     <Compile Include="Testing\CharacterizationTest.cs" />
     <Compile Include="Testing\Comparator.cs" />
+    <Compile Include="Testing\ComparatorOfT.cs" />
     <Compile Include="Testing\ObjectComparison\GraphNode.cs" />
     <Compile Include="Testing\ObjectComparison\ObjectComparer.cs" />
     <Compile Include="Testing\ObjectComparison\ObjectComparisonMismatch.cs" />

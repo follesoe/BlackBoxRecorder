@@ -77,6 +77,11 @@ namespace Microsoft.Test.ObjectComparison
 
         #endregion
 
+        public override string ToString()
+        {
+            return string.Format("{0}: LeftNodeName={1}", MismatchType, LeftObjectNode.QualifiedName);
+        }
+
         #region Private Data
 
         private GraphNode leftObjectNode;

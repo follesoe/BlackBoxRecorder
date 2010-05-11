@@ -70,7 +70,7 @@ namespace Microsoft.Test.ObjectComparison
     /// }
     /// </code>
     /// </example>
-    public sealed class ObjectComparer<T>
+    public sealed class ObjectComparer
     {
         #region Constuctors
 

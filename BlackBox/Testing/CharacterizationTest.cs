@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using Microsoft.Test.ObjectComparison;
 
 namespace BlackBox.Testing
 {
@@ -66,9 +67,11 @@ namespace BlackBox.Testing
             return _reader.GetReturnValue();   
         }
 
-        public void CompareObjects(object expected, object actuall)
+        public void CompareObjects(object expected, object actual)
         {
-
+            IEnumerable<ObjectComparisonMismatch> mismatches;
+            new ObjectComparer(new PublicPropertyObjectGraphFactory()).Compare(expected, actual, out mismatches);
+            mismatches.ToList().ForEach(m => m.ToString());
         }
 
         protected virtual void ConfigureComparsion()

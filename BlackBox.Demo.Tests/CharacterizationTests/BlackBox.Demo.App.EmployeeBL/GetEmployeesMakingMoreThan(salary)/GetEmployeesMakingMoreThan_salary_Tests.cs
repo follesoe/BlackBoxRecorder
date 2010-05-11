@@ -39,12 +39,12 @@ namespace CharacterizationTests
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary.xml");
 		}
-
-		[Fact]
+		[Fact]
 		public void GetEmployeesMakingMoreThan_salary_2()
 		{
 			Run(@"..\..\..\BlackBox.Demo.Tests\CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan(salary)\GetEmployeesMakingMoreThan_salary_2.xml");
 		}
+
 	}
 }
 
