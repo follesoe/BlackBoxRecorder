@@ -71,7 +71,9 @@
     <Content Include="CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan%28salary%29\GetEmployeesMakingMoreThan_salary.xml" />
     <Content Include="CharacterizationTests\BlackBox.Demo.App.EmployeeBL\GetEmployeesMakingMoreThan%28salary%29\GetEmployeesMakingMoreThan_salary_2.xml" />
     <Content Include="CharacterizationTests\BlackBox.Demo.App.WebDependencies.MyAirports\GetDepartures%28city%29\GetDepartures_city.xml" />
-    <Content Include="CharacterizationTests\BlackBox.Demo.App.WebDependencies.MyAirports\GetDepartures%28city%29\GetDepartures_city_2.xml" />
+    <Content Include="CharacterizationTests\BlackBox.Demo.App.WebDependencies.MyAirports\GetDepartures%28city%29\GetDepartures_city_2.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
