@@ -1,33 +1,42 @@
 ﻿using System;
-using PostSharp.Laos;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using PostSharp.Aspects;
 
 namespace BlackBox.Recorder
 {
     [Serializable]
-    public class DependencyAttribute : OnMethodInvocationAspect
+    public class DependencyAttribute : MethodInterceptionAspect
     {
-        public override void OnInvocation(MethodInvocationEventArgs eventArgs)
+        public override void OnInvoke(MethodInterceptionArgs eventArgs)
         {
             if (Configuration.IsRecording())
             {
-                eventArgs.ReturnValue = eventArgs.Method.Invoke(eventArgs.Instance, eventArgs.GetArgumentArray());
+                eventArgs.Proceed();
                 if (RecordingStack.Count > 0)
                 {
                     Guid callGuid = RecordingStack.Peek();
-                    RecordingServices.Recorder.RecordDependency(callGuid, eventArgs.Instance, eventArgs.Method, eventArgs.ReturnValue);
+                    RecordingServices.Recorder.RecordDependency(callGuid, eventArgs.Instance, (MethodInfo)eventArgs.Method, eventArgs.ReturnValue);
                 }
             }
             else
             {
-                if (RecordingServices.DependencyPlayback.HasReturnValue(eventArgs.Method))
+                if (RecordingServices.DependencyPlayback.HasReturnValue((MethodInfo)eventArgs.Method))
                 {
-                    eventArgs.ReturnValue = RecordingServices.DependencyPlayback.GetReturnValue(eventArgs.Method);
+                    eventArgs.ReturnValue = RecordingServices.DependencyPlayback.GetReturnValue((MethodInfo)eventArgs.Method);
                 }
                 else
                 {
-                    eventArgs.ReturnValue = eventArgs.Method.Invoke(eventArgs.Instance, eventArgs.GetArgumentArray());
+                    eventArgs.Proceed();
                 }
             }
+        }
+
+        public override bool CompileTimeValidate(MethodBase method)
+        {
+            return (method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), true).Length == 0 && 
+                !method.Name.StartsWith("get_") && 
+                !method.Name.StartsWith("set_"));
         }
     }
 }

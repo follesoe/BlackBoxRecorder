@@ -52,13 +52,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PostSharp">
+      <HintPath>..\lib\PostSharp2\Reference Assemblies\.NET Framework 2.0\PostSharp.dll</HintPath>
+    </Reference>
     <Reference Include="PostSharp.Laos, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\PostSharp\Reference Assemblies\.NET Framework 2.0\PostSharp.Laos.dll</HintPath>
-    </Reference>
-    <Reference Include="PostSharp.Public, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
-      <HintPath>..\lib\PostSharp\Reference Assemblies\.NET Framework 2.0\PostSharp.Public.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\PostSharp2\Reference Assemblies\.NET Framework 2.0\PostSharp.Laos.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

@@ -26,13 +26,6 @@
     <FullyQualifiedType><![CDATA[System.Collections.Generic.List`1[[BlackBox.Demo.App.WebDependencies.Flight, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
     <Value><![CDATA[<ArrayOfFlight xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.WebDependencies" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
   <Flight>
-    <Airport>OSL</Airport>
-    <Direction i:nil="true" />
-    <FlightNumber>DY263</FlightNumber>
-    <Status i:nil="true" />
-    <Time>2010-05-11T18:45:00</Time>
-  </Flight>
-  <Flight>
     <Airport>VDS</Airport>
     <Direction i:nil="true" />
     <FlightNumber>WF936</FlightNumber>
@@ -41,39 +34,6 @@
   </Flight>
 </ArrayOfFlight>]]></Value>
     <Dependencies>
-      <Dependency>
-        <Type><![CDATA[BlackBox.Demo.App.WebDependencies.FlightDataService]]></Type>
-        <FullyQualifiedType><![CDATA[BlackBox.Demo.App.WebDependencies.FlightDataService, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
-        <Method>
-          <Name>&lt;GetDepartures&gt;b__5</Name>
-          <IsStatic>true</IsStatic>
-          <Parameters>
-            <FullyQualifiedType>System.Xml.Linq.XElement, System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-          </Parameters>
-          <ReturnValues>
-            <ReturnValue>
-              <FullyQualifiedType>BlackBox.Demo.App.WebDependencies.Flight, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</FullyQualifiedType>
-              <Value><![CDATA[<Flight xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.WebDependencies" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-  <Airport>OSL</Airport>
-  <Direction i:nil="true" />
-  <FlightNumber>DY263</FlightNumber>
-  <Status i:nil="true" />
-  <Time>2010-05-11T18:45:00</Time>
-</Flight>]]></Value>
-            </ReturnValue>
-            <ReturnValue>
-              <FullyQualifiedType>BlackBox.Demo.App.WebDependencies.Flight, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</FullyQualifiedType>
-              <Value><![CDATA[<Flight xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.WebDependencies" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-  <Airport>VDS</Airport>
-  <Direction i:nil="true" />
-  <FlightNumber>WF936</FlightNumber>
-  <Status i:nil="true" />
-  <Time>2010-05-11T21:59:00</Time>
-</Flight>]]></Value>
-            </ReturnValue>
-          </ReturnValues>
-        </Method>
-      </Dependency>
       <Dependency>
         <Type><![CDATA[BlackBox.Demo.App.WebDependencies.FlightDataService]]></Type>
         <FullyQualifiedType><![CDATA[BlackBox.Demo.App.WebDependencies.FlightDataService, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
@@ -87,13 +47,6 @@
             <ReturnValue>
               <FullyQualifiedType>System.Collections.Generic.List`1[[BlackBox.Demo.App.WebDependencies.Flight, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
               <Value><![CDATA[<ArrayOfFlight xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.WebDependencies" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-  <Flight>
-    <Airport>OSL</Airport>
-    <Direction i:nil="true" />
-    <FlightNumber>DY263</FlightNumber>
-    <Status i:nil="true" />
-    <Time>2010-05-11T18:45:00</Time>
-  </Flight>
   <Flight>
     <Airport>VDS</Airport>
     <Direction i:nil="true" />
