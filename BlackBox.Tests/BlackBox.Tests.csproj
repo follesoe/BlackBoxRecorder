@@ -114,6 +114,8 @@
     <Compile Include="SerializationExtensionTest.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="Testing\CharacterizationTestBaseClassTest.cs" />
+    <Compile Include="Testing\ObjectComparisonTests.cs" />
+    <Compile Include="Testing\TestClasses.cs" />
     <Compile Include="TypeExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>

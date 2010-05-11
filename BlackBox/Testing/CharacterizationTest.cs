@@ -10,12 +10,14 @@ namespace BlackBox.Testing
         private readonly RecordingXmlReader _reader;
         private readonly List<ParameterRecording> _inputParameters;
         private readonly List<ParameterRecording> _outputParameters;
+        private readonly ObjectComparer _objectComparer;
        
         public CharacterizationTest()
         {
             _reader = new RecordingXmlReader();
             _inputParameters = new List<ParameterRecording>();
             _outputParameters = new List<ParameterRecording>();
+            _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
         }
 
         public void LoadRecording(string path)
@@ -69,6 +71,10 @@ namespace BlackBox.Testing
 
         public void CompareObjects(object expected, object actual)
         {
+            IEnumerable<ObjectComparisonMismatch> mismatches;
+            _objectComparer.Compare(expected, actual, out mismatches);
+            if (mismatches.Any())
+                throw new ObjectMismatchException(mismatches);
         }
 
         protected virtual void ConfigureComparsion()
