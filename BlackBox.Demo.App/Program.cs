@@ -15,6 +15,7 @@ namespace BlackBox.Demo.App
             Console.WriteLine("  2. Multiple calls to external web resource.");
             Console.WriteLine("  3. Parameter serves as both input and output.");
             Console.WriteLine("  4. One recording, multiple calls on external dependency.");
+            Console.WriteLine("  5. Recording of static method with static dependency method.");
             Console.WriteLine();
             Console.Write("Pick demo to run recording on: ");
 
@@ -34,6 +35,9 @@ namespace BlackBox.Demo.App
                     break;
                 case 4:
                     MultipleCallsOnDependency.Demo.Run();
+                    break;
+                case 5:
+                    StaticMethods.Demo.Run();
                     break;
             }            
 

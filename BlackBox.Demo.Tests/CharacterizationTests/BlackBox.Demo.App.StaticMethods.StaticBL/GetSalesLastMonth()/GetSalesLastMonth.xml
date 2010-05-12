@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Recording>
+  <Name>GetSalesLastMonth</Name>
+  <Method>GetSalesLastMonth</Method>
+  <IsStatic>true</IsStatic>
+  <Type><![CDATA[BlackBox.Demo.App.StaticMethods.StaticBL]]></Type>
+  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.StaticMethods.StaticBL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+  <InputParameters />
+  <OutputParameters />
+  <Return>
+    <Type><![CDATA[System.Double]]></Type>
+    <FullyQualifiedType><![CDATA[System.Double, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+    <Value><![CDATA[<double xmlns="http://schemas.microsoft.com/2003/10/Serialization/">544602</double>]]></Value>
+    <Dependencies>
+      <Dependency>
+        <Type><![CDATA[BlackBox.Demo.App.StaticMethods.StaticDAL]]></Type>
+        <FullyQualifiedType><![CDATA[BlackBox.Demo.App.StaticMethods.StaticDAL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+        <Method>
+          <Name>GetSales</Name>
+          <IsStatic>true</IsStatic>
+          <Parameters>
+            <FullyQualifiedType>System.DateTime, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+            <FullyQualifiedType>System.DateTime, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+          </Parameters>
+          <ReturnValues>
+            <ReturnValue>
+              <FullyQualifiedType>System.Double[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<ArrayOfdouble xmlns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <double>17147</double>
+  <double>20676</double>
+  <double>18219</double>
+  <double>20360</double>
+  <double>23339</double>
+  <double>20461</double>
+  <double>10881</double>
+  <double>20350</double>
+  <double>24773</double>
+  <double>17532</double>
+  <double>13917</double>
+  <double>23879</double>
+  <double>21576</double>
+  <double>12616</double>
+  <double>12009</double>
+  <double>24048</double>
+  <double>24207</double>
+  <double>19044</double>
+  <double>13367</double>
+  <double>24556</double>
+  <double>18297</double>
+  <double>16037</double>
+  <double>14650</double>
+  <double>15455</double>
+  <double>20345</double>
+  <double>10332</double>
+  <double>10073</double>
+  <double>24198</double>
+  <double>20746</double>
+  <double>11512</double>
+</ArrayOfdouble>]]></Value>
+            </ReturnValue>
+          </ReturnValues>
+        </Method>
+      </Dependency>
+    </Dependencies>
+  </Return>
+</Recording>

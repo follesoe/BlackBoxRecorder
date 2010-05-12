@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using PostSharp.Aspects;
@@ -9,7 +10,7 @@ namespace BlackBox.Recorder
     public class DependencyAttribute : MethodInterceptionAspect
     {
         public override void OnInvoke(MethodInterceptionArgs eventArgs)
-        {
+        {            
             if (Configuration.IsRecording())
             {
                 eventArgs.Proceed();
@@ -21,8 +22,10 @@ namespace BlackBox.Recorder
             }
             else
             {
+                
                 if (RecordingServices.DependencyPlayback.HasReturnValue((MethodInfo)eventArgs.Method))
                 {
+                    Debugger.Break();
                     eventArgs.ReturnValue = RecordingServices.DependencyPlayback.GetReturnValue((MethodInfo)eventArgs.Method);
                 }
                 else
