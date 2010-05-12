@@ -11,6 +11,11 @@ namespace BlackBox.Tests.Testing
         Three
     }
 
+    public class ObjectWithSelfReference
+    {
+        public ObjectWithSelfReference Self { get { return this; } }
+    }
+
     public class ObjectWithEnumProperty
     {
         public OneOrTwoOrThree MyEnumeration { get; set; }
