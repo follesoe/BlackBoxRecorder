@@ -129,6 +129,9 @@ namespace Microsoft.Test.ObjectComparison
         {
             List<GraphNode> childNodes = new List<GraphNode>();
 
+            if (IsIEnumerable(nodeData))
+                return childNodes;
+
             PropertyInfo[] properties = nodeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo property in properties)
             {
