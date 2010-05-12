@@ -61,11 +61,41 @@ namespace BlackBox.Tests.Testing
         }
 
         [Fact]
-        public void Can_exclude_a_certain_property_in_a_simple_comparison()
+        public void Can_exclude_a_certain_property_from_a_simple_comparison()
         {
             Given.A_property_we_wish_to_ignore();
             When.We_compare_two_objects_that_differ_on_that_property();
             Then.Nothing();
+        }
+
+        [Fact]
+        public void Can_exclude_a_certain_property_on_an_element_in_a_list_from_comparison()
+        {
+            Given.A_property_on_an_element_in_a_list_we_wish_to_ignore();
+            When.We_compare_two_lists_that_differ_on_that_property();
+            Then.Nothing();
+        }
+
+        private void A_property_on_an_element_in_a_list_we_wish_to_ignore()
+        {
+            propertyToIgnore = "RootObject.IEnumerable1.MyBoolean";
+        }
+
+        private void We_compare_two_lists_that_differ_on_that_property()
+        {
+            var aList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties()
+                            };
+            var anotherList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties{MyBoolean = true}
+                            };
+            var test = new CharacterizationTest();
+            test.Ignore(propertyToIgnore);
+            test.CompareObjects(aList, anotherList);
         }
 
         private void A_property_we_wish_to_ignore()
