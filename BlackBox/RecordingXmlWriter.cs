@@ -17,11 +17,23 @@ namespace BlackBox
                              new XElement("FullyQualifiedType", new XCData(recording.CalledOnType.AssemblyQualifiedName)),
                              new XElement("InputParameters", CreateParameterNodes(recording.InputParameters)),
                              new XElement("OutputParameters", CreateParameterNodes(recording.OutputParameters)),
-                             new XElement("Return",
-                                          new XElement("Type", new XCData(recording.ReturnValue.GetType().GetCodeDefinition())),
-                                          new XElement("FullyQualifiedType", new XCData(recording.ReturnValue.GetType().AssemblyQualifiedName)),
-                                          new XElement("Value", new XCData(recording.ReturnValue.ToXml().ToString())),
-                            new XElement("Dependencies", CreateDependencyNodes(recording.DependencyRecordings)))));
+                             new XElement("Return", CreateReturnNode(recording),
+                             new XElement("Dependencies", CreateDependencyNodes(recording.DependencyRecordings)))));
+        }
+
+        private static IEnumerable<XElement> CreateReturnNode(MethodRecording recording)
+        {
+            if(recording.ReturnValue == null)
+            {
+                yield return new XElement("Type", "void");
+                yield return new XElement("FullyQualifiedType", "void");
+                yield return new XElement("Value", "void");
+                yield break;
+            }
+
+            yield return new XElement("Type", new XCData(recording.ReturnValue.GetType().GetCodeDefinition()));
+            yield return new XElement("FullyQualifiedType", new XCData(recording.ReturnValue.GetType().AssemblyQualifiedName));
+            yield return new XElement("Value", new XCData(recording.ReturnValue.ToXml().ToString()));
         }
 
         private static IEnumerable<XElement> CreateParameterNodes(IEnumerable<ParameterRecording> parameterRecordings)

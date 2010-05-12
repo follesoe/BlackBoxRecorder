@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Recording>
+  <Name>DoSomething_entity</Name>
+  <Method>DoSomething</Method>
+  <IsStatic>false</IsStatic>
+  <Type><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeBL]]></Type>
+  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeBL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+  <InputParameters>
+    <Parameter>
+      <Name>entity</Name>
+      <Type><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeEntity]]></Type>
+      <FullyQualifiedType><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+      <Value><![CDATA[<SomeEntity xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.InputOutputArgument" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Income>1000</Income>
+  <Name>My name</Name>
+</SomeEntity>]]></Value>
+    </Parameter>
+  </InputParameters>
+  <OutputParameters>
+    <Parameter>
+      <Name>entity</Name>
+      <Type><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeEntity]]></Type>
+      <FullyQualifiedType><![CDATA[BlackBox.Demo.App.InputOutputArgument.SomeEntity, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+      <Value><![CDATA[<SomeEntity xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.InputOutputArgument" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Income>1100</Income>
+  <Name>My name edited...</Name>
+</SomeEntity>]]></Value>
+    </Parameter>
+  </OutputParameters>
+  <Return>
+    <Type>void</Type>
+    <FullyQualifiedType>void</FullyQualifiedType>
+    <Value>void</Value>
+    <Dependencies />
+  </Return>
+</Recording>

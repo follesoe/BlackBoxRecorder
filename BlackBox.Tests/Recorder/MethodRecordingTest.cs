@@ -22,6 +22,14 @@ namespace BlackBox.Tests.Recorder
             recording.DependencyRecordings.Count.ShouldEqual(1);
         }
 
+        [Fact]
+        public void Can_add_null_as_return_value()
+        {
+            object returnValue = null;
+            recording.AddReturnValues(new object[] { 5, 5 }, returnValue);
+            recording.ReturnValue.ShouldBeNull();
+        }
+
         public MethodRecordingTest()
         {
             math = new SimpleMath();

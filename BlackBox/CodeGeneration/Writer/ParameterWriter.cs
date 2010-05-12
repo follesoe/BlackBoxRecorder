@@ -25,7 +25,6 @@ namespace BlackBox.CodeGeneration.Writer
                 if (i < parameters.Count - 1) parameterList += ", ";
                 _output.AppendFormatLine("\t\t\t{0}Input = ({1})GetInputParameterValue(\"{0}\");", parameter.Name, parameter.TypeName);
             }
-            _output.AppendLine();
             return parameterList;
         }
 

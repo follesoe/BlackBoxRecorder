@@ -8,19 +8,32 @@ namespace BlackBox.Demo.App
         public static void Main(string[] args)
         {
             ConfigreBlackBox();
-            Console.WriteLine("[BlackBox Recorder Demo Application]");
+
+            Console.WriteLine("[BlackBox Recorder Examples]");
+            Console.WriteLine();
+            Console.WriteLine("  1. Simple Anemic Domain Model (BL, DAL, Entity)");
+            Console.WriteLine("  2. Multiple calls to external web resource.");
+            Console.WriteLine("  3. Parameter serves as both input and output.");
+            Console.WriteLine();
+            Console.Write("Pick demo to run recording on: ");
+
+            int demo = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
 
-            var bl = new EmployeeBL();
-            var topPayedEmployees = bl.GetEmployeesMakingMoreThan(5000);
-            var topPayedEmployees2 = bl.GetEmployeesMakingMoreThan(7500);
-
-            Console.WriteLine("Name\t\t\tSalary");
-            foreach(var employee in topPayedEmployees)
+            switch(demo)
             {
-                Console.WriteLine("{0}\t{1}", employee.Name, employee.Salary);
-            }
+                case 1:
+                    SimpleAnemic.Demo.Run();
+                    break;
+                case 2:
+                    WebDependencies.Demo.Run();
+                    break;
+                case 3:
+                    InputOutputArgument.Demo.Run();
+                    break;
+            }            
 
+            Console.WriteLine("Click a key to exit...");
             Console.ReadLine();
         }
 

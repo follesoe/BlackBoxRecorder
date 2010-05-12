@@ -38,7 +38,7 @@ namespace BlackBox
             return CurrentRecording.XPathSelectElement("/Recording/Method").Value;
         }
 
-        public bool GetMethodIsStatic()
+        public bool IsStaticMethod()
         {
             return Convert.ToBoolean(CurrentRecording.XPathSelectElement("/Recording/IsStatic").Value);
         }
@@ -138,6 +138,12 @@ namespace BlackBox
             string fullyQualifiedType = CurrentRecording.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;
             var type = Type.GetType(fullyQualifiedType);
             return CurrentRecording.XPathSelectElement("/Recording/Return/Value").Value.Deserialize(type);
+        }
+
+        public bool IsVoidMethod()
+        {
+            string fullyQualifiedType = CurrentRecording.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;
+            return fullyQualifiedType.Equals("void");
         }
     }
 }

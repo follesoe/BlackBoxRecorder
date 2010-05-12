@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace BlackBox
 {
@@ -9,20 +10,28 @@ namespace BlackBox
     {
         public static XNode ToXml(this object obj)
         {
-            var serializer = new XmlSerializer(obj.GetType());
-
-            using(var sw = new StringWriter())
+            var serializer = new DataContractSerializer(obj.GetType());
+            
+            using(var ms = new MemoryStream())
             {
-                serializer.Serialize(sw, obj);
-                var xml = XDocument.Parse(sw.ToString());
-                return xml.FirstNode;
-            }            
+                serializer.WriteObject(ms, obj);
+                ms.Flush();
+                ms.Position = 0;
+                
+                using(var sr = new StreamReader(ms))
+                {
+                    string xmlString = sr.ReadToEnd();
+                    var xml = XDocument.Parse(xmlString);
+                    return xml.FirstNode;
+                }
+            }
         }
 
         public static object Deserialize(this string xml, Type type)
         {
-            var serializer = new XmlSerializer(type);
-            return serializer.Deserialize(new StringReader(xml));
+            var serializer = new DataContractSerializer(type);             
+            var  xmlReader = XmlReader.Create(new StringReader(xml));
+            return serializer.ReadObject(xmlReader);
         }
 
         public static object Copy(this object obj)

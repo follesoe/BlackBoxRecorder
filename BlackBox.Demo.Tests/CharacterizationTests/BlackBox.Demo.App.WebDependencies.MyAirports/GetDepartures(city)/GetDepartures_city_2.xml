@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Recording>
+  <Name>GetDepartures_city</Name>
+  <Method>GetDepartures</Method>
+  <IsStatic>false</IsStatic>
+  <Type><![CDATA[BlackBox.Demo.App.WebDependencies.MyAirports]]></Type>
+  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.WebDependencies.MyAirports, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+  <InputParameters>
+    <Parameter>
+      <Name>city</Name>
+      <Type><![CDATA[System.String]]></Type>
+      <FullyQualifiedType><![CDATA[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+      <Value><![CDATA[<string xmlns="http://schemas.microsoft.com/2003/10/Serialization/">Alta</string>]]></Value>
+    </Parameter>
+  </InputParameters>
+  <OutputParameters>
+    <Parameter>
+      <Name>city</Name>
+      <Type><![CDATA[System.String]]></Type>
+      <FullyQualifiedType><![CDATA[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+      <Value><![CDATA[<string xmlns="http://schemas.microsoft.com/2003/10/Serialization/">Alta</string>]]></Value>
+    </Parameter>
+  </OutputParameters>
+  <Return>
+    <Type><![CDATA[System.Collections.Generic.List<BlackBox.Demo.App.WebDependencies.Flight>]]></Type>
+    <FullyQualifiedType><![CDATA[System.Collections.Generic.List`1[[BlackBox.Demo.App.WebDependencies.Flight, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+    <Value><![CDATA[<ArrayOfFlight xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.WebDependencies" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Flight>
+    <Airport>VDS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF936</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-11T21:59:00</Time>
+  </Flight>
+</ArrayOfFlight>]]></Value>
+    <Dependencies>
+      <Dependency>
+        <Type><![CDATA[BlackBox.Demo.App.WebDependencies.FlightDataService]]></Type>
+        <FullyQualifiedType><![CDATA[BlackBox.Demo.App.WebDependencies.FlightDataService, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+        <Method>
+          <Name>GetDepartures</Name>
+          <IsStatic>false</IsStatic>
+          <Parameters>
+            <FullyQualifiedType>System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+          </Parameters>
+          <ReturnValues>
+            <ReturnValue>
+              <FullyQualifiedType>System.Collections.Generic.List`1[[BlackBox.Demo.App.WebDependencies.Flight, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<ArrayOfFlight xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.WebDependencies" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Flight>
+    <Airport>VDS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF936</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-11T21:59:00</Time>
+  </Flight>
+</ArrayOfFlight>]]></Value>
+            </ReturnValue>
+          </ReturnValues>
+        </Method>
+      </Dependency>
+    </Dependencies>
+  </Return>
+</Recording>

@@ -19,6 +19,13 @@ namespace BlackBox.Tests.Fakes
         }
 
         [Recording]
+        public void UpdateContact(Contact contact)
+        {
+            contact.Name = contact.Name + " updated";
+            contact.Email = contact.Email + " updated";
+        }
+
+        [Recording]
         public List<Contact> AllExcept(Contact contact)
         {
             return (from c in _contacts

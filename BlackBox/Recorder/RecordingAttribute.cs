@@ -1,27 +1,26 @@
 ﻿using System;
-using PostSharp.Laos;
+using PostSharp.Aspects;
 
 namespace BlackBox.Recorder
 {
     [Serializable]
     public class RecordingAttribute : OnMethodBoundaryAspect 
     {
-        public override void OnEntry(MethodExecutionEventArgs eventArgs)
+        public override void OnEntry(MethodExecutionArgs eventArgs)
         {
             if (Configuration.IsPlayback()) return;
 
-            Guid callGuid = Guid.NewGuid();
+            var callGuid = Guid.NewGuid();
             eventArgs.MethodExecutionTag = callGuid;
-            RecordingServices.Recorder.RecordEntry(callGuid, eventArgs.Method, eventArgs.Instance, eventArgs.GetReadOnlyArgumentArray());
-            
+            RecordingServices.Recorder.RecordEntry(callGuid, eventArgs.Method, eventArgs.Instance, eventArgs.Arguments.ToArray());
+
             RecordingStack.Push(callGuid);
         }
-
-        public override void OnExit(MethodExecutionEventArgs eventArgs)
+        public override void OnExit(MethodExecutionArgs eventArgs)
         {
             if (Configuration.IsPlayback()) return;
 
-            RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.GetReadOnlyArgumentArray(), eventArgs.ReturnValue);
+            RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.Arguments.ToArray(), eventArgs.ReturnValue);
             RecordingStack.Pop();
         }
     }
