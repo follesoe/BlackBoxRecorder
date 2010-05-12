@@ -8,7 +8,7 @@ namespace BlackBox.Recorder
     public class DependencyPlayback
     {
         [ThreadStatic]
-        private static Dictionary<MethodInfo, Stack<object>> _playbackValues;
+        private static Dictionary<MethodInfo, Queue<object>> _playbackValues;
 
         public void RegisterExpectedReturnValue(MethodInfo method, object returnValue)
         {
@@ -17,10 +17,10 @@ namespace BlackBox.Recorder
 
             if (!_playbackValues.ContainsKey(interceptedMethod))
             {
-                _playbackValues.Add(method, new Stack<object>());
+                _playbackValues.Add(method, new Queue<object>());
             }
 
-            _playbackValues[interceptedMethod].Push(returnValue);         
+            _playbackValues[interceptedMethod].Enqueue(returnValue);         
         }
 
         public bool HasReturnValue(MethodInfo method)
@@ -34,14 +34,14 @@ namespace BlackBox.Recorder
         {
             InitializeStore();
             var interceptedMethod = GetInterceptedMethod(method);
-            return _playbackValues[interceptedMethod].Pop();
+            return _playbackValues[interceptedMethod].Dequeue();
         }
 
         private static void InitializeStore()
         {
             if (_playbackValues == null)
             {
-                _playbackValues = new Dictionary<MethodInfo, Stack<object>>();
+                _playbackValues = new Dictionary<MethodInfo, Queue<object>>();
             }
         }
 

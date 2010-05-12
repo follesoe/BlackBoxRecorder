@@ -53,12 +53,15 @@
     <Compile Include="InputOutputArgument\Demo.cs" />
     <Compile Include="InputOutputArgument\SomeBL.cs" />
     <Compile Include="InputOutputArgument\SomeEntity.cs" />
+    <Compile Include="MultipleCallsOnDependency\RandomNumber.cs" />
+    <Compile Include="MultipleCallsOnDependency\LotteryDraw.cs" />
     <Compile Include="SimpleAnemic\Demo.cs" />
     <Compile Include="SimpleAnemic\EmployeeBL.cs" />
     <Compile Include="SimpleAnemic\EmployeeDAL.cs" />
     <Compile Include="SimpleAnemic\EmployeeEntity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MultipleCallsOnDependency\Demo.cs" />
     <Compile Include="WebDependencies\Demo.cs" />
     <Compile Include="WebDependencies\FlightDataService.cs" />
     <Compile Include="WebDependencies\Flight.cs" />
