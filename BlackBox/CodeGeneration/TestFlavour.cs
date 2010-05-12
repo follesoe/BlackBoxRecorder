@@ -14,7 +14,6 @@
 
         private TestFlavour()
         {
-            
         }
 
         public static TestFlavour CreateXunit()
@@ -36,5 +35,7 @@
                            SetupAttribute = "TestInitialize"
                        };
         }
+
+        // TODO: add a flavour for NUnit tests
     }
 }
