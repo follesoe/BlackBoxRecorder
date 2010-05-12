@@ -52,6 +52,49 @@ namespace BlackBox.Tests.Testing
             Then.Nothing();
         }
 
+        [Fact]
+        public void Comparing_two_lists_of_different_objects_yields_all_nested_differences()
+        {
+            Given.A_comparator();
+            When.We_compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each();
+            Then.The_exception_message_contains_all_four_differences();
+        }
+
+        private void We_compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each()
+        {
+            thrownException = Record.Exception(() => Compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each());
+        }
+
+        private void Compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each()
+        {
+            var aListElement = new ObjectWithValueTypeProperties();
+            var anotherListElement = new ObjectWithValueTypeProperties { MyBoolean = true, MyInteger = 1 };
+            var aSecondListElement = new ObjectWithValueTypeProperties();
+            var another2ListElement = new ObjectWithValueTypeProperties { MyBoolean = true, MyInteger = 1 };
+
+            var aList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties {MyBoolean = true, MyInteger = 1}
+                            };
+            var anotherList = new List<ObjectWithValueTypeProperties>
+                                  {
+                                      new ObjectWithValueTypeProperties {MyByte = 1, MyChar = 'a'},
+                                      new ObjectWithValueTypeProperties()
+                                  };
+
+            new CharacterizationTest().CompareObjects(aList, anotherList);
+        }
+
+        private void The_exception_message_contains_all_four_differences()
+        {
+            exceptionMessage = thrownException.Message;
+            Assert.Contains("ObjectValuesDoNotMatch: LeftNodeName=RootObject.IEnumerable0.MyByte", exceptionMessage);
+            Assert.Contains("ObjectValuesDoNotMatch: LeftNodeName=RootObject.IEnumerable0.MyChar", exceptionMessage);
+            Assert.Contains("ObjectValuesDoNotMatch: LeftNodeName=RootObject.IEnumerable1.MyBoolean", exceptionMessage);
+            Assert.Contains("ObjectValuesDoNotMatch: LeftNodeName=RootObject.IEnumerable1.MyInteger", exceptionMessage);
+        }
+
         private void We_compare_two_lists_with_equal_objects_but_different_capacity()
         {
             var aList = new List<int>(1) {1};
