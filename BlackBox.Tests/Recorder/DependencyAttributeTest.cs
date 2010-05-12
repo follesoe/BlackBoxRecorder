@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 
 using BlackBox.Recorder;
@@ -28,7 +29,7 @@ namespace BlackBox.Tests.Recorder
             Configuration.RecordingMode = RecordingMode.Playback;
             var contacts = addressBook.GetAllContacts();
             Configuration.RecordingMode = RecordingMode.Recording;
-            
+
             contacts.ShouldContain(contactsToReturn[0]);
         }
 
