@@ -60,6 +60,58 @@ namespace BlackBox.Tests.Testing
             Then.The_exception_message_contains_all_four_differences();
         }
 
+        [Fact]
+        public void Can_exclude_a_certain_property_from_a_simple_comparison()
+        {
+            Given.A_property_we_wish_to_ignore();
+            When.We_compare_two_objects_that_differ_on_that_property();
+            Then.Nothing();
+        }
+
+        [Fact]
+        public void Can_exclude_a_certain_property_on_an_element_in_a_list_from_comparison()
+        {
+            Given.A_property_on_an_element_in_a_list_we_wish_to_ignore();
+            When.We_compare_two_lists_that_differ_on_that_property();
+            Then.Nothing();
+        }
+
+        private void A_property_on_an_element_in_a_list_we_wish_to_ignore()
+        {
+            propertyToIgnore = "RootObject.IEnumerable1.MyBoolean";
+        }
+
+        private void We_compare_two_lists_that_differ_on_that_property()
+        {
+            var aList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties()
+                            };
+            var anotherList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties{MyBoolean = true}
+                            };
+            var test = new CharacterizationTest();
+            test.Ignore(propertyToIgnore);
+            test.CompareObjects(aList, anotherList);
+        }
+
+        private void A_property_we_wish_to_ignore()
+        {
+            propertyToIgnore = "RootObject.MyBoolean";
+        }
+
+        private void We_compare_two_objects_that_differ_on_that_property()
+        {
+            var someObject = new ObjectWithValueTypeProperties();
+            var anotherObject = new ObjectWithValueTypeProperties { MyBoolean = true };
+            var test = new CharacterizationTest();
+            test.Ignore(propertyToIgnore);
+            test.CompareObjects(someObject, anotherObject);
+        }
+
         private void We_compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each()
         {
             thrownException = Record.Exception(() => Compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each());
@@ -163,6 +215,7 @@ namespace BlackBox.Tests.Testing
         }
 
         //private CharacterizationTest test;
+        private string propertyToIgnore;
         private Exception thrownException;
         private string exceptionMessage;
     }
