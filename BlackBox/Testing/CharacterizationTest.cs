@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Microsoft.Test.ObjectComparison;
@@ -11,6 +13,7 @@ namespace BlackBox.Testing
         private readonly List<ParameterRecording> _inputParameters;
         private readonly List<ParameterRecording> _outputParameters;
         private readonly ObjectComparer _objectComparer;
+        private readonly List<string> _propertiesToIgnore;
        
         public CharacterizationTest()
         {
@@ -18,6 +21,7 @@ namespace BlackBox.Testing
             _inputParameters = new List<ParameterRecording>();
             _outputParameters = new List<ParameterRecording>();
             _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
+            _propertiesToIgnore = new List<string>();
         }
 
         public void LoadRecording(string path)
@@ -73,19 +77,24 @@ namespace BlackBox.Testing
         {
             IEnumerable<ObjectComparisonMismatch> mismatches;
             _objectComparer.Compare(expected, actual, out mismatches);
-            if (mismatches.Any())
-                throw new ObjectMismatchException(mismatches);
+            IEnumerable<ObjectComparisonMismatch> filteredMismatches = mismatches.Exclude(_propertiesToIgnore);
+            if (filteredMismatches.Any())
+                throw new ObjectMismatchException(filteredMismatches);
         }
 
-        protected virtual void ConfigureComparsion()
+        protected virtual void ConfigureComparison()
         {
-
         }
 
         public void Initialize()
         {
             Configuration.RecordingMode = RecordingMode.Playback;
-            ConfigureComparsion();
+            ConfigureComparison();
+        }
+
+        public void Ignore(string propertyToIgnore)
+        {
+            _propertiesToIgnore.Add(propertyToIgnore);
         }
     }
 }

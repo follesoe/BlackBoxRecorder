@@ -18,5 +18,12 @@ namespace BlackBox.Testing
             }
             return toStringBuilder.ToString();
         }
+
+        public static IEnumerable<ObjectComparisonMismatch> Exclude(this IEnumerable<ObjectComparisonMismatch> mismatches,
+                                                                    IEnumerable<string> mismatchesToExclude)
+        {
+            return mismatches.Where(m => !mismatchesToExclude.Contains(m.LeftObjectNode.QualifiedName));
+        }
+
     }
 }
