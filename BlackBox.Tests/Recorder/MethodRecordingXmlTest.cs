@@ -26,7 +26,7 @@ namespace BlackBox.Tests.Recorder
             When.we_load_the_recording_into_the_reader();
            
             string expectedIfUITestRunner = "Can_read_name_of_the_recording";
-            string expectedIfConsoleTestRunner = "System.Collections.Generic.List`1[BlackBox.Tests.Fakes.Contact]_AllExcept_BlackBox.Tests.Fakes.Contact";
+            string expectedIfConsoleTestRunner = "AllExcept_contact";
             string recordingName = reader.GetRecordingName();
 
             if(recordingName != expectedIfUITestRunner && recordingName != expectedIfConsoleTestRunner)
