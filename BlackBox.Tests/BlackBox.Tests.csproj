@@ -92,6 +92,7 @@
     <Compile Include="BDD.cs" />
     <Compile Include="CodeGeneration\AppendMethodToTestWriterTest.cs" />
     <Compile Include="CodeGeneration\MSTestFlavourTest.cs" />
+    <Compile Include="CodeGeneration\NUnitTestFlavourTest.cs" />
     <Compile Include="CodeGeneration\StaticMethodTestWriterTest.cs" />
     <Compile Include="CodeGeneration\TestsWithFlavour.cs" />
     <Compile Include="CodeGeneration\TestWriterTest.cs" />

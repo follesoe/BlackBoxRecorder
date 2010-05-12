@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -30,7 +31,8 @@ namespace BlackBox.Tests.Recorder
             var contacts = addressBook.GetAllContacts();
             Configuration.RecordingMode = RecordingMode.Recording;
 
-            contacts.ShouldContain(contactsToReturn[0]);
+            contacts[0].Name.ShouldEqual("BlackBox");
+            contacts[0].Email.ShouldEqual("blackbox@gmail.com");
         }
 
         [Fact]

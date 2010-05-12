@@ -106,7 +106,7 @@ namespace BlackBox
                 string methodName = dependencyNode.XPathSelectElement("Method/Name").Value;
                 var methodParameters = new List<Type>();
 
-                foreach (var parameterNode in dependencyNode.XPathSelectElements("Method//Parameters"))
+                foreach (var parameterNode in dependencyNode.XPathSelectElements("Method/Parameters//FullyQualifiedType"))
                 {
                     if (!string.IsNullOrEmpty(parameterNode.Value))
                     {
