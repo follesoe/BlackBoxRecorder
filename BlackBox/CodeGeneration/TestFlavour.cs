@@ -36,6 +36,15 @@
                        };
         }
 
-        // TODO: add a flavour for NUnit tests
+        public static TestFlavour CreateNUnit()
+        {
+            return new TestFlavour
+                       {
+                           Namespace = "NUnit.Framework",
+                           ClassAttribute = "TestFixture",
+                           TestAttribute = "Test",
+                           SetupAttribute = "SetUp"
+                       };
+        }
     }
 }
