@@ -10,6 +10,8 @@
     <link rel="Stylesheet" href="css/screen.css" type="text/css" media="screen" />
     <link rel="Stylesheet" href="css/typography.css" type="text/css" media="screen" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+    <script src="js/jquery.pngfix.js" type="text/javascript"></script>
+    <script src="js/behaviour.js" type="text/javascript"></script>
 </head>
 <body>
     <a href="http://github.com/follesoe/BlackBoxRecorder" id="forkMe">
@@ -83,9 +85,11 @@
                         <a href="http://github.com/follesoe" title="Visit Git profile" target="_self">
                 		    <img src="http://a1.twimg.com/profile_images/485080790/jonas.png" alt="gravatar" />
                         </a>
-                        <a href="#" class="tweet">
-                            <img src="images/twitter_logo.png" alt="Twitter logo" />
-                        </a>
+                        <div class="tweet">
+                            <a href="#" class="tweet">
+                                <img src="images/twitter_logo.png" alt="Twitter logo" />
+                            </a>
+                        </div>
                 		<h3>
                 			Jonas Follesø
                 		</h3>
@@ -98,9 +102,15 @@
                         <a href="http://github.com/marcusalmgren" title="Visit Git profile" target="_self">
                             <img src="http://a3.twimg.com/profile_images/270600797/n644657741_129683_5035.jpg" alt="gravatar" />
                         </a>
-                        <a href="#" class="tweet">
-                            <img src="images/twitter_logo.png" alt="Twitter logo" />
-                        </a>
+                        <div class="tweet">
+                            <a href="http://twitter.com/marcusalmgren">
+                                <img src="images/twitter_logo.png" alt="Twitter logo" />
+                            </a>
+                            <div class="twitter_div">
+                                <ul id="twitter_update_list">
+                                </ul>
+                            </div>
+                        </div>
                         <h3>
                 			Marcus Almgren
                 		</h3>
@@ -110,11 +120,13 @@
                 	</li>
                 	<li>
                         <a href="http://github.com/alexyork" title="Visit Git profile" target="_self">
-                            <img src="../images/gravatar.gif" alt="gravatar" />
+                            <img src="http://a1.twimg.com/profile_images/223473680/alexsimpson_bigger.png" alt="gravatar" />
                         </a>
-                        <a href="#" class="tweet">
-                            <img src="images/twitter_logo.png" alt="Twitter logo" />
-                        </a>
+                        <div class="tweet">
+                            <a href="http://twitter.com/alex_york">
+                                <img src="images/twitter_logo.png" alt="Twitter logo" />
+                            </a>
+                        </div>
                 		<h3>
                 			Alex York
                 		</h3>
@@ -124,11 +136,13 @@
                 	</li>
                 	<li>
                         <a href="http://github.com/hegerokenes" title="Visit Git profile" target="_self">
-                            <img src="../images/gravatar.gif" alt="gravatar" />
+                            <img src="http://a3.twimg.com/profile_images/53074263/msn_profilbilde_bigger.JPG" alt="gravatar" />
                         </a>
-                        <a href="#" class="tweet">
-                            <img src="images/twitter_logo.png" alt="Twitter logo" />
-                        </a>
+                        <div class="tweet">
+                            <a href="http://twitter.com/hegerokenes">
+                                <img src="images/twitter_logo.png" alt="Twitter logo" />
+                            </a>
+                        </div>
                 		<h3>
                 			Hege Røkenes
                 		</h3>
@@ -148,19 +162,24 @@
   code on GitHub : <a href="http://github.com/follesoe/BlackBoxRecorder">follesoe/BlackBoxRecorder</a>
   
   -->
-  <!-- Google analytics tracker -->
-    <script type="text/javascript">
+<!-- Twitter feed -->
+<script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>
+<script type="text/javascript" src="http://twitter.com/statuses/user_timeline/marcusalmgren.json?callback=twitterCallback2&count=1"></script>
+<!-- /Twitter feed -->
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-16391508-1']);
-        _gaq.push(['_trackPageview']);
+<!-- Google analytics tracker -->
+<script type="text/javascript">
 
-        (function () {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16391508-1']);
+    _gaq.push(['_trackPageview']);
 
-    </script>
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 </body>
 </html>
