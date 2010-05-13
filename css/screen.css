@@ -92,7 +92,7 @@ body {
     
     #header {
         display: table;
-        padding: 20px 0;
+        padding: 30px 0;
         }
         
         #siteLogo {
@@ -111,7 +111,7 @@ body {
         height: 181px;
         width: 981px;
         position: absolute;
-        top: 120px;
+        top: 140px;
         left: -12px;
         }
         
@@ -122,8 +122,8 @@ body {
             }
             
             #salesText {
-                width: 350px;
-                margin: 20px 0 0 40px;
+                width: 400px;
+                margin: 20px 0 0 95px;
                 float: left;
                 }
                 
@@ -132,6 +132,7 @@ body {
                  height: 90px;
                  width: 256px;
                  margin-right: 30px;
+                 margin-top: 10px;
                  }
                  
                  #download a {
@@ -162,7 +163,7 @@ body {
                          }
     
     #mainContent {
-        margin-top: 181px;
+        margin-top: 200px;
         margin-bottom: 30px;
         padding: 0 10px;
         display: table;
@@ -180,8 +181,8 @@ body {
             
             .contentColumn h2 {
                 background: url(header_separator.gif) no-repeat bottom center;
-                padding-bottom: 10px;
-                margin-bottom: 10px;
+                padding-bottom: 15px;
+                margin-bottom: 15px;
                 }
             
         #lastColumn {
@@ -236,10 +237,9 @@ body {
                         }
     
     #footer {
-        display: table;
         padding: 10px 10px;
         background-color: #2b2b2b;
-        width: 100%;
+        width: 934px;
         }
     
     /* Page Navigation

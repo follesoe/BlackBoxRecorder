@@ -1,7 +1,7 @@
 ﻿body {
     font-family: Arial, Verdana, Tahoma;
     color: White;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 18px;
     }
     
@@ -27,7 +27,8 @@ a {
 #salesText {
     font-family: Georgia, Times New Roman, Serif;
     font-style: italic;  
-    font-size: 16px;       
+    font-size: 18px;  
+    line-height: 24px;     
     }
     
 #download a span#title, #download a span#subTitle {
@@ -46,7 +47,7 @@ a {
     }
     
 .contentColumn h2 {  
-    text-align: center;
+    text-align: left;
     text-transform: uppercase;
     color: #767676;
     font-size: 18px;
@@ -56,6 +57,7 @@ a {
     text-transform: uppercase;
     margin-top: 23px;
     line-height: 0;
+    display: table;
     }
         
 #contributorList a { 
