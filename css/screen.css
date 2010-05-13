@@ -109,6 +109,11 @@ body {
         #bannerInner {
             margin: 20px;
             }
+            
+            #salesText {
+                width: 350px;
+                margin: 40px 0 0 40px;
+                }
     
     #mainContent {
         margin-top: 181px;
@@ -137,6 +142,33 @@ body {
             margin-right: 0;
             background: none;
             }
+            
+            #contributorList li {
+                display: table;
+                width: 100%;
+                margin-bottom: 10px;
+                }
+                    
+            
+            #contributorList a img {
+                float: left;
+                height: 40px;
+                width: 40px;
+                border: 3px solid #2b2b2b;
+                margin-right: 10px;
+                }
+                
+            #contributorList a.tweet { 
+                float: right;
+                margin-top: 3px;
+                }    
+                
+                #contributorList a.tweet img {
+                    width: 31px;
+                    height: 36px;
+                    border: none;
+                    margin-top: 7px;
+                    }
     
     #footer {
         display: table;

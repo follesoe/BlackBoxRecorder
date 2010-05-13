@@ -4,10 +4,13 @@
     font-size: 14px;
     line-height: 18px;
     }
+    
+a {
+    text-decoration: none;
+    color: #767676;
+    }
 
 #navigation li a {
-    color: #767676;
-    text-decoration: none;
     font-weight: normal;
     }
     
@@ -21,7 +24,25 @@
         font-size: 11px;
         }  
     
-    .contentColumn h2 {  
-        text-align: center;
-        text-transform: uppercase;
-        }
+#salesText {
+    font-family: Georgia, Times New Roman, Serif;
+    font-style: italic;  
+    font-size: 16px;       
+    }
+    
+.contentColumn h2 {  
+    text-align: center;
+    text-transform: uppercase;
+    color: #767676;
+    font-size: 18px;
+    }
+        
+#contributorList h3 {
+    text-transform: uppercase;
+    margin-top: 23px;
+    line-height: 0;
+    }
+        
+#contributorList a { 
+    font-size: 11px;
+    }
