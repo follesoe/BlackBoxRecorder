@@ -1,4 +1,71 @@
-﻿pre { background: #000; color: #fff; padding: 15px;}
+﻿
+/**********************************************************************************************
+
+	Title: BlackBoxRecorder DarkTheme
+	Author: Hege Røkenes hege@rokenes.com www.hege.rokenes.com
+	Date: May 2010
+
+***********************************************************************************************
+
+	1. Global Reset
+	2. General Elements
+	3. Layout
+	4. Layout elements
+    5. Global typography
+		
+***********************************************************************************************
+    
+    Color Scheme
+    BaseGray: #222222
+    LighterGray: #2b2b2b
+    LightestGray: #767676
+
+***********************************************************************************************/
+
+/* Global Reset
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/	
+@media screen {
+	html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, images, ins, kbd,q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td  
+	{
+	    margin: 0; 
+	    padding: 0; 
+	    border: 0; 
+	    outline: 0; 
+	    font-weight: inherit; 
+	    font-style: inherit; 
+	    font-size: 100%; 
+	    font-family: inherit; 
+	    vertical-align: baseline;
+	    }
+
+	ol, ul {
+		list-style: none;
+	    }
+	
+	table {
+		border-collapse: separate; 
+		border-spacing: 0;
+	    }
+
+	caption, th, td {
+		text-align: left; 
+		font-weight: normal;
+	    }
+
+/* Global Declarations
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/	
+
+pre { background: #000; color: #fff; padding: 15px;}
+
+/* Page Layout
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/	
+
+body {
+    background: url(main_bg.gif) repeat;
+    }
 
 #forkMe {
     position: absolute; 
@@ -6,3 +73,62 @@
     right: 0; 
     border: 0;
     }
+
+#mainWrapper {
+    background-color: #222222;
+    border: 3px solid #2b2b2b;
+    width: 960px;
+    margin: 20px auto;
+    }
+    
+    #header, #banner, #mainContent, #footer {
+        width: 100%;
+        }
+    
+    #header {
+        border: 1px solid orange;
+        display: table;
+        }
+        
+        #siteLogo {
+            float: left;
+            }
+        
+    #banner {
+        border: 1px solid red;
+        clear: both;
+        }
+    
+    #mainContent {
+        border: 1px sold yellow;
+        }
+    
+    #footer {
+        border: 1px solid orange;
+        }
+    
+    /* Page Navigation
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/
+
+#navigation {
+    border: 1px solid red;
+    display: table;
+    float: right;
+    margin: 20px 0 20px 0;
+    }
+
+    #navigation li { 
+        border: 1px solid blue;
+        float: left;
+        height: 76px;
+        padding: 0 30px;
+        }
+        
+        #navigation li a span { 
+            display: block;
+            clear: both;
+            }
+
+
+
