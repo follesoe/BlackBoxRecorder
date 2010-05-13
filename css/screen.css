@@ -77,34 +77,72 @@ body {
 #mainWrapper {
     background-color: #222222;
     border: 3px solid #2b2b2b;
-    width: 960px;
+    width: 954px;
     margin: 20px auto;
+    position: relative;
     }
     
-    #header, #banner, #mainContent, #footer {
+    #header, #banner {
         width: 100%;
         }
     
     #header {
-        border: 1px solid orange;
         display: table;
+        padding: 20px 0;
         }
         
         #siteLogo {
             float: left;
+            margin-left: 20px;
             }
         
     #banner {
-        border: 1px solid red;
         clear: both;
+        background: url(banner_bg.png) no-repeat top center;
+        height: 181px;
+        width: 981px;
+        position: absolute;
+        top: 120px;
+        left: -12px;
         }
+        
+        #bannerInner {
+            margin: 20px;
+            }
     
     #mainContent {
-        border: 1px sold yellow;
+        margin-top: 181px;
+        margin-bottom: 30px;
+        padding: 0 10px;
+        display: table;
+        width: 100%;
         }
+        
+        .contentColumn {
+            float: left;
+            width: 264px;
+            margin-right: 10px;
+            background-color: #2b2b2b;
+            height: 300px;
+            padding: 20px;
+            }
+            
+            .contentColumn h2 {
+                background: url(header_separator.gif) no-repeat bottom center;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                }
+            
+        #lastColumn {
+            margin-right: 0;
+            background: none;
+            }
     
     #footer {
-        border: 1px solid orange;
+        display: table;
+        padding: 10px 10px;
+        background-color: #2b2b2b;
+        width: 100%;
         }
     
     /* Page Navigation
@@ -112,17 +150,15 @@ body {
 ===============================================================================================*/
 
 #navigation {
-    border: 1px solid red;
     display: table;
     float: right;
-    margin: 20px 0 20px 0;
+    margin: 0;
     }
 
     #navigation li { 
-        border: 1px solid blue;
         float: left;
-        height: 76px;
-        padding: 0 30px;
+        padding: 20px 30px;
+        background: url(menu_seperator.gif) no-repeat left top;
         }
         
         #navigation li a span { 

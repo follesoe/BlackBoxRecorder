@@ -1,6 +1,27 @@
-﻿body {}
+﻿body {
+    font-family: Arial, Verdana, Tahoma;
+    color: White;
+    font-size: 14px;
+    line-height: 18px;
+    }
 
-#navigation li a span {
+#navigation li a {
     color: #767676;
     text-decoration: none;
+    font-weight: normal;
     }
+    
+    #navigation li a span.mainTitle { 
+        text-transform: uppercase;
+        font-size: 18px;
+        }    
+
+    #navigation li a span.subTitle { 
+        text-transform: lowercase;
+        font-size: 11px;
+        }  
+    
+    .contentColumn h2 {  
+        text-align: center;
+        text-transform: uppercase;
+        }
