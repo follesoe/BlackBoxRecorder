@@ -30,6 +30,21 @@ a {
     font-size: 16px;       
     }
     
+#download a span#title, #download a span#subTitle {
+    color: White;
+    }
+
+#download a span#title {
+    font-size: 14px;
+    font-weight: bolder;
+    text-transform: uppercase;
+    }
+    
+#download a span#subTitle {
+    font-size: 9px;
+    text-transform: lowercase;
+    }
+    
 .contentColumn h2 {  
     text-align: center;
     text-transform: uppercase;

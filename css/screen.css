@@ -117,12 +117,49 @@ body {
         
         #bannerInner {
             margin: 20px;
+            display: table;
+            width: 95%;
             }
             
             #salesText {
                 width: 350px;
-                margin: 40px 0 0 40px;
+                margin: 20px 0 0 40px;
+                float: left;
                 }
+                
+             #download {
+                 float: right;
+                 height: 90px;
+                 width: 256px;
+                 margin-right: 30px;
+                 }
+                 
+                 #download a {
+                     position: relative;
+                     display: block;
+                     }
+                     
+                     #download a span#title, #download a span#subTitle, #download a img  {
+                         position: absolute;
+                         }
+                         
+                     #download a span#title, #download a span#subTitle {
+                         left: 130px;
+                         z-index: 100;
+                         }    
+                     
+                     #download a span#title { 
+                         top: 40px;
+                         }
+                         
+                     #download a span#subTitle {            
+                         top: 55px;
+                         }
+                  
+                     #download img {
+                         border: none;
+                         z-index: 1;
+                         }
     
     #mainContent {
         margin-top: 181px;
