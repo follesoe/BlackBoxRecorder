@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Collections.Generic;
 
 using BlackBox.Recorder;
@@ -25,8 +23,10 @@ namespace BlackBox.Tests.Recorder
         {           
             MethodInfo method = typeof (SimpleAddressBookDb).GetMethod("GetContacts");
             var contactsToReturn = new List<Contact> {new Contact("BlackBox", "blackbox@gmail.com")};
+            
+            RecordingServices.DependencyPlayback.Clear();
             RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(method, contactsToReturn);
-
+           
             Configuration.RecordingMode = RecordingMode.Playback;
             var contacts = addressBook.GetAllContacts();
             Configuration.RecordingMode = RecordingMode.Recording;

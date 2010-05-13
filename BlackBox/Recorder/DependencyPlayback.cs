@@ -52,5 +52,11 @@ namespace BlackBox.Recorder
 
             return interceptionMethod.DeclaringType.GetMethod(interceptionMethod.GetMethodNameWithoutTilde(), parameterTypes.ToArray());
         }
+
+        public void Clear()
+        {
+            if(_playbackValues != null)
+                _playbackValues.Clear();
+        }
     }
 }
