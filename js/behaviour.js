@@ -2,6 +2,7 @@
     $(document).pngFix();
 });
 
+
 //$(document).ready(function () {
 //    $(".tweet").hover(
 //        function () {
@@ -12,3 +13,9 @@
 //        }
 //    );
 //});
+
+$(document).ready(function () {
+    $('#mycarousel').animate({
+             
+    });
+});
