@@ -6,7 +6,6 @@ namespace CharacterizationTests
 	public partial class GetDepartures_city_Tests : CharacterizationTest
 	{
 		private System.String cityInput;
-
 		private System.String cityOutput;
 
 		private System.Collections.Generic.List<BlackBox.Demo.App.WebDependencies.Flight> expected;
@@ -19,7 +18,6 @@ namespace CharacterizationTests
 			target = new BlackBox.Demo.App.WebDependencies.MyAirports();
 
 			cityInput = (System.String)GetInputParameterValue("city");
-
 			cityOutput = (System.String)GetOutputParameterValue("city");
 
 			expected = (System.Collections.Generic.List<BlackBox.Demo.App.WebDependencies.Flight>)GetReturnValue();

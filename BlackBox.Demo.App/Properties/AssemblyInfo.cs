@@ -24,3 +24,7 @@ using BlackBox.Recorder;
 [assembly: DependencyAttribute(
             AttributeTargetAssemblies = "BlackBox.Demo.App",
             AttributeTargetTypes = "BlackBox.Demo.App.AssemblyAttribute.DAL.*")]
+
+[assembly: DependencyAttribute(
+            AttributeTargetAssemblies = "mscorlib",
+            AttributeTargetTypes = "System.Random")]

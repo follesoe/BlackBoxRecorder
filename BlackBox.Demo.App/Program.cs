@@ -17,6 +17,7 @@ namespace BlackBox.Demo.App
             Console.WriteLine("  4. One recording, multiple calls on external dependency.");
             Console.WriteLine("  5. Recording of static method with static dependency method.");
             Console.WriteLine("  6. Recording on types marked using assembly attribute.");
+            Console.WriteLine("  7. Recording of dependencies in external APIs.");
             Console.WriteLine();
             Console.Write("Pick demo to run recording on: ");
 
@@ -41,6 +42,9 @@ namespace BlackBox.Demo.App
                     StaticMethods.Demo.Run();
                     break;
                 case 6: AssemblyAttribute.Demo.Run();
+                    break;
+                case 7 :
+                    ExternalApiDependencyRecording.Demo.Run();
                     break;
             }            
 

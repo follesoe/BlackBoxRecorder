@@ -11,14 +11,52 @@
     <Type><![CDATA[System.Int32[]]]></Type>
     <FullyQualifiedType><![CDATA[System.Int32[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
     <Value><![CDATA[<ArrayOfint xmlns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-  <int>3</int>
-  <int>47</int>
-  <int>63</int>
-  <int>14</int>
-  <int>39</int>
-  <int>44</int>
+  <int>80</int>
+  <int>8</int>
+  <int>73</int>
+  <int>60</int>
+  <int>73</int>
+  <int>36</int>
 </ArrayOfint>]]></Value>
     <Dependencies>
+      <Dependency>
+        <Type><![CDATA[System.Random]]></Type>
+        <FullyQualifiedType><![CDATA[System.Random, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+        <Method>
+          <Name>Next</Name>
+          <IsStatic>false</IsStatic>
+          <Parameters>
+            <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+            <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+          </Parameters>
+          <ReturnValues>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">80</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">73</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">60</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">73</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">36</int>]]></Value>
+            </ReturnValue>
+          </ReturnValues>
+        </Method>
+      </Dependency>
       <Dependency>
         <Type><![CDATA[BlackBox.Demo.App.MultipleCallsOnDependency.RandomNumber]]></Type>
         <FullyQualifiedType><![CDATA[BlackBox.Demo.App.MultipleCallsOnDependency.RandomNumber, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
@@ -29,27 +67,27 @@
           <ReturnValues>
             <ReturnValue>
               <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</int>]]></Value>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">80</int>]]></Value>
             </ReturnValue>
             <ReturnValue>
               <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">47</int>]]></Value>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</int>]]></Value>
             </ReturnValue>
             <ReturnValue>
               <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">63</int>]]></Value>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">73</int>]]></Value>
             </ReturnValue>
             <ReturnValue>
               <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">14</int>]]></Value>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">60</int>]]></Value>
             </ReturnValue>
             <ReturnValue>
               <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">39</int>]]></Value>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">73</int>]]></Value>
             </ReturnValue>
             <ReturnValue>
               <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
-              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">44</int>]]></Value>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">36</int>]]></Value>
             </ReturnValue>
           </ReturnValues>
         </Method>
