@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterizationTests\BlackBox.Demo.App.AssemblyAttribute.BL.EmployeeBL\GetPayrolls%28%29\GetPayrolls_Tests.cs" />
     <Compile Include="CharacterizationTests\BlackBox.Demo.App.InputOutputArgument.SomeBL\DoSomething%28entity%29\DoSomething_entity_Tests.cs" />
     <Compile Include="CharacterizationTests\BlackBox.Demo.App.MultipleCallsOnDependency.LotteryDraw\GenerateLotteryNumbers%28%29\GenerateLotteryNumbers_Tests.cs" />
     <Compile Include="CharacterizationTests\BlackBox.Demo.App.SimpleAnemic.EmployeeBL\GetEmployeesMakingMoreThan%28salary%29\GetEmployeesMakingMoreThan_salary_Tests.cs" />
@@ -71,6 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CharacterizationTests\BlackBox.Demo.App.AssemblyAttribute.BL.EmployeeBL\GetPayrolls%28%29\GetPayrolls.xml" />
     <Content Include="CharacterizationTests\BlackBox.Demo.App.InputOutputArgument.SomeBL\DoSomething%28entity%29\DoSomething_entity.xml" />
     <Content Include="CharacterizationTests\BlackBox.Demo.App.MultipleCallsOnDependency.LotteryDraw\GenerateLotteryNumbers%28%29\GenerateLotteryNumbers.xml" />
     <Content Include="CharacterizationTests\BlackBox.Demo.App.SimpleAnemic.EmployeeBL\GetEmployeesMakingMoreThan%28salary%29\GetEmployeesMakingMoreThan_salary.xml" />

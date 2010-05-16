@@ -102,6 +102,7 @@
     <Compile Include="Fakes\SaveRecordingsToMemory.cs" />
     <Compile Include="Recorder\DependencyAttributeTest.cs" />
     <Compile Include="Recorder\MethodRecordingTest.cs" />
+    <Compile Include="Recorder\RecordingOnTypeLevelTest.cs" />
     <Compile Include="Recorder\TypeAndMethodNamerTest.cs" />
     <Compile Include="Fakes\SimpleAddressBook.cs" />
     <Compile Include="Fakes\SimpleMath.cs" />
