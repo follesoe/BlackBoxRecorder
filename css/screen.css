@@ -125,29 +125,7 @@ a:hover {
             width: 95%;
             }
             
-            #salesText {
-                width: 500px;
-                margin: 10px 0 0 55px;
-                float: left;
-                border: 1px solid red;
-                padding: 10px;
-                }
-                
-                #salesText ul#mycarousel {
-                    float: left;
-                    display: inline;
-                    width: 80%;
-                    height: 80px;
-                    overflow: hidden;
-                    }
-                    
-                    #salesText ul#mycarousel li { 
-                        float: left;
-                        height: 80px;
-                        width: 100%;
-                        } 
-                
-                .prev, .next {
+            .slideBtnContainer {
                     height: 100px;
                     width: 10%;
                     }
@@ -159,13 +137,42 @@ a:hover {
                 .prev {
                     float: left;
                     }
+            
+            #salesText {
+                width: 600px;
+                margin: 5px 0 0 55px;
+                float: left;
+                }
                 
+                .content {
+                    height: 100px;
+                    width: 450px;
+                    float: left;
+                    overflow: scroll;
+                    position: relative;
+                    }
+                
+                ul#slideShow {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: -10000px;
+                    height: 90px;
+                    }
+                    
+                    #salesText ul#slideShow li { 
+                        height: 80px;
+                        width: 450px;
+                        float: left;
+                        } 
+                        
              #download {
                  float: right;
                  height: 90px;
                  width: 256px;
                  margin-right: 30px;
                  margin-top: 10px;
+                 display: none;
                  }
                  
                  #download a {
