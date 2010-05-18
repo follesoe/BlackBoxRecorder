@@ -1,6 +1,6 @@
 /**
  * --------------------------------------------------------------------
- * jQuery-Plugin "pngFix"
+ * jQuery-Plugin "pngFix"   
  * Version: 1.2, 09.03.2009
  * by Andreas Eberhard, andreas.eberhard@gmail.com
  *                      http://jquery.andreaseberhard.de/

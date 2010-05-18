@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $(document).pngFix();
 });
-
+  
 
 $(document).ready(function () {
     var currentPosition = 0;
