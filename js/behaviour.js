@@ -9,8 +9,6 @@ $(document).ready(function () {
     var slides = $("#slideShow li");
     var numberOfSlides = slides.length;
 
-    console.log(numberOfSlides);
-
     $(".content").css("overflow", "hidden");
 
     $("ul#slideShow").css("width", slideWidth * numberOfSlides);
