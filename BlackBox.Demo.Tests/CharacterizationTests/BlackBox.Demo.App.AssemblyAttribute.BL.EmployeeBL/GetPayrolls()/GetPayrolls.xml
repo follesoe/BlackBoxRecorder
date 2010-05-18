@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Recording>
+  <Name>GetPayrolls</Name>
+  <Method>GetPayrolls</Method>
+  <IsStatic>false</IsStatic>
+  <Type><![CDATA[BlackBox.Demo.App.AssemblyAttribute.BL.EmployeeBL]]></Type>
+  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.AssemblyAttribute.BL.EmployeeBL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+  <InputParameters />
+  <OutputParameters />
+  <Return>
+    <Type><![CDATA[System.Collections.Generic.List<BlackBox.Demo.App.AssemblyAttribute.Entity.Payroll>]]></Type>
+    <FullyQualifiedType><![CDATA[System.Collections.Generic.List`1[[BlackBox.Demo.App.AssemblyAttribute.Entity.Payroll, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+    <Value><![CDATA[<ArrayOfPayroll xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.AssemblyAttribute.Entity" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Payroll>
+    <Employee>
+      <Id>0</Id>
+      <Name>Jonas Follesø</Name>
+    </Employee>
+    <Pay>100000</Pay>
+  </Payroll>
+  <Payroll>
+    <Employee>
+      <Id>0</Id>
+      <Name>Marcus Almgren</Name>
+    </Employee>
+    <Pay>100000</Pay>
+  </Payroll>
+  <Payroll>
+    <Employee>
+      <Id>0</Id>
+      <Name>Alex York</Name>
+    </Employee>
+    <Pay>100000</Pay>
+  </Payroll>
+</ArrayOfPayroll>]]></Value>
+    <Dependencies>
+      <Dependency>
+        <Type><![CDATA[BlackBox.Demo.App.AssemblyAttribute.DAL.EmployeeDAL]]></Type>
+        <FullyQualifiedType><![CDATA[BlackBox.Demo.App.AssemblyAttribute.DAL.EmployeeDAL, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+        <Method>
+          <Name>GetAllEmployees</Name>
+          <IsStatic>false</IsStatic>
+          <Parameters />
+          <ReturnValues>
+            <ReturnValue>
+              <FullyQualifiedType>System.Collections.Generic.List`1[[BlackBox.Demo.App.AssemblyAttribute.Entity.Employee, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<ArrayOfEmployee xmlns="http://schemas.datacontract.org/2004/07/BlackBox.Demo.App.AssemblyAttribute.Entity" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <Employee>
+    <Id>0</Id>
+    <Name>Jonas Follesø</Name>
+  </Employee>
+  <Employee>
+    <Id>0</Id>
+    <Name>Marcus Almgren</Name>
+  </Employee>
+  <Employee>
+    <Id>0</Id>
+    <Name>Alex York</Name>
+  </Employee>
+</ArrayOfEmployee>]]></Value>
+            </ReturnValue>
+          </ReturnValues>
+        </Method>
+      </Dependency>
+    </Dependencies>
+  </Return>
+</Recording>

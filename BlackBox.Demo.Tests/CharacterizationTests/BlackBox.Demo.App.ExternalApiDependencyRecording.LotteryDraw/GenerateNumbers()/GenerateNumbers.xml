@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Recording>
+  <Name>GenerateNumbers</Name>
+  <Method>GenerateNumbers</Method>
+  <IsStatic>false</IsStatic>
+  <Type><![CDATA[BlackBox.Demo.App.ExternalApiDependencyRecording.LotteryDraw]]></Type>
+  <FullyQualifiedType><![CDATA[BlackBox.Demo.App.ExternalApiDependencyRecording.LotteryDraw, BlackBox.Demo.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]></FullyQualifiedType>
+  <InputParameters />
+  <OutputParameters />
+  <Return>
+    <Type><![CDATA[System.Int32[]]]></Type>
+    <FullyQualifiedType><![CDATA[System.Int32[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+    <Value><![CDATA[<ArrayOfint xmlns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <int>70</int>
+  <int>97</int>
+  <int>45</int>
+  <int>5</int>
+  <int>69</int>
+  <int>91</int>
+</ArrayOfint>]]></Value>
+    <Dependencies>
+      <Dependency>
+        <Type><![CDATA[System.Random]]></Type>
+        <FullyQualifiedType><![CDATA[System.Random, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]></FullyQualifiedType>
+        <Method>
+          <Name>Next</Name>
+          <IsStatic>false</IsStatic>
+          <Parameters>
+            <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+            <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+          </Parameters>
+          <ReturnValues>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">70</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">97</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">45</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">69</int>]]></Value>
+            </ReturnValue>
+            <ReturnValue>
+              <FullyQualifiedType>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</FullyQualifiedType>
+              <Value><![CDATA[<int xmlns="http://schemas.microsoft.com/2003/10/Serialization/">91</int>]]></Value>
+            </ReturnValue>
+          </ReturnValues>
+        </Method>
+      </Dependency>
+    </Dependencies>
+  </Return>
+</Recording>

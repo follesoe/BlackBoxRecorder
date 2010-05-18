@@ -1,6 +1,6 @@
 BlackBoxRecorder - Characterization test generator
 ===================================================
-BlackBoxRecorder is a simple tool that uses [AOP](http://en.wikipedia.org/wiki/Aspect-oriented_programming) 
+BlackBoxRecorder is a tool that uses [AOP](http://en.wikipedia.org/wiki/Aspect-oriented_programming) 
 techniques to automatically record and generate [characterization tests](http://en.wikipedia.org/wiki/Characterization_test) 
 for legacy code (code without tests). You apply a **[Recording]**-attribute on the method you want to generate tests for, 
 and a **[Dependency]**-attribute on any type calling external resources such as file system, web services and databases.

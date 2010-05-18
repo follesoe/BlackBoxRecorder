@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using PostSharp.Aspects;
 
 namespace BlackBox.Recorder
@@ -16,12 +17,18 @@ namespace BlackBox.Recorder
 
             RecordingStack.Push(callGuid);
         }
+
         public override void OnExit(MethodExecutionArgs eventArgs)
         {
             if (Configuration.IsPlayback()) return;
 
             RecordingServices.Recorder.RecordExit((Guid)eventArgs.MethodExecutionTag, eventArgs.Arguments.ToArray(), eventArgs.ReturnValue);
             RecordingStack.Pop();
+        }
+
+        public override bool CompileTimeValidate(MethodBase method)
+        {
+            return !method.IsConstructor && base.CompileTimeValidate(method);
         }
     }
 }

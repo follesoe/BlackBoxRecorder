@@ -50,6 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyAttribute\BL\EmployeeBL.cs" />
+    <Compile Include="AssemblyAttribute\DAL\EmployeeDAL.cs" />
+    <Compile Include="AssemblyAttribute\Demo.cs" />
+    <Compile Include="AssemblyAttribute\Entity\Employee.cs" />
+    <Compile Include="AssemblyAttribute\Entity\Payroll.cs" />
+    <Compile Include="ExternalApiDependencyRecording\Demo.cs" />
+    <Compile Include="ExternalApiDependencyRecording\LotteryDraw.cs" />
     <Compile Include="InputOutputArgument\Demo.cs" />
     <Compile Include="InputOutputArgument\SomeBL.cs" />
     <Compile Include="InputOutputArgument\SomeEntity.cs" />
