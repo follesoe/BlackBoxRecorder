@@ -6,7 +6,6 @@ namespace CharacterizationTests
 	public partial class GetEmployeesMakingMoreThan_salary_Tests : CharacterizationTest
 	{
 		private System.Double salaryInput;
-
 		private System.Double salaryOutput;
 
 		private System.Collections.Generic.List<BlackBox.Demo.App.SimpleAnemic.EmployeeEntity> expected;
@@ -19,7 +18,6 @@ namespace CharacterizationTests
 			target = new BlackBox.Demo.App.SimpleAnemic.EmployeeBL();
 
 			salaryInput = (System.Double)GetInputParameterValue("salary");
-
 			salaryOutput = (System.Double)GetOutputParameterValue("salary");
 
 			expected = (System.Collections.Generic.List<BlackBox.Demo.App.SimpleAnemic.EmployeeEntity>)GetReturnValue();

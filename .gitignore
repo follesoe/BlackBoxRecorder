@@ -1,5 +1,6 @@
 obj
 bin
+build
 TestResults
 _ReSharper.*
 BlackBox.Tests/PostSharp 1.5
