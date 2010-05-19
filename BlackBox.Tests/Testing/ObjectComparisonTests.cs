@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using BlackBox.Testing;
-using Microsoft.Test.ObjectComparison;
 using Xunit;
-using Xunit.Extensions;
 
 namespace BlackBox.Tests.Testing
 {
@@ -15,7 +10,7 @@ namespace BlackBox.Tests.Testing
         [Fact]
         public void Comparing_true_and_true_does_not_yield_any_exception()
         {
-            Given.A_comparator();
+            Given.we_want_to_compare_two_objects();
             When.We_compare_true_and_true();
             Then.Nothing();
         }
@@ -23,23 +18,23 @@ namespace BlackBox.Tests.Testing
         [Fact]
         public void Comparing_true_and_false_yields_an_exception()
         {
-            Given.A_comparator();
+            Given.we_want_to_compare_two_objects();
             When.We_compare_true_and_false();
             Then.We_get_the_appropriate_exception();
         }
 
         [Fact]
-        public void The_mismatch_exception_object_message_contains_information_about_the_mismatch()
+        public void The_mismatch_exception_message_contains_information_about_the_mismatch()
         {
-            Given.A_mismatch_exception_object_for_a_specific_comparison();
-            When.We_get_the_message_of_the_exception();
+            Given.we_have_mismatch_exception_for_a_specific_comparison();
+            When.we_read_the_message_of_the_exception();
             Then.It_tells_us_what_the_difference_is();
         }
 
         [Fact]
         public void Do_not_follow_circular_references()
         {
-            Given.A_comparator();
+            Given.we_want_to_compare_two_objects();
             When.We_compare_two_objects_with_circular_references();
             Then.Nothing();
         }
@@ -47,7 +42,7 @@ namespace BlackBox.Tests.Testing
         [Fact]
         public void We_do_not_want_to_compare_the_Capacity_or_other_properties_when_comparing_IEnumerables()
         {
-            Given.A_comparator();
+            Given.we_want_to_compare_two_objects();
             When.We_compare_two_lists_with_equal_objects_but_different_capacity();
             Then.Nothing();
         }
@@ -55,7 +50,7 @@ namespace BlackBox.Tests.Testing
         [Fact]
         public void Comparing_two_lists_of_different_objects_yields_all_nested_differences()
         {
-            Given.A_comparator();
+            Given.we_want_to_compare_two_objects();
             When.We_compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each();
             Then.The_exception_message_contains_all_four_differences();
         }
@@ -118,12 +113,7 @@ namespace BlackBox.Tests.Testing
         }
 
         private void Compare_two_lists_with_two_objects_each_that_differ_in_two_properties_each()
-        {
-            var aListElement = new ObjectWithValueTypeProperties();
-            var anotherListElement = new ObjectWithValueTypeProperties { MyBoolean = true, MyInteger = 1 };
-            var aSecondListElement = new ObjectWithValueTypeProperties();
-            var another2ListElement = new ObjectWithValueTypeProperties { MyBoolean = true, MyInteger = 1 };
-
+        {            
             var aList = new List<ObjectWithValueTypeProperties>
                             {
                                 new ObjectWithValueTypeProperties(),
@@ -160,7 +150,7 @@ namespace BlackBox.Tests.Testing
             new CharacterizationTest().CompareObjects(someObject, someObject);
         }
 
-        private void A_mismatch_exception_object_for_a_specific_comparison()
+        private void we_have_mismatch_exception_for_a_specific_comparison()
         {
             thrownException = Record.Exception(() => Compare_two_objects_with_value_type_properties());
         }
@@ -172,7 +162,7 @@ namespace BlackBox.Tests.Testing
             new CharacterizationTest().CompareObjects(someObject, anotherObject);
         }
 
-        private void We_get_the_message_of_the_exception()
+        private void we_read_the_message_of_the_exception()
         {
             exceptionMessage = thrownException.Message;
         }
@@ -182,7 +172,7 @@ namespace BlackBox.Tests.Testing
             Assert.Contains("ObjectValuesDoNotMatch: LeftNodeName=RootObject.MyBoolean", exceptionMessage);
         }
 
-        private void A_comparator()
+        private void we_want_to_compare_two_objects()
         {
             // WTF? If I instantiate CharacterizationTest here, 
             // I *sometimes* get a null reference when I reference it later.
