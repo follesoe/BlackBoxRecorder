@@ -74,8 +74,9 @@ a:hover {
 #forkMe {
     position: absolute; 
     top: 0; 
-    right: 0; 
+    left: 0; 
     border: 0;
+    z-index: 100;
     }
     
     #forkMe img {
@@ -127,20 +128,22 @@ a:hover {
             
             .slideBtnContainer {
                     height: 100px;
-                    width: 10%;
+                    width: 30px;
+                    cursor: pointer;
+                    }
+                    
+                .slideBtnContainer img {
+                    border: none;
+                    padding: 30px 10px;
                     }
                 
-                .next {
-                    float: right;
-                    }
+                .next {float: right;}
                 
-                .prev {
-                    float: left;
-                    }
+                .prev {float: left;}
             
             #salesText {
-                width: 600px;
-                margin: 5px 0 0 55px;
+                width: 520px;
+                margin: 5px 0 0 25px;
                 float: left;
                 }
                 
@@ -151,19 +154,29 @@ a:hover {
                     overflow: scroll;
                     position: relative;
                     }
-                
-                ul#slideShow {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    height: 90px;
-                    }
                     
-                    #salesText ul#slideShow li { 
-                        height: 80px;
-                        width: 450px;
-                        float: left;
-                        } 
+                    .gradient {
+                        z-index: 100;
+                        position: absolute;
+                        }
+                        
+                        #rightGradient {right: 0;}
+                
+                    ul#slideShow {
+                        position: absolute;
+                        top: 0;
+                        left: 0px;
+                        height: 90px;
+                        z-index: 1;
+                        }
+                    
+                        #salesText ul#slideShow li { 
+                            height: 80px;
+                            width: 380px;
+                            float: left;
+                            text-align: center;
+                            padding: 0 35px;
+                            } 
                         
              #download {
                  float: right;
@@ -171,7 +184,6 @@ a:hover {
                  width: 256px;
                  margin-right: 30px;
                  margin-top: 10px;
-                 display: none;
                  }
                  
                  #download a {
@@ -214,7 +226,7 @@ a:hover {
             width: 264px;
             margin-right: 10px;
             background-color: #2b2b2b;
-            height: 300px;
+            height: 310px;
             padding: 20px;
             }
             
@@ -234,6 +246,15 @@ a:hover {
                 width: 100%;
                 margin-bottom: 10px;
                 }
+                
+            #contribute p, #contribute a, #contribute h3 {
+                font-size: 9px!important;
+                }
+                
+                #contribute p {
+                    line-height: 12px;
+                    margin-top: 4px;
+                    }
             
             #contributorList a img {
                 float: left;
@@ -247,10 +268,9 @@ a:hover {
                 float: right;
                 margin-top: 3px;
                 width: 31px;
-                height: 42px;
                 position: relative;
                 cursor: pointer;
-                }    
+                }   
                 
                 #contributorList div.tweet img {
                     width: 31px;
@@ -262,11 +282,12 @@ a:hover {
                 .twitter_div {
                     position: absolute;
                     top: 7px;
-                    left: 30px;
-                    height: 18px;
+                    right: 30px;
                     background-color: #0b0b0c;
                     width: 0;
                     overflow: hidden;
+                    height: 55px;
+                    padding: 0;
                     }
                     
                     .viewLast {

@@ -2,7 +2,7 @@
     $(document).pngFix();
 });
   
-
+// Banner slide
 $(document).ready(function () {
     var currentPosition = 0;
     var slideWidth = 450;
@@ -41,3 +41,47 @@ $(document).ready(function () {
     }
 });
 
+// Tweet show and hide
+$(document).ready(function () {
+    $(".tweet").hover(
+        function () {
+            $(".twitter_div", this).stop(true, true).animate({ width: "300px", padding: "5px" }) 
+        },
+        function () {
+            $(".twitter_div", this).animate({ width: "0", padding: "0" }) 
+        });
+});
+
+
+// Tweets
+$(document).ready(function () {
+
+    $("#marcus").tweet({
+        username: "marcusalmgren",
+        join_text: "auto",
+        count: 1,
+        loading_text: "loading tweets..."
+    });
+
+    $("#jonas").tweet({
+        username: "follesoe",
+        join_text: "auto",
+        count: 1,
+        loading_text: "loading tweets..."
+    });
+
+    $("#alex").tweet({
+        username: "alex_york",
+        join_text: "auto",
+        count: 1,
+        loading_text: "loading tweets..."
+    });
+
+    $("#hege").tweet({
+        username: "hegerokenes",
+        join_text: "auto",
+        count: 1,
+        loading_text: "loading tweets..."
+    });
+
+});
