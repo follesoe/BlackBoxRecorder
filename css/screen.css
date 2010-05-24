@@ -191,22 +191,16 @@ a:hover {
                      display: block;
                      }
                      
-                     #download a span#title, #download a span#subTitle, #download a img  {
-                         position: absolute;
-                         }
+                     #download a span#title, #download a span#subTitle, #download a img  {position: absolute;}
                          
                      #download a span#title, #download a span#subTitle {
                          left: 130px;
                          z-index: 100;
                          }    
                      
-                     #download a span#title { 
-                         top: 40px;
-                         }
+                     #download a span#title {top: 40px;}
                          
-                     #download a span#subTitle {            
-                         top: 55px;
-                         }
+                     #download a span#subTitle {top: 55px;}
                   
                      #download img {
                          border: none;
@@ -234,6 +228,15 @@ a:hover {
                 background: url(header_separator.gif) no-repeat bottom center;
                 padding-bottom: 15px;
                 margin-bottom: 15px;
+                }
+                
+        /* for double columns */
+        .double {
+            width: 538px;            
+            }
+            
+            .double h2 {    
+                background: url(header_separator_large.gif) no-repeat bottom center;
                 }
             
         #lastColumn {
