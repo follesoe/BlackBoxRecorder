@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlackBoxConfigurationAttribute.cs" />
     <Compile Include="CodeGeneration\DoNotGenerateTests.cs" />
     <Compile Include="CodeGeneration\IGenerateTests.cs" />
     <Compile Include="CodeGeneration\TestFlavour.cs" />
