@@ -16,7 +16,7 @@ namespace Microsoft.Test.ObjectComparison
     /// <summary>
     /// Creates a graph by extracting public instance properties in the object. If the
     /// property is an IEnumerable, extract the items. If an exception is thrown
-    /// when accessing a property on the left object, it is considered a match if 
+    /// when accessing a property on the left object, it is considered a match if
     /// the same exception type is thrown when accessing the property on the right
     /// object.
     /// </summary>
@@ -31,37 +31,27 @@ namespace Microsoft.Test.ObjectComparison
         /// <param name="typePropertiesToIgnore">A set of properties which will constitute leaf nodes</param>
         /// <param name="objectPropertiesToIgnore">A set of specific object properties which will constitute leaf nodes</param>
         /// <returns>The root node of the created graph.</returns>
-<<<<<<< HEAD
-<<<<<<< HEAD
         public override GraphNode CreateObjectGraph(object value,
                                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
                                                     Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
-=======
-        public override GraphNode CreateObjectGraph(object value, IEnumerable<MemberInfo> propertiesToIgnore)
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
-        public override GraphNode CreateObjectGraph(object value,
-                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             if (value == null)
             {
                 throw new ArgumentNullException("value");
             }
 
-            // Queue of pending nodes 
+            // Queue of pending nodes
             Queue<GraphNode> pendingQueue = new Queue<GraphNode>();
 
-            // Dictionary of < object hashcode, node > - to lookup already visited objects 
+            // Dictionary of < object hashcode, node > - to lookup already visited objects
             Dictionary<int, GraphNode> visitedObjects = new Dictionary<int, GraphNode>();
 
             // Build the root node and enqueue it
             var root = new GraphNode()
-                           {
-                               Name = value is IEnumerable ? "" : value.GetType().Name,
-                               ObjectValue = value
-                           };
+            {
+                Name = value is IEnumerable ? "" : value.GetType().Name,
+                ObjectValue = value
+            };
             pendingQueue.Enqueue(root);
 
             while (pendingQueue.Count != 0)
@@ -77,7 +67,7 @@ namespace Microsoft.Test.ObjectComparison
                     continue;
                 }
 
-                // Handle loops by checking the visted objects 
+                // Handle loops by checking the visted objects
                 if (visitedObjects.Keys.Contains(nodeData.GetHashCode()))
                 {
                     // Caused by a cycle - we have alredy seen this node so
@@ -89,15 +79,7 @@ namespace Microsoft.Test.ObjectComparison
                 visitedObjects.Add(nodeData.GetHashCode(), currentNode);
 
                 // Extract and add child nodes for current object //
-<<<<<<< HEAD
-<<<<<<< HEAD
                 Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
-=======
-                Collection<GraphNode> childNodes = GetChildNodes(nodeData, propertiesToIgnore);
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
-                Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
                 foreach (GraphNode childNode in childNodes)
                 {
                     childNode.Parent = currentNode;
@@ -119,37 +101,19 @@ namespace Microsoft.Test.ObjectComparison
         /// </summary>
         /// <param name="nodeData">The object whose child nodes need to be extracted</param>
         /// <returns>Collection of child graph nodes</returns>
-<<<<<<< HEAD
-<<<<<<< HEAD
         private Collection<GraphNode> GetChildNodes(object nodeData,
                                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
                                                     Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
-=======
-        private Collection<GraphNode> GetChildNodes(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
-        private Collection<GraphNode> GetChildNodes(object nodeData,
-                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             Collection<GraphNode> childNodes = new Collection<GraphNode>();
 
-            // Extract and add properties 
-<<<<<<< HEAD
-<<<<<<< HEAD
+            // Extract and add properties
             foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
-=======
-            foreach (GraphNode child in ExtractProperties(nodeData, propertiesToIgnore))
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
-            foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
             {
                 childNodes.Add(child);
             }
 
-            // Extract and add IEnumerable content 
+            // Extract and add IEnumerable content
             if (IsIEnumerable(nodeData))
             {
                 foreach (GraphNode child in GetIEnumerableChildNodes(nodeData))
@@ -161,19 +125,9 @@ namespace Microsoft.Test.ObjectComparison
             return childNodes;
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         private List<GraphNode> ExtractProperties(object nodeData,
                                                   IEnumerable<MemberInfo> typePropertiesToIgnore,
                                                   Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
-=======
-        private List<GraphNode> ExtractProperties(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
-        private List<GraphNode> ExtractProperties(object nodeData,
-                                                  IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                  Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             List<GraphNode> childNodes = new List<GraphNode>();
 
@@ -183,15 +137,7 @@ namespace Microsoft.Test.ObjectComparison
             PropertyInfo[] properties = nodeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo property in properties)
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 if (typePropertiesToIgnore.Contains(property))
-=======
-                if(propertiesToIgnore.Contains(property))
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
-                if (typePropertiesToIgnore.Contains(property))
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
                     continue;
 
                 object value = null;
@@ -208,32 +154,19 @@ namespace Microsoft.Test.ObjectComparison
                     {
                         // If accessing the property threw an exception
                         // then make the type of exception as the child.
-                        // Do we want to validate the entire exception object 
+                        // Do we want to validate the entire exception object
                         // here ? - currently not doing to improve perf.
                         value = ex.GetType().ToString();
                     }
 
                     GraphNode childNode = new GraphNode()
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
-                                              {
-                                                  Name = property.Name,
-                                                  ObjectValue = value,
-                                                  Ignore = IsPropertySupposedToBeIgnored(nodeData,
-                                                                                         property,
-                                                                                         objectPropertiesToIgnore)
-                                              };
-<<<<<<< HEAD
-=======
                     {
                         Name = property.Name,
-                        ObjectValue = value
+                        ObjectValue = value,
+                        Ignore = IsPropertySupposedToBeIgnored(nodeData,
+                                                               property,
+                                                               objectPropertiesToIgnore)
                     };
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
-=======
->>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
 
                     childNodes.Add(childNode);
                 }
@@ -295,3 +228,4 @@ namespace Microsoft.Test.ObjectComparison
         #endregion
     }
 }
+
