@@ -43,10 +43,23 @@ namespace BlackBox.Tests.CodeGeneration
         }
 
         [Fact]
+        public void Test_class_should_contain_a_call_to_the_comparison_configuration()
+        {
+            generatedCode.ShouldContain("ConfigureComparison(filename);");
+        }
+
+        [Fact]
         public void Test_class_should_compare_input_to_output_parameters()
         {
             generatedCode.ShouldContain("CompareObjects(aInput, aOutput);");
             generatedCode.ShouldContain("CompareObjects(bInput, bOutput);");
+        }
+
+        [Fact]
+        public void Test_class_should_contain_an_example_of_how_to_configure_the_object_comparison()
+        {
+            generatedCode.ShouldContain("protected override void ConfigureComparison(string filename)");
+            generatedCode.ShouldContain("IgnoreOnType(");
         }
 
         [Fact]

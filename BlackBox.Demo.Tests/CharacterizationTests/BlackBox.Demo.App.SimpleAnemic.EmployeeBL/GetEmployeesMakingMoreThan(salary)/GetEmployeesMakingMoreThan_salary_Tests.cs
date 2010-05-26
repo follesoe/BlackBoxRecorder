@@ -23,6 +23,7 @@ namespace CharacterizationTests
 			expected = (System.Collections.Generic.List<BlackBox.Demo.App.SimpleAnemic.EmployeeEntity>)GetReturnValue();
 			actual = target.GetEmployeesMakingMoreThan(salaryInput);
 
+			ConfigureComparison(filename);
 			CompareObjects(salaryInput, salaryOutput);
 			CompareObjects(expected, actual);
 		}
@@ -30,6 +31,14 @@ namespace CharacterizationTests
 		public GetEmployeesMakingMoreThan_salary_Tests()
 		{
 			Initialize();
+		}
+
+		protected override void ConfigureComparison(string filename)
+		{
+			if(filename.EndsWith("GetEmployeesMakingMoreThan_salary.xml"))
+			{
+				//IgnoreOnType(TODO);
+			}
 		}
 
 		[Fact]

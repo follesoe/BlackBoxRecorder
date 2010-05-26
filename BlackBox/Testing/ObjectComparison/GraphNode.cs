@@ -33,10 +33,6 @@ namespace Microsoft.Test.ObjectComparison
 
             set
             {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Please provide a valid name", "value");
-                }
                 this.name = value;
             }
         }
@@ -84,7 +80,7 @@ namespace Microsoft.Test.ObjectComparison
                 Type objectType = null;
                 if (this.ObjectValue != null)
                 {
-                    objectType = this.ObjectValue.GetType();
+                    objectType = this.ObjectValue.GetType();                    
                 }
 
                 return objectType;
@@ -122,9 +118,13 @@ namespace Microsoft.Test.ObjectComparison
             {
                 GraphNode node = this;
                 string qualifiedName = this.Name;
+                string delimiter = ".";
                 while (node.Parent != null)
                 {
-                    qualifiedName = node.Parent.Name + "." + qualifiedName;
+
+                    if (node.Parent.Name == "")
+                        delimiter = "";
+                    qualifiedName = node.Parent.Name + delimiter + qualifiedName;
                     node = node.Parent;
                 }
                 return qualifiedName;

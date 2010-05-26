@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Microsoft.Test.ObjectComparison;
@@ -13,7 +15,7 @@ namespace BlackBox.Testing
         private readonly List<ParameterRecording> _inputParameters;
         private readonly List<ParameterRecording> _outputParameters;
         private readonly ObjectComparer _objectComparer;
-        private readonly List<string> _propertiesToIgnore;
+        private readonly List<MemberInfo> _propertiesToIgnore;
        
         public CharacterizationTest()
         {
@@ -21,7 +23,7 @@ namespace BlackBox.Testing
             _inputParameters = new List<ParameterRecording>();
             _outputParameters = new List<ParameterRecording>();
             _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
-            _propertiesToIgnore = new List<string>();
+            _propertiesToIgnore = new List<MemberInfo>();
         }
 
         public void LoadRecording(string path)
@@ -33,10 +35,10 @@ namespace BlackBox.Testing
         {
             _inputParameters.Clear();
             _reader.LoadRecording(recording);
-            LoadDependenyReturnValues();
+            LoadDependencyReturnValues();
         }
 
-        private void LoadDependenyReturnValues()
+        private void LoadDependencyReturnValues()
         {
             List<DependencyRecording> recordedDependencies = _reader.GetDependencies();
 
@@ -47,6 +49,10 @@ namespace BlackBox.Testing
                     RecordingServices.DependencyPlayback.RegisterExpectedReturnValue(dependency.Method, returnValue);
                 }
             }
+        }
+
+        protected virtual void ConfigureComparison(string filename)
+        {
         }
 
         public object GetInputParameterValue(string parameterName)
@@ -76,25 +82,22 @@ namespace BlackBox.Testing
         public void CompareObjects(object expected, object actual)
         {
             IEnumerable<ObjectComparisonMismatch> mismatches;
-            _objectComparer.Compare(expected, actual, out mismatches);
-            IEnumerable<ObjectComparisonMismatch> filteredMismatches = mismatches.Exclude(_propertiesToIgnore);
-            if (filteredMismatches.Any())
-                throw new ObjectMismatchException(filteredMismatches);
-        }
-
-        protected virtual void ConfigureComparison()
-        {
+            _objectComparer.Compare(expected, actual, _propertiesToIgnore, out mismatches);
+            if (mismatches.Any())
+                throw new ObjectMismatchException(mismatches);
         }
 
         public void Initialize()
         {
             Configuration.RecordingMode = RecordingMode.Playback;
-            ConfigureComparison();
         }
 
-        public void Ignore(string propertyToIgnore)
+        public void IgnoreOnType<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> propertySelector)
         {
-            _propertiesToIgnore.Add(propertyToIgnore);
+            var memberExpression = propertySelector.Body as MemberExpression;
+            if (memberExpression == null)
+                throw new ArgumentException(string.Format("{0} is not a valid member expression.", propertySelector));
+           _propertiesToIgnore.Add(memberExpression.Member); 
         }
     }
 }
