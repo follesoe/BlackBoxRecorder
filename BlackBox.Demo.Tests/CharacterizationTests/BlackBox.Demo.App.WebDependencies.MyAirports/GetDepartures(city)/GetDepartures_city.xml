@@ -32,6 +32,13 @@
     <Status i:nil="true" />
     <Time>2010-05-26T10:30:00</Time>
   </Flight>
+  <Flight>
+    <Airport>TOS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF689</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T15:30:00</Time>
+  </Flight>
 </ArrayOfFlight>]]></Value>
     <Dependencies>
       <Dependency>
@@ -7793,6 +7800,13 @@
     <FlightNumber>WF681</FlightNumber>
     <Status i:nil="true" />
     <Time>2010-05-26T10:30:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>TOS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF689</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T15:30:00</Time>
   </Flight>
 </ArrayOfFlight>]]></Value>
             </ReturnValue>
