@@ -136,6 +136,7 @@ namespace Microsoft.Test.ObjectComparison
         public bool Compare(object leftValue,
                             object rightValue,
 <<<<<<< HEAD
+<<<<<<< HEAD
                             IEnumerable<MemberInfo> typePropertiesToIgnore,
                             out IEnumerable<ObjectComparisonMismatch> mismatches)
         {
@@ -162,14 +163,37 @@ namespace Microsoft.Test.ObjectComparison
                                                out mismatch);
 =======
                             IEnumerable<MemberInfo> propertiesToIgnore,
+=======
+                            IEnumerable<MemberInfo> typePropertiesToIgnore,
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
                             out IEnumerable<ObjectComparisonMismatch> mismatches)
         {
-            if (propertiesToIgnore == null)
-                propertiesToIgnore = new List<MemberInfo>();
+            return Compare(leftValue, rightValue, typePropertiesToIgnore, null, out mismatches);
+        }
+
+        public bool Compare(object leftValue,
+                            object rightValue,
+                            IEnumerable<MemberInfo> typePropertiesToIgnore,
+                            Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
+                            out IEnumerable<ObjectComparisonMismatch> mismatches)
+        {
+            if (typePropertiesToIgnore == null)
+                typePropertiesToIgnore = new List<MemberInfo>();
+
+            if(objectPropertiesToIgnore == null)
+                objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
 
             List<ObjectComparisonMismatch> mismatch;
+<<<<<<< HEAD
             bool isMatch = this.CompareObjects(leftValue, rightValue, propertiesToIgnore, out mismatch);
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+            bool isMatch = this.CompareObjects(leftValue,
+                                               rightValue,
+                                               typePropertiesToIgnore,
+                                               objectPropertiesToIgnore,
+                                               out mismatch);
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
             mismatches = mismatch;
             return isMatch;
         }
@@ -179,18 +203,25 @@ namespace Microsoft.Test.ObjectComparison
         #region Private Members
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         private bool CompareObjects(object leftObject,
                                     object rightObject,
                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
                                     Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
                                     out List<ObjectComparisonMismatch> mismatches)
+<<<<<<< HEAD
 =======
         private bool CompareObjects(object leftObject, object rightObject, IEnumerable<MemberInfo> propertiesToIgnore, out List<ObjectComparisonMismatch> mismatches)
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             mismatches = new List<ObjectComparisonMismatch>();
 
             // Get the graph from the objects 
+<<<<<<< HEAD
 <<<<<<< HEAD
             GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, typePropertiesToIgnore, objectPropertiesToIgnore);
             GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, typePropertiesToIgnore, objectPropertiesToIgnore);
@@ -198,6 +229,10 @@ namespace Microsoft.Test.ObjectComparison
             GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, propertiesToIgnore);
             GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, propertiesToIgnore);
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, typePropertiesToIgnore, objectPropertiesToIgnore);
+            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, typePropertiesToIgnore, objectPropertiesToIgnore);
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
 
             // Get the nodes in breadth first order 
             List<GraphNode> leftNodes = new List<GraphNode>(leftRoot.GetNodesInDepthFirstOrder());

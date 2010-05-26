@@ -16,11 +16,16 @@ namespace BlackBox.Testing
         private readonly List<ParameterRecording> _outputParameters;
         private readonly ObjectComparer _objectComparer;
 <<<<<<< HEAD
+<<<<<<< HEAD
         private readonly List<MemberInfo> _typePropertiesToIgnore;
         private readonly Dictionary<object, List<MemberInfo>> _objectPropertiesToIgnore;
 =======
         private readonly List<MemberInfo> _propertiesToIgnore;
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+        private readonly List<MemberInfo> _typePropertiesToIgnore;
+        private readonly Dictionary<object, List<MemberInfo>> _objectPropertiesToIgnore;
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
        
         public CharacterizationTest()
         {
@@ -29,11 +34,16 @@ namespace BlackBox.Testing
             _outputParameters = new List<ParameterRecording>();
             _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
 <<<<<<< HEAD
+<<<<<<< HEAD
             _typePropertiesToIgnore = new List<MemberInfo>();
             _objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
 =======
             _propertiesToIgnore = new List<MemberInfo>();
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+            _typePropertiesToIgnore = new List<MemberInfo>();
+            _objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         }
 
         public void LoadRecording(string path)
@@ -93,6 +103,9 @@ namespace BlackBox.Testing
         {
             IEnumerable<ObjectComparisonMismatch> mismatches;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
             _objectComparer.Compare(expected, actual, _typePropertiesToIgnore, _objectPropertiesToIgnore, out mismatches);
             if (mismatches.Any())
                 throw new ObjectMismatchException(mismatches);
@@ -120,9 +133,20 @@ namespace BlackBox.Testing
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
         }
 
+        public void Ignore<TType, TPropertyType>(TType anObject, Expression<Func<TType, TPropertyType>> propertySelector)
+        {
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+            if(!_objectPropertiesToIgnore.ContainsKey(anObject))
+                _objectPropertiesToIgnore.Add(anObject, new List<MemberInfo>());
+            _objectPropertiesToIgnore[anObject].Add(memberExpression.Member);
+        }
+
         public void IgnoreOnType<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> propertySelector)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
             MemberExpression memberExpression = GetMemberExpression(propertySelector);
            _typePropertiesToIgnore.Add(memberExpression.Member); 
         }
@@ -130,6 +154,7 @@ namespace BlackBox.Testing
         private static MemberExpression GetMemberExpression<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> expression)
         {
             var memberExpression = expression.Body as MemberExpression;
+<<<<<<< HEAD
             if (memberExpression == null)
                 throw new ArgumentException(string.Format("{0} is not a valid member expression.", expression));
 
@@ -140,6 +165,12 @@ namespace BlackBox.Testing
                 throw new ArgumentException(string.Format("{0} is not a valid member expression.", propertySelector));
            _propertiesToIgnore.Add(memberExpression.Member); 
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+            if (memberExpression == null)
+                throw new ArgumentException(string.Format("{0} is not a valid member expression.", expression));
+
+            return memberExpression;            
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         }
     }
 }

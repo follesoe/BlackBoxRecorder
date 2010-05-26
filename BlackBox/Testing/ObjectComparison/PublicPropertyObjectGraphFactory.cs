@@ -32,12 +32,18 @@ namespace Microsoft.Test.ObjectComparison
         /// <param name="objectPropertiesToIgnore">A set of specific object properties which will constitute leaf nodes</param>
         /// <returns>The root node of the created graph.</returns>
 <<<<<<< HEAD
+<<<<<<< HEAD
         public override GraphNode CreateObjectGraph(object value,
                                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
                                                     Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
 =======
         public override GraphNode CreateObjectGraph(object value, IEnumerable<MemberInfo> propertiesToIgnore)
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+        public override GraphNode CreateObjectGraph(object value,
+                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             if (value == null)
             {
@@ -84,10 +90,14 @@ namespace Microsoft.Test.ObjectComparison
 
                 // Extract and add child nodes for current object //
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
 =======
                 Collection<GraphNode> childNodes = GetChildNodes(nodeData, propertiesToIgnore);
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+                Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
                 foreach (GraphNode childNode in childNodes)
                 {
                     childNode.Parent = currentNode;
@@ -110,21 +120,31 @@ namespace Microsoft.Test.ObjectComparison
         /// <param name="nodeData">The object whose child nodes need to be extracted</param>
         /// <returns>Collection of child graph nodes</returns>
 <<<<<<< HEAD
+<<<<<<< HEAD
         private Collection<GraphNode> GetChildNodes(object nodeData,
                                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
                                                     Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
 =======
         private Collection<GraphNode> GetChildNodes(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+        private Collection<GraphNode> GetChildNodes(object nodeData,
+                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             Collection<GraphNode> childNodes = new Collection<GraphNode>();
 
             // Extract and add properties 
 <<<<<<< HEAD
+<<<<<<< HEAD
             foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
 =======
             foreach (GraphNode child in ExtractProperties(nodeData, propertiesToIgnore))
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+            foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
             {
                 childNodes.Add(child);
             }
@@ -142,12 +162,18 @@ namespace Microsoft.Test.ObjectComparison
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         private List<GraphNode> ExtractProperties(object nodeData,
                                                   IEnumerable<MemberInfo> typePropertiesToIgnore,
                                                   Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
 =======
         private List<GraphNode> ExtractProperties(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+        private List<GraphNode> ExtractProperties(object nodeData,
+                                                  IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                  Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
         {
             List<GraphNode> childNodes = new List<GraphNode>();
 
@@ -158,10 +184,14 @@ namespace Microsoft.Test.ObjectComparison
             foreach (PropertyInfo property in properties)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (typePropertiesToIgnore.Contains(property))
 =======
                 if(propertiesToIgnore.Contains(property))
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+                if (typePropertiesToIgnore.Contains(property))
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
                     continue;
 
                 object value = null;
@@ -185,6 +215,9 @@ namespace Microsoft.Test.ObjectComparison
 
                     GraphNode childNode = new GraphNode()
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
                                               {
                                                   Name = property.Name,
                                                   ObjectValue = value,
@@ -192,12 +225,15 @@ namespace Microsoft.Test.ObjectComparison
                                                                                          property,
                                                                                          objectPropertiesToIgnore)
                                               };
+<<<<<<< HEAD
 =======
                     {
                         Name = property.Name,
                         ObjectValue = value
                     };
 >>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
+=======
+>>>>>>> cd25d43eeaa9f998f9f2b5ca9cbfe5233f9ae584
 
                     childNodes.Add(childNode);
                 }

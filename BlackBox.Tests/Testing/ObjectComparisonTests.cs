@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
 using System.Linq.Expressions;
-=======
-using System.Linq.Expressions;
-using System.Reflection;
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
 using BlackBox.Testing;
 using Xunit;
 using Xunit.Extensions;
@@ -97,7 +92,6 @@ namespace BlackBox.Tests.Testing
             Then.Nothing();
         }
 
-<<<<<<< HEAD
         [Fact]
         public void Can_ignore_a_specific_property_on_a_specific_object()
         {
@@ -194,58 +188,6 @@ namespace BlackBox.Tests.Testing
             Assert.Contains("is not a valid member expression", thrownException.Message);
         }
 
-=======
-        private void A_lamba_representation_of_a_reference_type_property_we_wish_to_ignore()
-        {
-            referenceTypePropertySelector = o => o.MySimpleObject;
-        }
-
-        private void We_use_that_lambda_representation_when_we_compare_two_objects_that_differ_on_underlying_properties()
-        {
-            var someObject = new ObjectWithMixedTypeProperties {MySimpleObject = new ObjectWithValueTypeProperties()};
-            var anotherObject = new ObjectWithMixedTypeProperties
-                                    {
-                                        MySimpleObject = new ObjectWithValueTypeProperties
-                                                             {
-                                                                 MyBoolean = true,
-                                                                 MyDecimal = 1,
-                                                                 MyInteger = 1
-                                                             }
-                                    };
-            var test = new CharacterizationTest();
-            test.IgnoreOnType(referenceTypePropertySelector);
-            test.CompareObjects(someObject, anotherObject);
-        }
-
-        private void A_self_selector()
-        {
-            selfSelector = o => o;
-        }
-
-        private void An_unary_selector()
-        {
-            unarySelector = o => Convert.ToDecimal(o);
-        }
-
-        private void We_try_to_ignore_on_that_self_selector()
-        {
-            var test = new CharacterizationTest();
-            thrownException = Record.Exception(() => test.IgnoreOnType(selfSelector));
-        }
-
-        private void We_try_to_ignore_on_that_unary_selector()
-        {
-            var test = new CharacterizationTest();
-            thrownException = Record.Exception(() => test.IgnoreOnType(unarySelector));
-        }
-
-        private void We_get_an_exception_saying_it_is_not_a_valid_member_expression()
-        {
-            Assert.IsType(typeof(ArgumentException), thrownException);
-            Assert.Contains("is not a valid member expression", thrownException.Message);
-        }
-
->>>>>>> c8bb31f489161031b89e5649a4c57a760e58c337
         private void A_lambda_representation_of_a_property_we_wish_to_ignore()
         {
             propertySelector = o => o.MyBoolean;
