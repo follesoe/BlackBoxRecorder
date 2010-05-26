@@ -28,13 +28,6 @@
   <Flight>
     <Airport>TOS</Airport>
     <Direction i:nil="true" />
-    <FlightNumber>WF679</FlightNumber>
-    <Status i:nil="true" />
-    <Time>2010-05-26T07:13:00</Time>
-  </Flight>
-  <Flight>
-    <Airport>TOS</Airport>
-    <Direction i:nil="true" />
     <FlightNumber>WF681</FlightNumber>
     <Status i:nil="true" />
     <Time>2010-05-26T09:48:00</Time>
@@ -52,6 +45,27 @@
     <FlightNumber>WF675</FlightNumber>
     <Status i:nil="true" />
     <Time>2010-05-26T12:53:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>TOS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF937</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T14:05:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>TOS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF677</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T15:58:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>OSL</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>SK4545</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T16:15:00</Time>
   </Flight>
 </ArrayOfFlight>]]></Value>
     <Dependencies>
@@ -71,13 +85,6 @@
   <Flight>
     <Airport>TOS</Airport>
     <Direction i:nil="true" />
-    <FlightNumber>WF679</FlightNumber>
-    <Status i:nil="true" />
-    <Time>2010-05-26T07:13:00</Time>
-  </Flight>
-  <Flight>
-    <Airport>TOS</Airport>
-    <Direction i:nil="true" />
     <FlightNumber>WF681</FlightNumber>
     <Status i:nil="true" />
     <Time>2010-05-26T09:48:00</Time>
@@ -95,6 +102,27 @@
     <FlightNumber>WF675</FlightNumber>
     <Status i:nil="true" />
     <Time>2010-05-26T12:53:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>TOS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF937</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T14:05:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>TOS</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>WF677</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T15:58:00</Time>
+  </Flight>
+  <Flight>
+    <Airport>OSL</Airport>
+    <Direction i:nil="true" />
+    <FlightNumber>SK4545</FlightNumber>
+    <Status i:nil="true" />
+    <Time>2010-05-26T16:15:00</Time>
   </Flight>
 </ArrayOfFlight>]]></Value>
             </ReturnValue>

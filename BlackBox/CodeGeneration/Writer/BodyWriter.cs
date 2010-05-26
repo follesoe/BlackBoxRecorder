@@ -29,6 +29,7 @@ namespace BlackBox.CodeGeneration.Writer
 
             CreateNameOfTestFixture();
 
+            _output.AppendFormatLine("using System.Linq;");
             _output.AppendFormatLine("using BlackBox.Testing;");
             _output.AppendFormatLine("using {0};", Configuration.TestFlavour.Namespace);
             _output.AppendLine();

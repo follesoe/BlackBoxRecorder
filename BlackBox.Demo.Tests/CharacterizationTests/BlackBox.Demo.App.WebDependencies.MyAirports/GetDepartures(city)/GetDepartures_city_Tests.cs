@@ -1,3 +1,4 @@
+using System.Linq;
 using BlackBox.Testing;
 using Xunit;
 
@@ -35,9 +36,15 @@ namespace CharacterizationTests
 
 		protected override void ConfigureComparison(string filename)
 		{
+			//// Use the filename of the test to setup different
+			//// comparison configurations for each test.
 			//if(filename.EndsWith("GetDepartures_city.xml"))
 			//{
+			//    // Use IgnoreOnType to exclude a property from the comparison for all objects of that type.
 			//    IgnoreOnType((BlackBox.Demo.App.WebDependencies.Flight b) => b.Time);
+			//
+			//    // Use Ignore to exclude a property from the comparison for a specific instance.
+			//    Ignore(expected.First(), (BlackBox.Demo.App.WebDependencies.Flight b) => b.Time);
 			//}
 		}
 

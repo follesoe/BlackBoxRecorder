@@ -26,5 +26,10 @@ namespace BlackBox
                        .DefaultIfEmpty("NoPublicInstancePropertiesAvailable")
                        .FirstOrDefault();
         }
+
+        public static bool IsGenericType(string qualifiedTypeName)
+        {
+            return Type.GetType(qualifiedTypeName, false).IsGenericType;
+        }
     }
 }
