@@ -135,14 +135,30 @@ namespace Microsoft.Test.ObjectComparison
 
         public bool Compare(object leftValue,
                             object rightValue,
-                            IEnumerable<MemberInfo> propertiesToIgnore,
+                            IEnumerable<MemberInfo> typePropertiesToIgnore,
                             out IEnumerable<ObjectComparisonMismatch> mismatches)
         {
-            if (propertiesToIgnore == null)
-                propertiesToIgnore = new List<MemberInfo>();
+            return Compare(leftValue, rightValue, typePropertiesToIgnore, null, out mismatches);
+        }
+
+        public bool Compare(object leftValue,
+                            object rightValue,
+                            IEnumerable<MemberInfo> typePropertiesToIgnore,
+                            Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
+                            out IEnumerable<ObjectComparisonMismatch> mismatches)
+        {
+            if (typePropertiesToIgnore == null)
+                typePropertiesToIgnore = new List<MemberInfo>();
+
+            if(objectPropertiesToIgnore == null)
+                objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
 
             List<ObjectComparisonMismatch> mismatch;
-            bool isMatch = this.CompareObjects(leftValue, rightValue, propertiesToIgnore, out mismatch);
+            bool isMatch = this.CompareObjects(leftValue,
+                                               rightValue,
+                                               typePropertiesToIgnore,
+                                               objectPropertiesToIgnore,
+                                               out mismatch);
             mismatches = mismatch;
             return isMatch;
         }
@@ -151,13 +167,17 @@ namespace Microsoft.Test.ObjectComparison
 
         #region Private Members
 
-        private bool CompareObjects(object leftObject, object rightObject, IEnumerable<MemberInfo> propertiesToIgnore, out List<ObjectComparisonMismatch> mismatches)
+        private bool CompareObjects(object leftObject,
+                                    object rightObject,
+                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
+                                    out List<ObjectComparisonMismatch> mismatches)
         {
             mismatches = new List<ObjectComparisonMismatch>();
 
             // Get the graph from the objects 
-            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, propertiesToIgnore);
-            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, propertiesToIgnore);
+            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, typePropertiesToIgnore, objectPropertiesToIgnore);
+            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, typePropertiesToIgnore, objectPropertiesToIgnore);
 
             // Get the nodes in breadth first order 
             List<GraphNode> leftNodes = new List<GraphNode>(leftRoot.GetNodesInDepthFirstOrder());
@@ -174,7 +194,7 @@ namespace Microsoft.Test.ObjectComparison
                                select node;
 
                 List<GraphNode> matchingNodes = nodelist.ToList<GraphNode>();
-                if (matchingNodes.Count != 1)
+                if (RightNodeIsMissingAndShouldNotBeIgnored(matchingNodes, leftNode))
                 {
                     ObjectComparisonMismatch mismatch = new ObjectComparisonMismatch(leftNode, null, ObjectComparisonMismatchType.MissingRightNode);
                     mismatches.Add(mismatch);
@@ -185,7 +205,7 @@ namespace Microsoft.Test.ObjectComparison
 
                 // Compare the nodes 
                 ObjectComparisonMismatch nodesMismatch = CompareNodes(leftNode, rightNode);
-                if (nodesMismatch != null)
+                if (ThereIsAMismatchWhichShouldNotBeIgnored(nodesMismatch, leftNode))
                 {
                     mismatches.Add(nodesMismatch);
                 }
@@ -194,6 +214,16 @@ namespace Microsoft.Test.ObjectComparison
             bool passed = mismatches.Count == 0 ? true : false;
 
             return passed;
+        }
+
+        private bool RightNodeIsMissingAndShouldNotBeIgnored(List<GraphNode> graphNodes, GraphNode leftNode)
+        {
+            return !(graphNodes.Any() || leftNode.Ignore);
+        }
+
+        private bool ThereIsAMismatchWhichShouldNotBeIgnored(ObjectComparisonMismatch potentialMismatch, GraphNode leftNode)
+        {
+            return potentialMismatch != null && !leftNode.Ignore;
         }
 
         private ObjectComparisonMismatch CompareNodes(GraphNode leftNode, GraphNode rightNode)

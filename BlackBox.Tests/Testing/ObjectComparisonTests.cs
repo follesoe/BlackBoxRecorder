@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using BlackBox.Testing;
 using Xunit;
+using Xunit.Extensions;
 
 namespace BlackBox.Tests.Testing
 {
@@ -89,6 +90,52 @@ namespace BlackBox.Tests.Testing
             Given.A_lamba_representation_of_a_reference_type_property_we_wish_to_ignore();
             When.We_use_that_lambda_representation_when_we_compare_two_objects_that_differ_on_underlying_properties();
             Then.Nothing();
+        }
+
+        [Fact]
+        public void Can_ignore_a_specific_property_on_a_specific_object()
+        {
+            Given.A_lambda_representation_of_a_property_we_wish_to_ignore();
+            When.We_tell_the_comparator_to_use_that_on_a_specific_object_when_comparing();
+            Then.Nothing();
+        }
+
+        [Fact]
+        public void Can_ignore_a_specific_property_on_a_specific_object_in_a_list()
+        {
+            Given.A_lambda_representation_of_a_property_we_wish_to_ignore();
+            When.We_tell_the_comparator_to_use_that_on_a_specific_object_when_comparing_two_lists();
+            Then.Nothing();
+        }
+
+        private void We_tell_the_comparator_to_use_that_on_a_specific_object_when_comparing_two_lists()
+        {
+            var aList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties()
+                            };
+            var anotherList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties{MyBoolean = true},
+                                new ObjectWithValueTypeProperties{MyBoolean = true}
+                            };
+            aList.ShouldNotBeSameAs(anotherList);
+            var test = new CharacterizationTest();
+            test.Ignore(aList.ElementAt(1), propertySelector);
+            test.Ignore(aList.ElementAt(2), propertySelector);
+            test.CompareObjects(aList, anotherList);
+        }
+
+        private void We_tell_the_comparator_to_use_that_on_a_specific_object_when_comparing()
+        {
+            var anObject = new ObjectWithValueTypeProperties();
+            var anotherObject = new ObjectWithValueTypeProperties {MyBoolean = true};
+            var test = new CharacterizationTest();
+            test.Ignore(anObject, propertySelector);
+            test.CompareObjects(anObject, anotherObject);
         }
 
         private void A_lamba_representation_of_a_reference_type_property_we_wish_to_ignore()

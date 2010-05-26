@@ -21,7 +21,9 @@ namespace Microsoft.Test.ObjectComparison
         /// <param name="value">The object to convert.</param>
         /// <param name="propertiesToIgnore">Properties to exclude from the comparison, i.e. properties which parents will be leaf nodes</param>
         /// <returns>The root node of the created graph.</returns>
-        public virtual GraphNode CreateObjectGraph(object value, IEnumerable<MemberInfo> propertiesToIgnore)
+        public virtual GraphNode CreateObjectGraph(object value,
+                                                   IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                   Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
         {
             throw new NotSupportedException("Please provide a behavior for this method in a derived class");
         }
