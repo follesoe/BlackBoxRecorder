@@ -108,6 +108,34 @@ namespace BlackBox.Tests.Testing
             Then.Nothing();
         }
 
+        [Fact]
+        public void Can_apply_ignore_functionality_to_all_instances_in_an_IEnumerable()
+        {
+            Given.A_lambda_representation_of_a_property_we_wish_to_ignore();
+            When.We_tell_the_comparator_to_use_that_on_all_elements_in_an_IEnumerable_when_comparing();
+            Then.Nothing();
+        }
+
+        private void We_tell_the_comparator_to_use_that_on_all_elements_in_an_IEnumerable_when_comparing()
+        {
+            var aList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties{MyInteger = 1},
+                                new ObjectWithValueTypeProperties{MyInteger = 1}
+                            };
+            var anotherList = new List<ObjectWithValueTypeProperties>
+                            {
+                                new ObjectWithValueTypeProperties(),
+                                new ObjectWithValueTypeProperties{MyInteger = 1, MyBoolean = true},
+                                new ObjectWithValueTypeProperties{MyInteger = 1, MyBoolean = true}
+                            };
+            aList.ShouldNotBeSameAs(anotherList);
+            var test = new CharacterizationTest();
+            test.Ignore(aList.Where(o => o.MyInteger == 1), o => o.MyBoolean);
+            test.CompareObjects(aList, anotherList);
+        }
+
         private void We_tell_the_comparator_to_use_that_on_a_specific_object_when_comparing_two_lists()
         {
             var aList = new List<ObjectWithValueTypeProperties>
@@ -124,6 +152,7 @@ namespace BlackBox.Tests.Testing
                             };
             aList.ShouldNotBeSameAs(anotherList);
             var test = new CharacterizationTest();
+
             test.Ignore(aList.ElementAt(1), propertySelector);
             test.Ignore(aList.ElementAt(2), propertySelector);
             test.CompareObjects(aList, anotherList);
