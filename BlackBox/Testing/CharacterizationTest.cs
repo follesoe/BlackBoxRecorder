@@ -15,7 +15,8 @@ namespace BlackBox.Testing
         private readonly List<ParameterRecording> _inputParameters;
         private readonly List<ParameterRecording> _outputParameters;
         private readonly ObjectComparer _objectComparer;
-        private readonly List<MemberInfo> _propertiesToIgnore;
+        private readonly List<MemberInfo> _typePropertiesToIgnore;
+        private readonly Dictionary<object, List<MemberInfo>> _objectPropertiesToIgnore;
        
         public CharacterizationTest()
         {
@@ -23,7 +24,8 @@ namespace BlackBox.Testing
             _inputParameters = new List<ParameterRecording>();
             _outputParameters = new List<ParameterRecording>();
             _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
-            _propertiesToIgnore = new List<MemberInfo>();
+            _typePropertiesToIgnore = new List<MemberInfo>();
+            _objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
         }
 
         public void LoadRecording(string path)
@@ -82,7 +84,7 @@ namespace BlackBox.Testing
         public void CompareObjects(object expected, object actual)
         {
             IEnumerable<ObjectComparisonMismatch> mismatches;
-            _objectComparer.Compare(expected, actual, _propertiesToIgnore, out mismatches);
+            _objectComparer.Compare(expected, actual, _typePropertiesToIgnore, _objectPropertiesToIgnore, out mismatches);
             if (mismatches.Any())
                 throw new ObjectMismatchException(mismatches);
         }
@@ -92,12 +94,27 @@ namespace BlackBox.Testing
             Configuration.RecordingMode = RecordingMode.Playback;
         }
 
+        public void Ignore<TType, TPropertyType>(TType anObject, Expression<Func<TType, TPropertyType>> propertySelector)
+        {
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+            if(!_objectPropertiesToIgnore.ContainsKey(anObject))
+                _objectPropertiesToIgnore.Add(anObject, new List<MemberInfo>());
+            _objectPropertiesToIgnore[anObject].Add(memberExpression.Member);
+        }
+
         public void IgnoreOnType<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> propertySelector)
         {
-            var memberExpression = propertySelector.Body as MemberExpression;
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+           _typePropertiesToIgnore.Add(memberExpression.Member); 
+        }
+
+        private static MemberExpression GetMemberExpression<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> expression)
+        {
+            var memberExpression = expression.Body as MemberExpression;
             if (memberExpression == null)
-                throw new ArgumentException(string.Format("{0} is not a valid member expression.", propertySelector));
-           _propertiesToIgnore.Add(memberExpression.Member); 
+                throw new ArgumentException(string.Format("{0} is not a valid member expression.", expression));
+
+            return memberExpression;            
         }
     }
 }

@@ -28,8 +28,12 @@ namespace Microsoft.Test.ObjectComparison
         /// Creates a graph for the given object by extracting public properties.
         /// </summary>
         /// <param name="value">The object to convert.</param>
+        /// <param name="typePropertiesToIgnore">A set of properties which will constitute leaf nodes</param>
+        /// <param name="objectPropertiesToIgnore">A set of specific object properties which will constitute leaf nodes</param>
         /// <returns>The root node of the created graph.</returns>
-        public override GraphNode CreateObjectGraph(object value, IEnumerable<MemberInfo> propertiesToIgnore)
+        public override GraphNode CreateObjectGraph(object value,
+                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
         {
             if (value == null)
             {
@@ -75,7 +79,7 @@ namespace Microsoft.Test.ObjectComparison
                 visitedObjects.Add(nodeData.GetHashCode(), currentNode);
 
                 // Extract and add child nodes for current object //
-                Collection<GraphNode> childNodes = GetChildNodes(nodeData, propertiesToIgnore);
+                Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
                 foreach (GraphNode childNode in childNodes)
                 {
                     childNode.Parent = currentNode;
@@ -97,12 +101,14 @@ namespace Microsoft.Test.ObjectComparison
         /// </summary>
         /// <param name="nodeData">The object whose child nodes need to be extracted</param>
         /// <returns>Collection of child graph nodes</returns>
-        private Collection<GraphNode> GetChildNodes(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
+        private Collection<GraphNode> GetChildNodes(object nodeData,
+                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
         {
             Collection<GraphNode> childNodes = new Collection<GraphNode>();
 
             // Extract and add properties 
-            foreach (GraphNode child in ExtractProperties(nodeData, propertiesToIgnore))
+            foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
             {
                 childNodes.Add(child);
             }
@@ -119,7 +125,9 @@ namespace Microsoft.Test.ObjectComparison
             return childNodes;
         }
 
-        private List<GraphNode> ExtractProperties(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
+        private List<GraphNode> ExtractProperties(object nodeData,
+                                                  IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                  Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
         {
             List<GraphNode> childNodes = new List<GraphNode>();
 
@@ -129,7 +137,7 @@ namespace Microsoft.Test.ObjectComparison
             PropertyInfo[] properties = nodeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo property in properties)
             {
-                if(propertiesToIgnore.Contains(property))
+                if (typePropertiesToIgnore.Contains(property))
                     continue;
 
                 object value = null;
@@ -152,16 +160,25 @@ namespace Microsoft.Test.ObjectComparison
                     }
 
                     GraphNode childNode = new GraphNode()
-                    {
-                        Name = property.Name,
-                        ObjectValue = value
-                    };
+                                              {
+                                                  Name = property.Name,
+                                                  ObjectValue = value,
+                                                  Ignore = IsPropertySupposedToBeIgnored(nodeData,
+                                                                                         property,
+                                                                                         objectPropertiesToIgnore)
+                                              };
 
                     childNodes.Add(childNode);
                 }
             };
 
             return childNodes;
+        }
+
+        private bool IsPropertySupposedToBeIgnored(object nodeData, PropertyInfo property, Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+        {
+            return objectPropertiesToIgnore.ContainsKey(nodeData) &&
+                   objectPropertiesToIgnore[nodeData].Contains(property);
         }
 
         private static List<GraphNode> GetIEnumerableChildNodes(object nodeData)

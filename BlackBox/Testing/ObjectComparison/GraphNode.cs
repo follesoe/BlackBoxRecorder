@@ -37,7 +37,7 @@ namespace Microsoft.Test.ObjectComparison
             }
         }
 
-        public LambdaExpression Selector { get; set; }
+        public bool Ignore { get; set; }
 
         /// <summary>
         /// Gets the collection of child nodes to this
