@@ -133,6 +133,11 @@ namespace BlackBox
             return CurrentRecording.XPathSelectElement("/Recording/Return/Type").Value;
         }
 
+        public string GetAssemblyQualifiedNameOfReturnValue()
+        {
+            return CurrentRecording.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;
+        }
+
         public object GetReturnValue()
         {
             string fullyQualifiedType = CurrentRecording.XPathSelectElement("/Recording/Return/FullyQualifiedType").Value;

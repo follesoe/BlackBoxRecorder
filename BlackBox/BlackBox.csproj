@@ -121,6 +121,7 @@
     <Compile Include="Testing\ObjectComparison\ObjectGraphFactory.cs" />
     <Compile Include="Testing\ObjectComparison\PublicPropertyObjectGraphFactory.cs" />
     <Compile Include="TypeExtension.cs" />
+    <Compile Include="TypeTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

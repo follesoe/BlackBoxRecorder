@@ -21,6 +21,10 @@ namespace BlackBox.Tests.Testing
         public OneOrTwoOrThree MyEnumeration { get; set; }
     }
 
+    public class ObjectWithNoProperties
+    {
+    }
+
     public class ObjectWithDateTimeProperty
     {
         public DateTime MyDay { get; set; }

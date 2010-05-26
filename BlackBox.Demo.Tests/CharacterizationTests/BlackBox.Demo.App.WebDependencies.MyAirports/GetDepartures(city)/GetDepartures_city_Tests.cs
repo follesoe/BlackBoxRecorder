@@ -23,6 +23,7 @@ namespace CharacterizationTests
 			expected = (System.Collections.Generic.List<BlackBox.Demo.App.WebDependencies.Flight>)GetReturnValue();
 			actual = target.GetDepartures(cityInput);
 
+			ConfigureComparison(filename);
 			CompareObjects(cityInput, cityOutput);
 			CompareObjects(expected, actual);
 		}
@@ -30,6 +31,14 @@ namespace CharacterizationTests
 		public GetDepartures_city_Tests()
 		{
 			Initialize();
+		}
+
+		protected override void ConfigureComparison(string filename)
+		{
+			//if(filename.EndsWith("GetDepartures_city.xml"))
+			//{
+			//    IgnoreOnType((BlackBox.Demo.App.WebDependencies.Flight b) => b.Time);
+			//}
 		}
 
 		[Fact]

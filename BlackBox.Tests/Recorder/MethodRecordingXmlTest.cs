@@ -96,6 +96,15 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
+        public void Can_read_the_fully_qualified_name_of_the_return_type()
+        {
+            Given.we_have_an_xml_recording();
+            When.we_load_the_recording_into_the_reader();
+            string qualifiedName = reader.GetAssemblyQualifiedNameOfReturnValue();
+            qualifiedName.ShouldEqual("System.Collections.Generic.List`1[[BlackBox.Tests.Fakes.Contact, BlackBox.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+        }
+
+        [Fact]
         public void Can_read_the_return_value()
         {
             Given.we_have_an_xml_recording();
