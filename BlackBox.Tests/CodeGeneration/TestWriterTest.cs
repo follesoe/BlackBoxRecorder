@@ -59,7 +59,8 @@ namespace BlackBox.Tests.CodeGeneration
         public void Test_class_should_contain_an_example_of_how_to_configure_the_object_comparison()
         {
             generatedCode.ShouldContain("protected override void ConfigureComparison(string filename)");
-            generatedCode.ShouldContain("IgnoreOnType(");
+            generatedCode.ShouldContain("if(filename.EndsWith(");
+            generatedCode.ShouldContain("IgnoreOnType((System.Int32 s) => s");
         }
 
         [Fact]

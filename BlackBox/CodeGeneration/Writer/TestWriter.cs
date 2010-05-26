@@ -39,6 +39,7 @@ namespace BlackBox.CodeGeneration.Writer
             RemoveClosingBrackets();
 
             _configurationWriter.WriteConfigurationMethod(path);
+
             _methodWriter.WriteTestMethod(path);
         }
 

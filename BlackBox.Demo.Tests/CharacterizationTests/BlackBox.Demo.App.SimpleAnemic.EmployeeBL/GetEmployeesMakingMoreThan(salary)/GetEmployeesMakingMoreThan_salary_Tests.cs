@@ -35,10 +35,10 @@ namespace CharacterizationTests
 
 		protected override void ConfigureComparison(string filename)
 		{
-			if(filename.EndsWith("GetEmployeesMakingMoreThan_salary.xml"))
-			{
+			//if(filename.EndsWith("GetEmployeesMakingMoreThan_salary.xml"))
+			//{
 				//IgnoreOnType(TODO);
-			}
+			//}
 		}
 
 		[Fact]

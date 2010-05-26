@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using System;
+using BlackBox.Tests.Testing;
+using Xunit;
 using Xunit.Extensions;
 
 using BlackBox.Tests.Fakes;
