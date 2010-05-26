@@ -12,6 +12,7 @@ namespace BlackBox.CodeGeneration.Writer
         private readonly StringBuilder _output;
         private readonly BodyWriter _bodyWriter;
         private readonly TestMethodWriter _methodWriter;
+        private readonly ComparisonConfigurationWriter _configurationWriter;
         private bool _isSaved;
 
         public TestWriter() : this(new RecordingXmlReader(), new FileAdapter())
@@ -26,6 +27,7 @@ namespace BlackBox.CodeGeneration.Writer
             _output = new StringBuilder();
             _bodyWriter = new BodyWriter(reader, _output);
             _methodWriter = new TestMethodWriter(reader, _output);
+            _configurationWriter = new ComparisonConfigurationWriter(reader, _output);
         }
 
         public void WriteTest(string path)
@@ -36,6 +38,7 @@ namespace BlackBox.CodeGeneration.Writer
 
             RemoveClosingBrackets();
 
+            _configurationWriter.WriteConfigurationMethod(path);
             _methodWriter.WriteTestMethod(path);
         }
 

@@ -21,7 +21,7 @@ namespace BlackBox.CodeGeneration.Writer
             _output.AppendLine();
         }
 
-        public void WriteConsturctor(string testFixtureName)
+        public void WriteConstructor(string testFixtureName)
         {
             _output.AppendFormatLine("\t\tpublic {0}()", testFixtureName);
             _output.AppendLine("\t\t{");

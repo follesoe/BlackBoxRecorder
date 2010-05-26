@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Microsoft.Test.ObjectComparison
 {
@@ -93,6 +94,8 @@ namespace Microsoft.Test.ObjectComparison
 
         #region Public and Protected Members
 
+        private IEnumerable<MemberInfo> _propertiesToIgnore;
+
         /// <summary>
         /// Gets the ObjectGraphFactory used to convert objects
         /// to graphs.
@@ -127,10 +130,20 @@ namespace Microsoft.Test.ObjectComparison
         /// <returns>true if the objects match.</returns>
         public bool Compare(object leftValue, object rightValue, out IEnumerable<ObjectComparisonMismatch> mismatches)
         {
-            List<ObjectComparisonMismatch> mismatch;
-            bool isMatch = this.CompareObjects(leftValue, rightValue, out mismatch);
-            mismatches = mismatch;
+            return Compare(leftValue, rightValue, null, out mismatches);
+        }
 
+        public bool Compare(object leftValue,
+                            object rightValue,
+                            IEnumerable<MemberInfo> propertiesToIgnore,
+                            out IEnumerable<ObjectComparisonMismatch> mismatches)
+        {
+            if (propertiesToIgnore == null)
+                propertiesToIgnore = new List<MemberInfo>();
+
+            List<ObjectComparisonMismatch> mismatch;
+            bool isMatch = this.CompareObjects(leftValue, rightValue, propertiesToIgnore, out mismatch);
+            mismatches = mismatch;
             return isMatch;
         }
 
@@ -138,13 +151,13 @@ namespace Microsoft.Test.ObjectComparison
 
         #region Private Members
 
-        private bool CompareObjects(object leftObject, object rightObject, out List<ObjectComparisonMismatch> mismatches)
+        private bool CompareObjects(object leftObject, object rightObject, IEnumerable<MemberInfo> propertiesToIgnore, out List<ObjectComparisonMismatch> mismatches)
         {
             mismatches = new List<ObjectComparisonMismatch>();
 
             // Get the graph from the objects 
-            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject);
-            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject);
+            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, propertiesToIgnore);
+            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, propertiesToIgnore);
 
             // Get the nodes in breadth first order 
             List<GraphNode> leftNodes = new List<GraphNode>(leftRoot.GetNodesInDepthFirstOrder());
@@ -212,7 +225,7 @@ namespace Microsoft.Test.ObjectComparison
             }
 
             // compare primitives, strings
-            if (leftNode.ObjectType.IsPrimitive || leftNode.ObjectType == typeof(string))
+            if (leftNode.ObjectType.IsPrimitive || leftNode.ObjectType.IsValueType || leftNode.ObjectType == typeof(string))
             {
                 if (!leftNode.ObjectValue.Equals(rightNode.ObjectValue))
                 {

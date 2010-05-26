@@ -28,7 +28,7 @@ namespace BlackBox.CodeGeneration.Writer
             if (_bodyIsWritten) return;
 
             CreateNameOfTestFixture();
-            
+
             _output.AppendFormatLine("using BlackBox.Testing;");
             _output.AppendFormatLine("using {0};", Configuration.TestFlavour.Namespace);
             _output.AppendLine();
@@ -64,7 +64,7 @@ namespace BlackBox.CodeGeneration.Writer
 
             if (Configuration.TestFlavour.ConstructorAsSetup())
             {
-                _setupWriter.WriteConsturctor(TestFixtureName);
+                _setupWriter.WriteConstructor(TestFixtureName);
             }
             else
             {

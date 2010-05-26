@@ -51,6 +51,8 @@ namespace BlackBox.CodeGeneration.Writer
 
             _output.AppendLine();
 
+            _output.AppendLine("\t\t\tConfigureComparison(filename);");
+
             var parameters = _reader.GetInputParametersMetadata();
             parameters.ForEach(p => _output.AppendFormatLine("\t\t\tCompareObjects({0}Input, {0}Output);", p.Name));
 

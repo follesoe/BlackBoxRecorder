@@ -29,7 +29,7 @@ namespace Microsoft.Test.ObjectComparison
         /// </summary>
         /// <param name="value">The object to convert.</param>
         /// <returns>The root node of the created graph.</returns>
-        public override GraphNode CreateObjectGraph(object value)
+        public override GraphNode CreateObjectGraph(object value, IEnumerable<MemberInfo> propertiesToIgnore)
         {
             if (value == null)
             {
@@ -42,15 +42,12 @@ namespace Microsoft.Test.ObjectComparison
             // Dictionary of < object hashcode, node > - to lookup already visited objects 
             Dictionary<int, GraphNode> visitedObjects = new Dictionary<int, GraphNode>();
 
-            // Build the root node and enqueue it 
-            ParameterExpression parameter = Expression.Parameter(value.GetType(), "obj");
-            var selector = Expression.Lambda(parameter, parameter);
+            // Build the root node and enqueue it
             var root = new GraphNode()
-                       {
-                           Name = "RootObject",
-                           ObjectValue = value,
-                           Selector = selector
-                       };
+                           {
+                               Name = value is IEnumerable ? "" : value.GetType().Name,
+                               ObjectValue = value
+                           };
             pendingQueue.Enqueue(root);
 
             while (pendingQueue.Count != 0)
@@ -75,13 +72,10 @@ namespace Microsoft.Test.ObjectComparison
                     currentNode.Children.Add(prebuiltNode);
                     continue;
                 }
-                else
-                {
-                    visitedObjects.Add(nodeData.GetHashCode(), currentNode);
-                }
+                visitedObjects.Add(nodeData.GetHashCode(), currentNode);
 
                 // Extract and add child nodes for current object //
-                Collection<GraphNode> childNodes = GetChildNodes(nodeData);
+                Collection<GraphNode> childNodes = GetChildNodes(nodeData, propertiesToIgnore);
                 foreach (GraphNode childNode in childNodes)
                 {
                     childNode.Parent = currentNode;
@@ -103,12 +97,12 @@ namespace Microsoft.Test.ObjectComparison
         /// </summary>
         /// <param name="nodeData">The object whose child nodes need to be extracted</param>
         /// <returns>Collection of child graph nodes</returns>
-        private Collection<GraphNode> GetChildNodes(object nodeData)
+        private Collection<GraphNode> GetChildNodes(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
         {
             Collection<GraphNode> childNodes = new Collection<GraphNode>();
 
             // Extract and add properties 
-            foreach (GraphNode child in ExtractProperties(nodeData))
+            foreach (GraphNode child in ExtractProperties(nodeData, propertiesToIgnore))
             {
                 childNodes.Add(child);
             }
@@ -125,7 +119,7 @@ namespace Microsoft.Test.ObjectComparison
             return childNodes;
         }
 
-        private List<GraphNode> ExtractProperties(object nodeData)
+        private List<GraphNode> ExtractProperties(object nodeData, IEnumerable<MemberInfo> propertiesToIgnore)
         {
             List<GraphNode> childNodes = new List<GraphNode>();
 
@@ -135,6 +129,9 @@ namespace Microsoft.Test.ObjectComparison
             PropertyInfo[] properties = nodeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo property in properties)
             {
+                if(propertiesToIgnore.Contains(property))
+                    continue;
+
                 object value = null;
 
                 ParameterInfo[] parameters = property.GetIndexParameters();
@@ -154,14 +151,10 @@ namespace Microsoft.Test.ObjectComparison
                         value = ex.GetType().ToString();
                     }
 
-                    ParameterExpression parameter = Expression.Parameter(nodeData.GetType(), "obj");
-                    ParameterExpression selectedProperty = Expression.Parameter(property.PropertyType, property.Name);
-                    var selector = Expression.Lambda(selectedProperty, parameter);
                     GraphNode childNode = new GraphNode()
                     {
                         Name = property.Name,
-                        ObjectValue = value,
-                        Selector = selector
+                        ObjectValue = value
                     };
 
                     childNodes.Add(childNode);
