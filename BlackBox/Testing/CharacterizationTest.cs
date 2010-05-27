@@ -16,7 +16,9 @@ namespace BlackBox.Testing
         private readonly List<ParameterRecording> _outputParameters;
         private readonly ObjectComparer _objectComparer;
         private readonly List<MemberInfo> _typePropertiesToIgnore;
-        private readonly Dictionary<object, List<MemberInfo>> _objectPropertiesToIgnore;
+        private readonly Dictionary<object, List<MemberInfo>> _instancePropertiesToIgnore;
+        private readonly List<PropertyComparator> _customTypePropertyComparisons;
+        private readonly Dictionary<object, List<PropertyComparator>> _customInstancePropertyComparisons;
        
         public CharacterizationTest()
         {
@@ -25,7 +27,9 @@ namespace BlackBox.Testing
             _outputParameters = new List<ParameterRecording>();
             _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
             _typePropertiesToIgnore = new List<MemberInfo>();
-            _objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
+            _instancePropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
+            _customTypePropertyComparisons = new List<PropertyComparator>();
+            _customInstancePropertyComparisons = new Dictionary<object, List<PropertyComparator>>();
         }
 
         public void LoadRecording(string path)
@@ -84,7 +88,13 @@ namespace BlackBox.Testing
         public void CompareObjects(object expected, object actual)
         {
             IEnumerable<ObjectComparisonMismatch> mismatches;
-            _objectComparer.Compare(expected, actual, _typePropertiesToIgnore, _objectPropertiesToIgnore, out mismatches);
+            _objectComparer.Compare(expected,
+                                    actual,
+                                    _typePropertiesToIgnore,
+                                    _instancePropertiesToIgnore,
+                                    _customTypePropertyComparisons,
+                                    _customInstancePropertyComparisons,
+                                    out mismatches);
             if (mismatches.Any())
                 throw new ObjectMismatchException(mismatches);
         }
@@ -97,9 +107,9 @@ namespace BlackBox.Testing
         public void Ignore<TType, TPropertyType>(TType anObject, Expression<Func<TType, TPropertyType>> propertySelector)
         {
             MemberExpression memberExpression = GetMemberExpression(propertySelector);
-            if(!_objectPropertiesToIgnore.ContainsKey(anObject))
-                _objectPropertiesToIgnore.Add(anObject, new List<MemberInfo>());
-            _objectPropertiesToIgnore[anObject].Add(memberExpression.Member);
+            if(!_instancePropertiesToIgnore.ContainsKey(anObject))
+                _instancePropertiesToIgnore.Add(anObject, new List<MemberInfo>());
+            _instancePropertiesToIgnore[anObject].Add(memberExpression.Member);
         }
 
         public void Ignore<TType, TPropertyType>(IEnumerable<TType> aSetOfObjects, Expression<Func<TType, TPropertyType>> propertySelector)
@@ -111,6 +121,28 @@ namespace BlackBox.Testing
         {
             MemberExpression memberExpression = GetMemberExpression(propertySelector);
            _typePropertiesToIgnore.Add(memberExpression.Member); 
+        }
+
+        public void AllowOnType<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> propertySelector, Predicate<TPropertyType> propertyComparison)
+        {
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+            _customTypePropertyComparisons.Add(new PropertyComparator
+                                               {
+                                                   Property = memberExpression.Member,
+                                                   Comparator = propertyComparison
+                                               });
+        }
+
+        public void Allow<TType, TPropertyType>(TType anObject, Expression<Func<TType, TPropertyType>> propertySelector, Predicate<TPropertyType> propertyComparison)
+        {
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+            if(!_customInstancePropertyComparisons.ContainsKey(anObject))
+                _customInstancePropertyComparisons.Add(anObject, new List<PropertyComparator>());
+            _customInstancePropertyComparisons[anObject].Add(new PropertyComparator
+                                                                 {
+                                                                     Property = memberExpression.Member,
+                                                                     Comparator = propertyComparison
+                                                                 });
         }
 
         private static MemberExpression GetMemberExpression<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> expression)

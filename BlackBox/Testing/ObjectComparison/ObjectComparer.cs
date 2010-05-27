@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using BlackBox.Testing;
 
 namespace Microsoft.Test.ObjectComparison
 {
@@ -94,8 +95,6 @@ namespace Microsoft.Test.ObjectComparison
 
         #region Public and Protected Members
 
-        private IEnumerable<MemberInfo> _propertiesToIgnore;
-
         /// <summary>
         /// Gets the ObjectGraphFactory used to convert objects
         /// to graphs.
@@ -108,56 +107,33 @@ namespace Microsoft.Test.ObjectComparison
             }
         }
 
-        /// <summary>
-        /// Performs a deep comparison of two objects.
-        /// </summary>
-        /// <param name="leftValue">The left object.</param>
-        /// <param name="rightValue">The right object.</param>
-        /// <returns>true if the objects match.</returns>
-        public bool Compare(object leftValue, object rightValue)
-        {
-            IEnumerable<ObjectComparisonMismatch> mismatches;
-            return Compare(leftValue, rightValue, out mismatches);
-        }
-
-        /// <summary>
-        /// Performs a deep comparison of two objects and provides
-        /// a list of mismatching nodes.
-        /// </summary>
-        /// <param name="leftValue">The left object.</param>
-        /// <param name="rightValue">The right object.</param>
-        /// <param name="mismatches">The list of mismatches.</param>
-        /// <returns>true if the objects match.</returns>
-        public bool Compare(object leftValue, object rightValue, out IEnumerable<ObjectComparisonMismatch> mismatches)
-        {
-            return Compare(leftValue, rightValue, null, out mismatches);
-        }
-
         public bool Compare(object leftValue,
                             object rightValue,
                             IEnumerable<MemberInfo> typePropertiesToIgnore,
-                            out IEnumerable<ObjectComparisonMismatch> mismatches)
-        {
-            return Compare(leftValue, rightValue, typePropertiesToIgnore, null, out mismatches);
-        }
-
-        public bool Compare(object leftValue,
-                            object rightValue,
-                            IEnumerable<MemberInfo> typePropertiesToIgnore,
-                            Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
+                            Dictionary<object, List<MemberInfo>> instancePropertiesToIgnore,
+                            IEnumerable<PropertyComparator> customTypePropertyComparisons,
+                            Dictionary<object, List<PropertyComparator>> customInstancePropertyComparisons,
                             out IEnumerable<ObjectComparisonMismatch> mismatches)
         {
             if (typePropertiesToIgnore == null)
                 typePropertiesToIgnore = new List<MemberInfo>();
 
-            if (objectPropertiesToIgnore == null)
-                objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
+            if (instancePropertiesToIgnore == null)
+                instancePropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
+
+            if (customTypePropertyComparisons == null)
+                customTypePropertyComparisons = new List<PropertyComparator>();
+
+            if(customInstancePropertyComparisons == null)
+                customInstancePropertyComparisons = new Dictionary<object, List<PropertyComparator>>();
 
             List<ObjectComparisonMismatch> mismatch;
             bool isMatch = this.CompareObjects(leftValue,
                                                rightValue,
                                                typePropertiesToIgnore,
-                                               objectPropertiesToIgnore,
+                                               instancePropertiesToIgnore,
+                                               customTypePropertyComparisons,
+                                               customInstancePropertyComparisons,
                                                out mismatch);
             mismatches = mismatch;
             return isMatch;
@@ -170,14 +146,24 @@ namespace Microsoft.Test.ObjectComparison
         private bool CompareObjects(object leftObject,
                                     object rightObject,
                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
+                                    Dictionary<object, List<MemberInfo>> instancePropertiesToIgnore,
+                                    IEnumerable<PropertyComparator> customTypePropertyComparisons,
+                                    Dictionary<object, List<PropertyComparator>> customInstancePropertyComparisons,
                                     out List<ObjectComparisonMismatch> mismatches)
         {
             mismatches = new List<ObjectComparisonMismatch>();
 
             // Get the graph from the objects
-            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, typePropertiesToIgnore, objectPropertiesToIgnore);
-            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, typePropertiesToIgnore, objectPropertiesToIgnore);
+            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject,
+                                                                           typePropertiesToIgnore,
+                                                                           instancePropertiesToIgnore,
+                                                                           customTypePropertyComparisons,
+                                                                           customInstancePropertyComparisons);
+            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject,
+                                                                            typePropertiesToIgnore,
+                                                                            instancePropertiesToIgnore,
+                                                                            customTypePropertyComparisons,
+                                                                            customInstancePropertyComparisons);
 
             // Get the nodes in breadth first order
             List<GraphNode> leftNodes = new List<GraphNode>(leftRoot.GetNodesInDepthFirstOrder());
@@ -205,7 +191,7 @@ namespace Microsoft.Test.ObjectComparison
 
                 // Compare the nodes
                 ObjectComparisonMismatch nodesMismatch = CompareNodes(leftNode, rightNode);
-                if (ThereIsAMismatchWhichShouldNotBeIgnored(nodesMismatch, leftNode))
+                if (ThereIsAMismatchWhichShouldNotBeIgnored(nodesMismatch, leftNode, rightNode))
                 {
                     mismatches.Add(nodesMismatch);
                 }
@@ -221,9 +207,9 @@ namespace Microsoft.Test.ObjectComparison
             return !(graphNodes.Any() || leftNode.Ignore);
         }
 
-        private bool ThereIsAMismatchWhichShouldNotBeIgnored(ObjectComparisonMismatch potentialMismatch, GraphNode leftNode)
+        private bool ThereIsAMismatchWhichShouldNotBeIgnored(ObjectComparisonMismatch potentialMismatch, GraphNode leftNode, GraphNode rightNode)
         {
-            return potentialMismatch != null && !leftNode.Ignore;
+            return potentialMismatch != null && !(leftNode.Ignore || rightNode.WithinAllowedRange);
         }
 
         private ObjectComparisonMismatch CompareNodes(GraphNode leftNode, GraphNode rightNode)
@@ -233,6 +219,9 @@ namespace Microsoft.Test.ObjectComparison
             {
                 return null;
             }
+
+            if (rightNode.WithinAllowedRange)
+                return null;
 
             // check if one of them is null
             if (leftNode.ObjectValue == null || rightNode.ObjectValue == null)

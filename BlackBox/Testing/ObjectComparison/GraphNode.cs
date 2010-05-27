@@ -38,6 +38,7 @@ namespace Microsoft.Test.ObjectComparison
         }
 
         public bool Ignore { get; set; }
+        public bool WithinAllowedRange { get; set; }
 
         /// <summary>
         /// Gets the collection of child nodes to this

@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using BlackBox.Testing;
 
 namespace Microsoft.Test.ObjectComparison
 {
@@ -29,11 +30,14 @@ namespace Microsoft.Test.ObjectComparison
         /// </summary>
         /// <param name="value">The object to convert.</param>
         /// <param name="typePropertiesToIgnore">A set of properties which will constitute leaf nodes</param>
-        /// <param name="objectPropertiesToIgnore">A set of specific object properties which will constitute leaf nodes</param>
+        /// <param name="instancePropertiesToIgnore">A set of specific object properties which will constitute leaf nodes</param>
+        /// <param name="customTypePropertyComparisons"></param>
         /// <returns>The root node of the created graph.</returns>
         public override GraphNode CreateObjectGraph(object value,
-                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+                                                   IEnumerable<MemberInfo> typePropertiesToIgnore,
+                                                   Dictionary<object, List<MemberInfo>> instancePropertiesToIgnore,
+                                                   IEnumerable<PropertyComparator> customTypePropertyComparisons,
+                                                   Dictionary<object, List<PropertyComparator>> customInstancePropertyComparisons)
         {
             if (value == null)
             {
@@ -79,7 +83,11 @@ namespace Microsoft.Test.ObjectComparison
                 visitedObjects.Add(nodeData.GetHashCode(), currentNode);
 
                 // Extract and add child nodes for current object //
-                Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
+                Collection<GraphNode> childNodes = GetChildNodes(nodeData,
+                                                                 typePropertiesToIgnore,
+                                                                 instancePropertiesToIgnore,
+                                                                 customTypePropertyComparisons,
+                                                                 customInstancePropertyComparisons);
                 foreach (GraphNode childNode in childNodes)
                 {
                     childNode.Parent = currentNode;
@@ -103,12 +111,18 @@ namespace Microsoft.Test.ObjectComparison
         /// <returns>Collection of child graph nodes</returns>
         private Collection<GraphNode> GetChildNodes(object nodeData,
                                                     IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+                                                    Dictionary<object, List<MemberInfo>> instancePropertiesToIgnore,
+                                                    IEnumerable<PropertyComparator> customTypePropertyComparisons,
+                                                    Dictionary<object, List<PropertyComparator>> customInstancePropertyComparisons)
         {
             Collection<GraphNode> childNodes = new Collection<GraphNode>();
 
             // Extract and add properties
-            foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
+            foreach (GraphNode child in ExtractProperties(nodeData,
+                                                          typePropertiesToIgnore,
+                                                          instancePropertiesToIgnore,
+                                                          customTypePropertyComparisons,
+                                                          customInstancePropertyComparisons))
             {
                 childNodes.Add(child);
             }
@@ -127,7 +141,9 @@ namespace Microsoft.Test.ObjectComparison
 
         private List<GraphNode> ExtractProperties(object nodeData,
                                                   IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                  Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+                                                  Dictionary<object, List<MemberInfo>> instancePropertiesToIgnore,
+                                                  IEnumerable<PropertyComparator> customTypePropertyComparisons,
+                                                  Dictionary<object, List<PropertyComparator>> customInstancePropertyComparisons)
         {
             List<GraphNode> childNodes = new List<GraphNode>();
 
@@ -141,7 +157,7 @@ namespace Microsoft.Test.ObjectComparison
                     continue;
 
                 object value = null;
-
+                bool withinRange = false;
                 ParameterInfo[] parameters = property.GetIndexParameters();
                 // Skip indexed properties and properties that cannot be read
                 if (property.CanRead && parameters.Length == 0)
@@ -149,6 +165,13 @@ namespace Microsoft.Test.ObjectComparison
                     try
                     {
                         value = property.GetValue(nodeData, null);
+                        if(customTypePropertyComparisons.Select(c => c.Property).Contains(property))
+                        {
+                            PropertyInfo prop = property;
+                            PropertyComparator customComparator =
+                                customTypePropertyComparisons.First(c => c.Property == prop);
+                            withinRange = (bool) customComparator.Comparator.DynamicInvoke(value);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -165,7 +188,11 @@ namespace Microsoft.Test.ObjectComparison
                         ObjectValue = value,
                         Ignore = IsPropertySupposedToBeIgnored(nodeData,
                                                                property,
-                                                               objectPropertiesToIgnore)
+                                                               instancePropertiesToIgnore),
+                        WithinAllowedRange = IsPropertyWithinRange(withinRange,
+                                                                   nodeData,
+                                                                   property,
+                                                                   customInstancePropertyComparisons)
                     };
 
                     childNodes.Add(childNode);
@@ -175,10 +202,31 @@ namespace Microsoft.Test.ObjectComparison
             return childNodes;
         }
 
-        private bool IsPropertySupposedToBeIgnored(object nodeData, PropertyInfo property, Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+        private bool IsPropertyWithinRange(bool withinRange,
+                                           object nodeData,
+                                           PropertyInfo property,
+                                           Dictionary<object, List<PropertyComparator>> customInstancePropertyComparisons)
         {
-            return objectPropertiesToIgnore.ContainsKey(nodeData) &&
-                   objectPropertiesToIgnore[nodeData].Contains(property);
+            if (withinRange)
+                return true;
+
+            if (customInstancePropertyComparisons.ContainsKey(nodeData))
+            {
+                List<PropertyComparator> customInstanceComparators = customInstancePropertyComparisons[nodeData];
+                if(customInstanceComparators.Select(c => c.Property).Contains(property))
+                {
+                    PropertyComparator customComparator = customInstanceComparators.First(c => c.Property == property);
+                    var propertyValue = property.GetValue(nodeData, null);
+                    return (bool)customComparator.Comparator.DynamicInvoke(propertyValue);
+                }
+            }
+            return false;
+        }
+
+        private bool IsPropertySupposedToBeIgnored(object nodeData, PropertyInfo property, Dictionary<object, List<MemberInfo>> instancePropertiesToIgnore)
+        {
+            return instancePropertiesToIgnore.ContainsKey(nodeData) &&
+                   instancePropertiesToIgnore[nodeData].Contains(property);
         }
 
         private static List<GraphNode> GetIEnumerableChildNodes(object nodeData)
