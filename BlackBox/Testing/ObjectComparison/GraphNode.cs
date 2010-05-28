@@ -6,92 +6,24 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Diagnostics;
-using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Microsoft.Test.ObjectComparison
 {
-    /// <summary>
-    /// Represents one node in the object graph.
-    /// The root of the graph is a graph node.
-    /// </summary>
     [DebuggerDisplay("{Name}")]
     public class GraphNode
     {
-        #region Public and Protected Members
-
-        /// <summary>
-        /// A name to identify this node. When comparing,
-        /// the left and right nodes are matched by name.
-        /// </summary>
-        public string Name 
-        { 
-            get
-            {
-                return this.name;
-            }
-
-            set
-            {
-                this.name = value;
-            }
-        }
-
-        public bool Ignore { get; set; }
-        public bool WithinAllowedRange { get; set; }
-
-        /// <summary>
-        /// Gets the collection of child nodes to this
-        /// node. The child nodes represent properties or
-        /// fields on an object.
-        /// </summary>
-        public Collection<GraphNode> Children
-        {
-            get
-            {
-                if (this.children == null)
-                {
-                    this.children = new Collection<GraphNode>();
-                }
-
-                return children;
-            }
-        }
-
-        /// <summary>
-        /// Represents the immediate parent to this node.
-        /// The parent node of the root of the graph is null. 
-        /// </summary>
-        public GraphNode Parent { get; set; }
-
-        /// <summary>
-        /// Contains the value of the object represented by
-        /// this node.
-        /// </summary>
+        //public bool Allow { get; set; }
+        public Collection<GraphNode> Children { get; private set; }
+        public string Name { get; set; }
+        public bool Ignore { get; private set; }
         public object ObjectValue { get; set; }
+        public Type ObjectType { get; set; }
+        public GraphNode Parent { get; set; }
+        public PropertyInfo Property { get; set; }
 
-        /// <summary>
-        /// Provides the System.Type of the object represented by 
-        /// this node. Returns null if the object value is null.
-        /// </summary>
-        public Type ObjectType 
-        {
-            get
-            {
-                Type objectType = null;
-                if (this.ObjectValue != null)
-                {
-                    objectType = this.ObjectValue.GetType();                    
-                }
-
-                return objectType;
-            }
-        }
-
-        /// <summary>
-        /// Gets the depth of this node from the root. If the depth of
-        /// the root node is 0, root.child is 1.
-        /// </summary>
         public int Depth
         {
             get
@@ -107,22 +39,15 @@ namespace Microsoft.Test.ObjectComparison
             }
         }
 
-        /// <summary>
-        /// Gets the fully qualified name of this node
-        /// If the root node has a child that is named child1 and the child
-        /// has another child that is named child12, qualified name of child12
-        /// would be root.child1.child12.
-        /// </summary>
         public string QualifiedName
         {
             get
             {
                 GraphNode node = this;
-                string qualifiedName = this.Name;
+                string qualifiedName = Name;
                 string delimiter = ".";
                 while (node.Parent != null)
                 {
-
                     if (node.Parent.Name == "")
                         delimiter = "";
                     qualifiedName = node.Parent.Name + delimiter + qualifiedName;
@@ -130,6 +55,32 @@ namespace Microsoft.Test.ObjectComparison
                 }
                 return qualifiedName;
             }
+        }
+
+        public GraphNode()
+        {
+            Children = new Collection<GraphNode>();
+        }
+
+        public void IgnoreChild(MemberInfo property)
+        {
+            Children.Where(c => c.Property == property)
+                    .ToList()
+                    .ForEach(c =>
+                                 {
+                                     c.Ignore = true;
+                                     c.IgnoreChildren();
+                                 });
+        }
+
+        public void IgnoreChildren()
+        {
+            Children.ToList()
+                    .ForEach(c =>
+                                 {
+                                     c.Ignore = true;
+                                     c.IgnoreChildren();
+                                 });
         }
 
         /// <summary>
@@ -140,9 +91,9 @@ namespace Microsoft.Test.ObjectComparison
         /// <returns>Nodes visited in depth-first order.</returns>
         public IEnumerable<GraphNode> GetNodesInDepthFirstOrder()
         {
-            Stack<GraphNode> pendingNodes = new Stack<GraphNode>();
+            var pendingNodes = new Stack<GraphNode>();
             pendingNodes.Push(this);
-            HashSet<GraphNode> visitedNodes = new HashSet<GraphNode>();
+            var visitedNodes = new HashSet<GraphNode>();
             while (pendingNodes.Count != 0)
             {
                 GraphNode currentNode = pendingNodes.Pop();
@@ -157,14 +108,5 @@ namespace Microsoft.Test.ObjectComparison
                 }
             }
         }
-
-        #endregion
-
-        #region Private Data
-
-        private Collection<GraphNode> children;
-        private string name;
-
-        #endregion
     }
 }
