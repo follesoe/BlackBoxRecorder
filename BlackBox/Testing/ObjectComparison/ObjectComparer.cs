@@ -183,27 +183,34 @@ namespace Microsoft.Test.ObjectComparison
 
         private ObjectComparisonMismatch CompareNodes(GraphNode leftNode, GraphNode rightNode)
         {
+            // Check if there is the node difference is within the allowed range
             if (IsAllowed(leftNode, rightNode))
                 return null;
 
             // Check if both are null
-            if (leftNode.ObjectValue == null && rightNode.ObjectValue == null)
+            if (IsNull(leftNode) && IsNull(rightNode))
                 return null;
 
             // Check if left is null and right is not
-            if (leftNode.ObjectValue == null)
+            if (IsNull(leftNode))
                 return new ObjectComparisonMismatch(leftNode,
                                                     rightNode,
                                                     ObjectComparisonMismatchType.MissingLeftNode);
 
-            // Check if left is null and right is not
-            if (rightNode.ObjectValue == null)
+            // Check if right is null and left is not
+            if (IsNull(rightNode))
                 return new ObjectComparisonMismatch(leftNode,
                                                     rightNode,
                                                     ObjectComparisonMismatchType.MissingRightNode);
 
-            // Compare type names //
+            // Compare type names of the properties
             if (!leftNode.ObjectType.Equals(rightNode.ObjectType))
+                return new ObjectComparisonMismatch(leftNode,
+                                                    rightNode,
+                                                    ObjectComparisonMismatchType.ObjectTypesDoNotMatch);
+
+            // Compare type names of instances
+            if (leftNode.ObjectValue.GetType() != rightNode.ObjectValue.GetType())
                 return new ObjectComparisonMismatch(leftNode,
                                                     rightNode,
                                                     ObjectComparisonMismatchType.ObjectTypesDoNotMatch);
@@ -233,8 +240,16 @@ namespace Microsoft.Test.ObjectComparison
             return null;
         }
 
+        private static bool IsNull(GraphNode node)
+        {
+            return node == null || node.ObjectValue == null;
+        }
+
         private bool IsAllowed(GraphNode leftNode, GraphNode rightNode)
         {
+            if (leftNode == null || rightNode == null)
+                return false;
+
             if (IsAllowed(_customTypePropertyComparisons, leftNode, rightNode))
                 return true;
 

@@ -117,6 +117,11 @@
     <Compile Include="TestExtensions.cs" />
     <Compile Include="Testing\CharacterizationTestBaseClassTest.cs" />
     <Compile Include="Testing\ObjectComparisonTests.cs" />
+    <Compile Include="Testing\ObjectComparison\CustomObjectGraphFactory.cs" />
+    <Compile Include="Testing\ObjectComparison\CustomTypes.cs" />
+    <Compile Include="Testing\ObjectComparison\IEnumerableExtensions.cs" />
+    <Compile Include="Testing\ObjectComparison\ObjectComparerTests.cs" />
+    <Compile Include="Testing\ObjectComparison\ObjectGraphFactoryTests.cs" />
     <Compile Include="Testing\TestClasses.cs" />
     <Compile Include="TypeExtensionTest.cs" />
     <Compile Include="TypeToolsTests.cs" />

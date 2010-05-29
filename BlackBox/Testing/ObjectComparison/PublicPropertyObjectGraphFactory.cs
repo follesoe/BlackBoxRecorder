@@ -83,21 +83,32 @@ namespace Microsoft.Test.ObjectComparison
 
         private static IEnumerable<GraphNode> ExtractProperties(object nodeData)
         {
+            var propertyNodes = new List<GraphNode>();
             if (IsIEnumerable(nodeData))
-                return new List<GraphNode>();
+                return propertyNodes;
+
+            if (IsString(nodeData))
+                return propertyNodes;
 
             IEnumerable<PropertyInfo> properties = GetPublicInstanceProperties(nodeData);
-            return from property in properties
-                   let parameters = property.GetIndexParameters()
-                   where property.CanRead && parameters.Length == 0
-                   let value = GetValue(nodeData, property)
-                   select new GraphNode
-                              {
-                                  Name = property.Name,
-                                  ObjectValue = value,
-                                  ObjectType = property.PropertyType,
-                                  Property = property
-                              };
+            foreach (PropertyInfo property in properties)
+            {
+                ParameterInfo[] parameters = property.GetIndexParameters();
+                if(property.CanRead && parameters.Length == 0)
+                {
+                    object value = GetValue(nodeData, property);
+                    propertyNodes.Add(
+                        new GraphNode
+                            {
+                                Name = property.Name,
+                                ObjectValue = value,
+                                ObjectType = property.PropertyType,
+                                Property = property
+                            });
+
+                }
+            }
+            return propertyNodes;
         }
 
         private static object GetValue(object nodeData, PropertyInfo property)
@@ -137,6 +148,11 @@ namespace Microsoft.Test.ObjectComparison
             return childNodes;
         }
 
+        private static bool IsString(object nodeData)
+        {
+            return nodeData != null && nodeData.GetType() == typeof (string);
+        }
+
         private static bool IsIEnumerable(object nodeData)
         {
             var enumerableData = nodeData as IEnumerable;
@@ -150,7 +166,7 @@ namespace Microsoft.Test.ObjectComparison
             return nodeData == null ||
                    nodeType.IsPrimitive ||
                    nodeType.IsValueType ||
-                   nodeType == typeof(string);
+                   nodeType == typeof (string);
         }
 
         private static Queue<GraphNode> CreatePendingQueue(GraphNode root)
