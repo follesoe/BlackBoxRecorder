@@ -37,9 +37,14 @@ namespace BlackBox.CodeGeneration.Writer
             _output.AppendFormatLine("namespace CharacterizationTests");
             _output.AppendLine("{");
 
-            if (!string.IsNullOrEmpty(Configuration.TestFlavour.ClassAttribute))
+            if (Configuration.TestFlavour.UseFixtureAttribute())
             {
-                _output.AppendFormatLine("\t[{0}]", Configuration.TestFlavour.ClassAttribute);
+                _output.AppendFormatLine("\t[{0}]", Configuration.TestFlavour.FixtureAttribute);
+            }
+
+            if(Configuration.TestFlavour.UseCategoryAttribute())
+            {
+                _output.AppendFormatLine("\t[{0}(\"Characterization\")]", Configuration.TestFlavour.CategoryAttribute);
             }
 
             _output.AppendFormatLine("\tpublic partial class {0} : CharacterizationTest", TestFixtureName);

@@ -4,12 +4,23 @@
     {
         public string Namespace { get; private set;}
         public string TestAttribute { get; private set; }
-        public string ClassAttribute { get; private set; }
+        public string FixtureAttribute { get; private set; }
         public string SetupAttribute { get; private set; }
+        public string CategoryAttribute { get; set; }
 
         public bool ConstructorAsSetup()
         {
             return string.IsNullOrEmpty(SetupAttribute);
+        }
+
+        public bool UseFixtureAttribute()
+        {
+            return !string.IsNullOrEmpty(FixtureAttribute);
+        }
+
+        public bool UseCategoryAttribute()
+        {
+            return !string.IsNullOrEmpty(CategoryAttribute);
         }
 
         private TestFlavour()
@@ -30,7 +41,7 @@
             return new TestFlavour
                        {
                            Namespace = "Microsoft.VisualStudio.TestTools.UnitTesting",
-                           ClassAttribute = "TestClass",
+                           FixtureAttribute = "TestClass",
                            TestAttribute = "TestMethod",
                            SetupAttribute = "TestInitialize"
                        };
@@ -41,7 +52,8 @@
             return new TestFlavour
                        {
                            Namespace = "NUnit.Framework",
-                           ClassAttribute = "TestFixture",
+                           FixtureAttribute = "TestFixture",
+                           CategoryAttribute = "Category",
                            TestAttribute = "Test",
                            SetupAttribute = "SetUp"
                        };

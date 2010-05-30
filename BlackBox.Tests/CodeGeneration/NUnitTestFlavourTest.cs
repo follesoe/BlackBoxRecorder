@@ -14,6 +14,12 @@ namespace BlackBox.Tests.CodeGeneration
         }
 
         [Fact]
+        public void Generated_test_fixture_includes_category_tag()
+        {
+            generatedCode.ShouldContain("[Category(\"Characterization\")]");
+        }
+
+        [Fact]
         public void Test_class_should_generate_one_test_method_for_each_recording()
         {
             generatedCode.ShouldContain("[Test]", 2);
