@@ -61,14 +61,6 @@ namespace BlackBox.Tests.Testing
         }
 
         [Fact]
-        public void Can_exclude_a_certain_property_from_a_simple_comparison_using_a_lambda_representation()
-        {
-            Given.A_lambda_representation_of_a_property_we_wish_to_ignore();
-            When.We_use_that_lambda_representation_when_we_compare_two_objects_that_differ_on_that_property();
-            Then.Nothing();
-        }
-
-        [Fact]
         public void Cannot_ignore_the_root_object()
         {
             Given.A_self_selector();
@@ -82,6 +74,14 @@ namespace BlackBox.Tests.Testing
             Given.An_unary_selector();
             When.We_try_to_ignore_on_that_unary_selector();
             Then.We_get_an_exception_saying_it_is_not_a_valid_member_expression();
+        }
+
+        [Fact]
+        public void Can_exclude_a_certain_property_from_a_simple_comparison_using_a_lambda_representation()
+        {
+            Given.A_lambda_representation_of_a_property_we_wish_to_ignore();
+            When.We_use_that_lambda_representation_when_we_compare_two_objects_that_differ_on_that_property();
+            Then.Nothing();
         }
 
         [Fact]
@@ -114,6 +114,52 @@ namespace BlackBox.Tests.Testing
             Given.A_lambda_representation_of_a_property_we_wish_to_ignore();
             When.We_tell_the_comparator_to_use_that_on_all_elements_in_an_IEnumerable_when_comparing();
             Then.Nothing();
+        }
+
+        [Fact]
+        public void Can_give_the_comparison_a_little_slack_by_allowing_the_use_of_custom_comparators()
+        {
+            Given.A_lambda_representation_of_a_property_we_wish_to_allow_a_certain_range();
+            And.A_custom_comparator_for_that_type();
+            When.We_do_the_comparison_on_two_slightly_different_objects_that_are_still_within_range();
+            Then.Nothing();
+        }
+
+        [Fact]
+        public void Can_apply_custom_comparisons_to_a_property_of_a_specific_instance()
+        {
+            Given.A_lambda_representation_of_a_property_we_wish_to_allow_a_certain_range();
+            And.A_custom_comparator_for_that_type();
+            When.We_attach_that_custom_comparator_to_the_comparison_on_two_slightly_different_objects_that_are_still_within_range();
+            Then.Nothing();
+        }
+
+        private void We_attach_that_custom_comparator_to_the_comparison_on_two_slightly_different_objects_that_are_still_within_range()
+        {
+            var anObject = new ObjectWithValueTypeProperties();
+            var anotherObject = new ObjectWithValueTypeProperties { MyInteger = 9 };
+            var test = new CharacterizationTest();
+            test.Allow(anotherObject, integerPropertySelector, integerPropertyComparison);
+            test.CompareObjects(anObject, anotherObject);
+        }
+
+        private void A_lambda_representation_of_a_property_we_wish_to_allow_a_certain_range()
+        {
+            integerPropertySelector = o => o.MyInteger;
+        }
+
+        private void A_custom_comparator_for_that_type()
+        {
+            integerPropertyComparison = (a, b) => b < 10;
+        }
+
+        private void We_do_the_comparison_on_two_slightly_different_objects_that_are_still_within_range()
+        {
+            var anObject = new ObjectWithValueTypeProperties();
+            var anotherObject = new ObjectWithValueTypeProperties { MyInteger = 9 };
+            var test = new CharacterizationTest();
+            test.AllowOnType(integerPropertySelector, integerPropertyComparison);
+            test.CompareObjects(anObject, anotherObject);
         }
 
         private void We_tell_the_comparator_to_use_that_on_all_elements_in_an_IEnumerable_when_comparing()
@@ -153,8 +199,8 @@ namespace BlackBox.Tests.Testing
             aList.ShouldNotBeSameAs(anotherList);
             var test = new CharacterizationTest();
 
-            test.Ignore(aList.ElementAt(1), propertySelector);
-            test.Ignore(aList.ElementAt(2), propertySelector);
+            test.Ignore(aList.ElementAt(1), booleanPropertySelector);
+            test.Ignore(aList.ElementAt(2), booleanPropertySelector);
             test.CompareObjects(aList, anotherList);
         }
 
@@ -163,7 +209,7 @@ namespace BlackBox.Tests.Testing
             var anObject = new ObjectWithValueTypeProperties();
             var anotherObject = new ObjectWithValueTypeProperties {MyBoolean = true};
             var test = new CharacterizationTest();
-            test.Ignore(anObject, propertySelector);
+            test.Ignore(anObject, booleanPropertySelector);
             test.CompareObjects(anObject, anotherObject);
         }
 
@@ -219,7 +265,7 @@ namespace BlackBox.Tests.Testing
 
         private void A_lambda_representation_of_a_property_we_wish_to_ignore()
         {
-            propertySelector = o => o.MyBoolean;
+            booleanPropertySelector = o => o.MyBoolean;
         }
 
         private void We_use_that_lambda_representation_when_we_compare_two_objects_that_differ_on_that_property()
@@ -227,7 +273,7 @@ namespace BlackBox.Tests.Testing
             var someObject = new ObjectWithValueTypeProperties();
             var anotherObject = new ObjectWithValueTypeProperties { MyBoolean = true };
             var test = new CharacterizationTest();
-            test.IgnoreOnType(propertySelector);
+            test.IgnoreOnType(booleanPropertySelector);
             test.CompareObjects(someObject, anotherObject);
         }
 
@@ -331,7 +377,9 @@ namespace BlackBox.Tests.Testing
         //private CharacterizationTest test;
         private Exception thrownException;
         private string exceptionMessage;
-        private Expression<Func<ObjectWithValueTypeProperties, bool>> propertySelector;
+        private Expression<Func<ObjectWithValueTypeProperties, bool>> booleanPropertySelector;
+        private Expression<Func<ObjectWithValueTypeProperties, int>> integerPropertySelector;
+        private Func<int, int, bool> integerPropertyComparison;
         private Expression<Func<ObjectWithValueTypeProperties, ObjectWithValueTypeProperties>> selfSelector;
         private Expression<Func<ObjectWithValueTypeProperties, decimal>> unarySelector;
         private Expression<Func<ObjectWithMixedTypeProperties, ObjectWithValueTypeProperties>> referenceTypePropertySelector;

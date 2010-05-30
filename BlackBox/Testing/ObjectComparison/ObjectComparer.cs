@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
+using BlackBox.Testing;
 
 namespace Microsoft.Test.ObjectComparison
 {
@@ -73,227 +73,206 @@ namespace Microsoft.Test.ObjectComparison
     /// </example>
     public sealed class ObjectComparer
     {
-        #region Constuctors
+        public ObjectGraphFactory ObjectGraphFactory { get; private set; }
 
-        /// <summary>
-        /// Creates an instance of the ObjectComparer class.
-        /// </summary>
-        /// <param name="factory">An ObjectGraphFactory to use for
-        /// converting objects to graphs.</param>
+        private readonly List<MemberInfo> _typePropertiesToIgnore;
+        private readonly Dictionary<object, List<MemberInfo>> _instancePropertiesToIgnore;
+        private readonly List<PropertyComparator> _customTypePropertyComparisons;
+        private readonly Dictionary<object, List<PropertyComparator>> _customInstancePropertyComparisons;
+
         public ObjectComparer(ObjectGraphFactory factory)
         {
             if (factory == null)
-            {
                 throw new ArgumentNullException("factory");
-            }
 
-            this.objectGraphFactory = factory;
+            ObjectGraphFactory = factory;
+            _typePropertiesToIgnore = new List<MemberInfo>();
+            _instancePropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
+            _customTypePropertyComparisons = new List<PropertyComparator>();
+            _customInstancePropertyComparisons = new Dictionary<object, List<PropertyComparator>>();
         }
 
-        #endregion
-
-        #region Public and Protected Members
-
-        private IEnumerable<MemberInfo> _propertiesToIgnore;
-
-        /// <summary>
-        /// Gets the ObjectGraphFactory used to convert objects
-        /// to graphs.
-        /// </summary>
-        public ObjectGraphFactory ObjectGraphFactory
+        public void Ignore(object instance, MemberInfo propertyToIgnore)
         {
-            get
-            {
-                return this.objectGraphFactory;
-            }
+            if(instance == null)
+                throw new ArgumentNullException("instance");
+
+            if (!_instancePropertiesToIgnore.ContainsKey(instance))
+                _instancePropertiesToIgnore.Add(instance, new List<MemberInfo>());
+            _instancePropertiesToIgnore[instance].Add(propertyToIgnore);
         }
 
-        /// <summary>
-        /// Performs a deep comparison of two objects.
-        /// </summary>
-        /// <param name="leftValue">The left object.</param>
-        /// <param name="rightValue">The right object.</param>
-        /// <returns>true if the objects match.</returns>
-        public bool Compare(object leftValue, object rightValue)
+        public void IgnoreOnType(MemberInfo propertyToIgnore)
         {
-            IEnumerable<ObjectComparisonMismatch> mismatches;
-            return Compare(leftValue, rightValue, out mismatches);
+            _typePropertiesToIgnore.Add(propertyToIgnore);
         }
 
-        /// <summary>
-        /// Performs a deep comparison of two objects and provides
-        /// a list of mismatching nodes.
-        /// </summary>
-        /// <param name="leftValue">The left object.</param>
-        /// <param name="rightValue">The right object.</param>
-        /// <param name="mismatches">The list of mismatches.</param>
-        /// <returns>true if the objects match.</returns>
-        public bool Compare(object leftValue, object rightValue, out IEnumerable<ObjectComparisonMismatch> mismatches)
+        public void Allow(object instance, PropertyComparator customComparator)
         {
-            return Compare(leftValue, rightValue, null, out mismatches);
+            if (!_customInstancePropertyComparisons.ContainsKey(instance))
+                _customInstancePropertyComparisons.Add(instance, new List<PropertyComparator>());
+            _customInstancePropertyComparisons[instance].Add(customComparator);
         }
 
-        public bool Compare(object leftValue,
-                            object rightValue,
-                            IEnumerable<MemberInfo> typePropertiesToIgnore,
-                            out IEnumerable<ObjectComparisonMismatch> mismatches)
+        public void AllowOnType(PropertyComparator customComparator)
         {
-            return Compare(leftValue, rightValue, typePropertiesToIgnore, null, out mismatches);
+            _customTypePropertyComparisons.Add(customComparator);
         }
 
-        public bool Compare(object leftValue,
-                            object rightValue,
-                            IEnumerable<MemberInfo> typePropertiesToIgnore,
-                            Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
-                            out IEnumerable<ObjectComparisonMismatch> mismatches)
+        public IEnumerable<ObjectComparisonMismatch> Compare(object leftValue, object rightValue)
         {
-            if (typePropertiesToIgnore == null)
-                typePropertiesToIgnore = new List<MemberInfo>();
-
-            if (objectPropertiesToIgnore == null)
-                objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
-
-            List<ObjectComparisonMismatch> mismatch;
-            bool isMatch = this.CompareObjects(leftValue,
-                                               rightValue,
-                                               typePropertiesToIgnore,
-                                               objectPropertiesToIgnore,
-                                               out mismatch);
-            mismatches = mismatch;
-            return isMatch;
+            return CompareObjects(leftValue, rightValue);
         }
 
-        #endregion
-
-        #region Private Members
-
-        private bool CompareObjects(object leftObject,
-                                    object rightObject,
-                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore,
-                                    out List<ObjectComparisonMismatch> mismatches)
+        private IEnumerable<ObjectComparisonMismatch> CompareObjects(object leftObject, object rightObject)
         {
-            mismatches = new List<ObjectComparisonMismatch>();
+            var mismatches = new List<ObjectComparisonMismatch>();
 
-            // Get the graph from the objects
-            GraphNode leftRoot = this.ObjectGraphFactory.CreateObjectGraph(leftObject, typePropertiesToIgnore, objectPropertiesToIgnore);
-            GraphNode rightRoot = this.ObjectGraphFactory.CreateObjectGraph(rightObject, typePropertiesToIgnore, objectPropertiesToIgnore);
+            GraphNode leftRoot = ObjectGraphFactory.CreateObjectGraph(leftObject);
+            GraphNode rightRoot = ObjectGraphFactory.CreateObjectGraph(rightObject);
 
-            // Get the nodes in breadth first order
-            List<GraphNode> leftNodes = new List<GraphNode>(leftRoot.GetNodesInDepthFirstOrder());
-            List<GraphNode> rightNodes = new List<GraphNode>(rightRoot.GetNodesInDepthFirstOrder());
+            var leftNodes = new List<GraphNode>(leftRoot.GetNodesInDepthFirstOrder());
+            var rightNodes = new List<GraphNode>(rightRoot.GetNodesInDepthFirstOrder());
+
+            FlagNodesThatShouldBeIgnored(leftNodes);
 
             // For each node in the left tree, search for the
             // node in the right tree and compare them
-            for (int i = 0; i < leftNodes.Count; i++)
+            foreach (GraphNode leftNode in leftNodes)
             {
-                GraphNode leftNode = leftNodes[i];
-
-                var nodelist = from node in rightNodes
-                               where leftNode.QualifiedName.Equals(node.QualifiedName)
-                               select node;
-
-                List<GraphNode> matchingNodes = nodelist.ToList<GraphNode>();
-                if (RightNodeIsMissingAndShouldNotBeIgnored(matchingNodes, leftNode))
-                {
-                    ObjectComparisonMismatch mismatch = new ObjectComparisonMismatch(leftNode, null, ObjectComparisonMismatchType.MissingRightNode);
-                    mismatches.Add(mismatch);
+                if(leftNode.Ignore)
                     continue;
-                }
 
-                GraphNode rightNode = matchingNodes[0];
+                GraphNode rightNode = rightNodes.Where(node => leftNode.QualifiedName == node.QualifiedName)
+                                                .DefaultIfEmpty(null)
+                                                .FirstOrDefault();
 
-                // Compare the nodes
-                ObjectComparisonMismatch nodesMismatch = CompareNodes(leftNode, rightNode);
-                if (ThereIsAMismatchWhichShouldNotBeIgnored(nodesMismatch, leftNode))
-                {
-                    mismatches.Add(nodesMismatch);
-                }
+                ObjectComparisonMismatch mismatch = CompareNodes(leftNode, rightNode);
+                if(mismatch != null)
+                    mismatches.Add(mismatch);
             }
+            return mismatches;
 
-            bool passed = mismatches.Count == 0 ? true : false;
-
-            return passed;
         }
 
-        private bool RightNodeIsMissingAndShouldNotBeIgnored(List<GraphNode> graphNodes, GraphNode leftNode)
+        private void FlagNodesThatShouldBeIgnored(IEnumerable<GraphNode> nodes)
         {
-            return !(graphNodes.Any() || leftNode.Ignore);
+            foreach (var node in nodes)
+            {
+                if(node.Ignore)
+                    continue;
+
+                List<MemberInfo> propertiesToIgnore = FindPropertiesToIgnore(node);
+                propertiesToIgnore.ForEach(node.IgnoreChild);
+            }
         }
 
-        private bool ThereIsAMismatchWhichShouldNotBeIgnored(ObjectComparisonMismatch potentialMismatch, GraphNode leftNode)
+        private List<MemberInfo> FindPropertiesToIgnore(GraphNode node)
         {
-            return potentialMismatch != null && !leftNode.Ignore;
+            var propertiesToIgnore = new List<MemberInfo>();
+            IEnumerable<MemberInfo> properties =
+                node.ObjectType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            propertiesToIgnore.AddRange(properties.Intersect(_typePropertiesToIgnore));
+            if (node.ObjectValue != null && _instancePropertiesToIgnore.ContainsKey(node.ObjectValue))
+            {
+                IEnumerable<MemberInfo> instanceProperties = _instancePropertiesToIgnore[node.ObjectValue];
+                propertiesToIgnore.AddRange(properties.Intersect(instanceProperties));
+            }
+            return propertiesToIgnore;
         }
 
         private ObjectComparisonMismatch CompareNodes(GraphNode leftNode, GraphNode rightNode)
         {
-            // Check if both are null
-            if (leftNode.ObjectValue == null && rightNode.ObjectValue == null)
-            {
+            // Check if there is the node difference is within the allowed range
+            if (IsAllowed(leftNode, rightNode))
                 return null;
-            }
 
-            // check if one of them is null
-            if (leftNode.ObjectValue == null || rightNode.ObjectValue == null)
-            {
-                ObjectComparisonMismatch mismatch = new ObjectComparisonMismatch(
-                    leftNode,
-                    rightNode,
-                    ObjectComparisonMismatchType.ObjectValuesDoNotMatch);
-                return mismatch;
-            }
+            // Check if both are null
+            if (IsNull(leftNode) && IsNull(rightNode))
+                return null;
 
-            // compare type names //
+            // Check if left is null and right is not
+            if (IsNull(leftNode))
+                return new ObjectComparisonMismatch(leftNode,
+                                                    rightNode,
+                                                    ObjectComparisonMismatchType.MissingLeftNode);
+
+            // Check if right is null and left is not
+            if (IsNull(rightNode))
+                return new ObjectComparisonMismatch(leftNode,
+                                                    rightNode,
+                                                    ObjectComparisonMismatchType.MissingRightNode);
+
+            // Compare type names of the properties
             if (!leftNode.ObjectType.Equals(rightNode.ObjectType))
-            {
-                ObjectComparisonMismatch mismatch = new ObjectComparisonMismatch(
-                    leftNode,
-                    rightNode,
-                    ObjectComparisonMismatchType.ObjectTypesDoNotMatch);
-                return mismatch;
-            }
+                return new ObjectComparisonMismatch(leftNode,
+                                                    rightNode,
+                                                    ObjectComparisonMismatchType.ObjectTypesDoNotMatch);
 
-            // compare primitives, strings
+            // Compare type names of instances
+            if (leftNode.ObjectValue.GetType() != rightNode.ObjectValue.GetType())
+                return new ObjectComparisonMismatch(leftNode,
+                                                    rightNode,
+                                                    ObjectComparisonMismatchType.ObjectTypesDoNotMatch);
+
+            // Compare primitives, strings
             if (leftNode.ObjectType.IsPrimitive || leftNode.ObjectType.IsValueType || leftNode.ObjectType == typeof(string))
             {
                 if (!leftNode.ObjectValue.Equals(rightNode.ObjectValue))
-                {
-                    ObjectComparisonMismatch mismatch = new ObjectComparisonMismatch(
-                        leftNode,
-                        rightNode,
-                        ObjectComparisonMismatchType.ObjectValuesDoNotMatch);
-                    return mismatch;
-                }
-                else
-                {
-                    return null;
-                }
+                    return new ObjectComparisonMismatch(leftNode,
+                                                        rightNode,
+                                                        ObjectComparisonMismatchType.ObjectValuesDoNotMatch);
+                return null;
             }
 
-            // compare the child count
+            // Compare the child count
             if (leftNode.Children.Count != rightNode.Children.Count)
             {
-                var type = leftNode.Children.Count > rightNode.Children.Count ?
-                    ObjectComparisonMismatchType.RightNodeHasFewerChildren : ObjectComparisonMismatchType.LeftNodeHasFewerChildren;
+                var mismatchType = leftNode.Children.Count > rightNode.Children.Count ?
+                                   ObjectComparisonMismatchType.RightNodeHasFewerChildren :
+                                   ObjectComparisonMismatchType.LeftNodeHasFewerChildren;
 
-                ObjectComparisonMismatch mismatch = new ObjectComparisonMismatch(
-                    leftNode,
-                    rightNode,
-                    type);
-                return mismatch;
+                return new ObjectComparisonMismatch(leftNode,
+                                                    rightNode,
+                                                    mismatchType);
             }
 
-            // No mismatch //
             return null;
         }
 
-        #endregion
+        private static bool IsNull(GraphNode node)
+        {
+            return node == null || node.ObjectValue == null;
+        }
 
-        #region Private Data
+        private bool IsAllowed(GraphNode leftNode, GraphNode rightNode)
+        {
+            if (leftNode == null || rightNode == null)
+                return false;
 
-        private ObjectGraphFactory objectGraphFactory;
+            if (IsAllowed(_customTypePropertyComparisons, leftNode, rightNode))
+                return true;
 
-        #endregion
+            if(rightNode.ObjectValue != null && 
+               rightNode.Parent != null && 
+               _customInstancePropertyComparisons.ContainsKey(rightNode.Parent.ObjectValue))
+            {
+                List<PropertyComparator> comparators = _customInstancePropertyComparisons[rightNode.Parent.ObjectValue];
+                if (IsAllowed(comparators, leftNode, rightNode))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool IsAllowed(IEnumerable<PropertyComparator> comparators, GraphNode leftNode, GraphNode rightNode)
+        {
+            if (comparators.Select(c => c.Property).Contains(rightNode.Property))
+            {
+                PropertyComparator comparator =
+                    comparators.First(c => c.Property == rightNode.Property);
+                return ((bool)comparator.Comparator.DynamicInvoke(leftNode.ObjectValue, rightNode.ObjectValue));
+            }
+            return false;
+        }
     }
 }

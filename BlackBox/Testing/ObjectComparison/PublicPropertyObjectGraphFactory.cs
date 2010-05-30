@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using BlackBox.Testing;
 
 namespace Microsoft.Test.ObjectComparison
 {
@@ -22,37 +23,19 @@ namespace Microsoft.Test.ObjectComparison
     /// </summary>
     public sealed class PublicPropertyObjectGraphFactory : ObjectGraphFactory
     {
-        #region Public Members
-
         /// <summary>
         /// Creates a graph for the given object by extracting public properties.
         /// </summary>
         /// <param name="value">The object to convert.</param>
-        /// <param name="typePropertiesToIgnore">A set of properties which will constitute leaf nodes</param>
-        /// <param name="objectPropertiesToIgnore">A set of specific object properties which will constitute leaf nodes</param>
         /// <returns>The root node of the created graph.</returns>
-        public override GraphNode CreateObjectGraph(object value,
-                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+        public override GraphNode CreateObjectGraph(object value)
         {
             if (value == null)
-            {
                 throw new ArgumentNullException("value");
-            }
 
-            // Queue of pending nodes
-            Queue<GraphNode> pendingQueue = new Queue<GraphNode>();
-
-            // Dictionary of < object hashcode, node > - to lookup already visited objects
-            Dictionary<int, GraphNode> visitedObjects = new Dictionary<int, GraphNode>();
-
-            // Build the root node and enqueue it
-            var root = new GraphNode()
-            {
-                Name = value is IEnumerable ? "" : value.GetType().Name,
-                ObjectValue = value
-            };
-            pendingQueue.Enqueue(root);
+            GraphNode root = CreateRoot(value);
+            Queue<GraphNode> pendingQueue = CreatePendingQueue(root);
+            var visitedObjects = new Dictionary<int, GraphNode>();
 
             while (pendingQueue.Count != 0)
             {
@@ -60,14 +43,9 @@ namespace Microsoft.Test.ObjectComparison
                 object nodeData = currentNode.ObjectValue;
                 Type nodeType = currentNode.ObjectType;
 
-                // If we have reached a leaf node -
-                // no more processing is necessary
                 if (IsLeafNode(nodeData, nodeType))
-                {
                     continue;
-                }
 
-                // Handle loops by checking the visted objects
                 if (visitedObjects.Keys.Contains(nodeData.GetHashCode()))
                 {
                     // Caused by a cycle - we have alredy seen this node so
@@ -78,154 +56,135 @@ namespace Microsoft.Test.ObjectComparison
                 }
                 visitedObjects.Add(nodeData.GetHashCode(), currentNode);
 
-                // Extract and add child nodes for current object //
-                Collection<GraphNode> childNodes = GetChildNodes(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore);
+                IEnumerable<GraphNode> childNodes = GetChildNodes(nodeData);
                 foreach (GraphNode childNode in childNodes)
                 {
                     childNode.Parent = currentNode;
                     currentNode.Children.Add(childNode);
-
                     pendingQueue.Enqueue(childNode);
                 }
             }
-
             return root;
         }
 
-        #endregion
-
-        #region Private Members
-
-        /// <summary>
-        /// Given an object, get a list of the immediate child nodes
-        /// </summary>
-        /// <param name="nodeData">The object whose child nodes need to be extracted</param>
-        /// <returns>Collection of child graph nodes</returns>
-        private Collection<GraphNode> GetChildNodes(object nodeData,
-                                                    IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                    Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+        private static IEnumerable<GraphNode> GetChildNodes(object nodeData)
         {
-            Collection<GraphNode> childNodes = new Collection<GraphNode>();
-
-            // Extract and add properties
-            foreach (GraphNode child in ExtractProperties(nodeData, typePropertiesToIgnore, objectPropertiesToIgnore))
-            {
+            var childNodes = new Collection<GraphNode>();
+            foreach (GraphNode child in ExtractProperties(nodeData))
                 childNodes.Add(child);
-            }
 
             // Extract and add IEnumerable content
             if (IsIEnumerable(nodeData))
-            {
                 foreach (GraphNode child in GetIEnumerableChildNodes(nodeData))
-                {
                     childNodes.Add(child);
-                }
-            }
 
             return childNodes;
         }
 
-        private List<GraphNode> ExtractProperties(object nodeData,
-                                                  IEnumerable<MemberInfo> typePropertiesToIgnore,
-                                                  Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+        private static IEnumerable<GraphNode> ExtractProperties(object nodeData)
         {
-            List<GraphNode> childNodes = new List<GraphNode>();
-
+            var propertyNodes = new List<GraphNode>();
             if (IsIEnumerable(nodeData))
-                return childNodes;
+                return propertyNodes;
 
-            PropertyInfo[] properties = nodeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            if (IsString(nodeData))
+                return propertyNodes;
+
+            IEnumerable<PropertyInfo> properties = GetPublicInstanceProperties(nodeData);
             foreach (PropertyInfo property in properties)
             {
-                if (typePropertiesToIgnore.Contains(property))
-                    continue;
-
-                object value = null;
-
                 ParameterInfo[] parameters = property.GetIndexParameters();
-                // Skip indexed properties and properties that cannot be read
-                if (property.CanRead && parameters.Length == 0)
+                if(property.CanRead && parameters.Length == 0)
                 {
-                    try
-                    {
-                        value = property.GetValue(nodeData, null);
-                    }
-                    catch (Exception ex)
-                    {
-                        // If accessing the property threw an exception
-                        // then make the type of exception as the child.
-                        // Do we want to validate the entire exception object
-                        // here ? - currently not doing to improve perf.
-                        value = ex.GetType().ToString();
-                    }
+                    object value = GetValue(nodeData, property);
+                    propertyNodes.Add(
+                        new GraphNode
+                            {
+                                Name = property.Name,
+                                ObjectValue = value,
+                                ObjectType = property.PropertyType,
+                                Property = property
+                            });
 
-                    GraphNode childNode = new GraphNode()
-                    {
-                        Name = property.Name,
-                        ObjectValue = value,
-                        Ignore = IsPropertySupposedToBeIgnored(nodeData,
-                                                               property,
-                                                               objectPropertiesToIgnore)
-                    };
-
-                    childNodes.Add(childNode);
                 }
-            };
-
-            return childNodes;
+            }
+            return propertyNodes;
         }
 
-        private bool IsPropertySupposedToBeIgnored(object nodeData, PropertyInfo property, Dictionary<object, List<MemberInfo>> objectPropertiesToIgnore)
+        private static object GetValue(object nodeData, PropertyInfo property)
         {
-            return objectPropertiesToIgnore.ContainsKey(nodeData) &&
-                   objectPropertiesToIgnore[nodeData].Contains(property);
+            try
+            {
+                return property.GetValue(nodeData, null);
+            }
+            catch (Exception ex)
+            {
+                // If accessing the property threw an exception
+                // then make the type of exception as the child.
+                // Do we want to validate the entire exception object
+                // here ? - currently not doing to improve perf.
+                return ex.GetType().ToString();
+            }
         }
 
-        private static List<GraphNode> GetIEnumerableChildNodes(object nodeData)
+        private static IEnumerable<PropertyInfo> GetPublicInstanceProperties(object nodeData)
         {
-            List<GraphNode> childNodes = new List<GraphNode>();
+            return nodeData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        }
 
-            IEnumerable enumerableData = nodeData as IEnumerable;
+        private static IEnumerable<GraphNode> GetIEnumerableChildNodes(object nodeData)
+        {
+            var childNodes = new List<GraphNode>();
+            var enumerableData = nodeData as IEnumerable;
             IEnumerator enumerator = enumerableData.GetEnumerator();
-
             int count = 0;
             while (enumerator.MoveNext())
-            {
-                GraphNode childNode = new GraphNode()
-                {
-                    Name = "IEnumerable" + count++,
-                    ObjectValue = enumerator.Current,
-                };
-
-                childNodes.Add(childNode);
-            }
-
+                childNodes.Add(new GraphNode
+                                   {
+                                       Name = "IEnumerable" + count++,
+                                       ObjectValue = enumerator.Current,
+                                       ObjectType = enumerator.Current.GetType()
+                                   });
             return childNodes;
+        }
+
+        private static bool IsString(object nodeData)
+        {
+            return nodeData != null && nodeData.GetType() == typeof (string);
         }
 
         private static bool IsIEnumerable(object nodeData)
         {
-            IEnumerable enumerableData = nodeData as IEnumerable;
-            if (enumerableData != null &&
-                enumerableData.GetType().IsPrimitive == false &&
-                nodeData.GetType() != typeof(System.String))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var enumerableData = nodeData as IEnumerable;
+            return enumerableData != null &&
+                   enumerableData.GetType().IsPrimitive == false &&
+                   nodeData.GetType() != typeof (System.String);
         }
 
         private static bool IsLeafNode(object nodeData, Type nodeType)
         {
             return nodeData == null ||
-                               nodeType.IsPrimitive ||
-                               nodeType == typeof(string);
+                   nodeType.IsPrimitive ||
+                   nodeType.IsValueType ||
+                   nodeType == typeof (string);
         }
 
-        #endregion
+        private static Queue<GraphNode> CreatePendingQueue(GraphNode root)
+        {
+            var queue = new Queue<GraphNode>();
+            queue.Enqueue(root);
+            return queue;
+        }
+
+        private static GraphNode CreateRoot(object value)
+        {
+            return new GraphNode()
+            {
+                Name = value is IEnumerable ? "" : value.GetType().Name,
+                ObjectValue = value,
+                ObjectType = value.GetType()
+            };
+        }
     }
 }
 

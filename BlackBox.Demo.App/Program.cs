@@ -7,7 +7,7 @@ namespace BlackBox.Demo.App
     {
         public static void Main(string[] args)
         {
-            ConfigreBlackBox();
+            ConfigureBlackBox();
 
             Console.WriteLine("[BlackBox Recorder Examples]");
             Console.WriteLine();
@@ -52,7 +52,7 @@ namespace BlackBox.Demo.App
             Console.ReadLine();
         }
 
-        private static void ConfigreBlackBox()
+        private static void ConfigureBlackBox()
         {
             Configuration.OutputDirectory = @"..\..\..\BlackBox.Demo.Tests\";
             Configuration.TestFlavour = TestFlavour.CreateXunit();

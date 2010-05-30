@@ -40,6 +40,8 @@ namespace Microsoft.Test.ObjectComparison
         /// <summary>
         /// The node values do not match.
         /// </summary>
-        ObjectValuesDoNotMatch = 5
+        ObjectValuesDoNotMatch = 5,
+
+        RightNodeValueNotAllowed = 6
     }
 }

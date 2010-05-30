@@ -15,8 +15,6 @@ namespace BlackBox.Testing
         private readonly List<ParameterRecording> _inputParameters;
         private readonly List<ParameterRecording> _outputParameters;
         private readonly ObjectComparer _objectComparer;
-        private readonly List<MemberInfo> _typePropertiesToIgnore;
-        private readonly Dictionary<object, List<MemberInfo>> _objectPropertiesToIgnore;
        
         public CharacterizationTest()
         {
@@ -24,8 +22,6 @@ namespace BlackBox.Testing
             _inputParameters = new List<ParameterRecording>();
             _outputParameters = new List<ParameterRecording>();
             _objectComparer = new ObjectComparer(new PublicPropertyObjectGraphFactory());
-            _typePropertiesToIgnore = new List<MemberInfo>();
-            _objectPropertiesToIgnore = new Dictionary<object, List<MemberInfo>>();
         }
 
         public void LoadRecording(string path)
@@ -43,7 +39,6 @@ namespace BlackBox.Testing
         private void LoadDependencyReturnValues()
         {
             List<DependencyRecording> recordedDependencies = _reader.GetDependencies();
-
             foreach (var dependency in recordedDependencies)
             {
                 foreach (var returnValue in dependency.ReturnValues)
@@ -83,8 +78,7 @@ namespace BlackBox.Testing
 
         public void CompareObjects(object expected, object actual)
         {
-            IEnumerable<ObjectComparisonMismatch> mismatches;
-            _objectComparer.Compare(expected, actual, _typePropertiesToIgnore, _objectPropertiesToIgnore, out mismatches);
+            IEnumerable<ObjectComparisonMismatch> mismatches = _objectComparer.Compare(expected, actual);
             if (mismatches.Any())
                 throw new ObjectMismatchException(mismatches);
         }
@@ -94,23 +88,46 @@ namespace BlackBox.Testing
             Configuration.RecordingMode = RecordingMode.Playback;
         }
 
-        public void Ignore<TType, TPropertyType>(TType anObject, Expression<Func<TType, TPropertyType>> propertySelector)
+        public void Ignore<TType, TPropertyType>(TType instance,
+                                                 Expression<Func<TType, TPropertyType>> propertySelector)
         {
             MemberExpression memberExpression = GetMemberExpression(propertySelector);
-            if(!_objectPropertiesToIgnore.ContainsKey(anObject))
-                _objectPropertiesToIgnore.Add(anObject, new List<MemberInfo>());
-            _objectPropertiesToIgnore[anObject].Add(memberExpression.Member);
+            _objectComparer.Ignore(instance, memberExpression.Member);
         }
 
-        public void Ignore<TType, TPropertyType>(IEnumerable<TType> aSetOfObjects, Expression<Func<TType, TPropertyType>> propertySelector)
+        public void Ignore<TType, TPropertyType>(IEnumerable<TType> instances,
+                                                 Expression<Func<TType, TPropertyType>> propertySelector)
         {
-            aSetOfObjects.ToList().ForEach(o => Ignore(o, propertySelector));
+            instances.ToList().ForEach(o => Ignore(o, propertySelector));
         }
 
         public void IgnoreOnType<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> propertySelector)
         {
             MemberExpression memberExpression = GetMemberExpression(propertySelector);
-           _typePropertiesToIgnore.Add(memberExpression.Member); 
+            _objectComparer.IgnoreOnType(memberExpression.Member);
+        }
+
+        public void Allow<TType, TPropertyType>(TType instance,
+                                                Expression<Func<TType, TPropertyType>> propertySelector,
+                                                Func<TPropertyType, TPropertyType, bool> propertyComparison)
+        {
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+            _objectComparer.Allow(instance, new PropertyComparator
+                                                {
+                                                    Property = memberExpression.Member,
+                                                    Comparator = propertyComparison
+                                                });
+        }
+
+        public void AllowOnType<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> propertySelector,
+                                                      Func<TPropertyType, TPropertyType, bool> propertyComparison)
+        {
+            MemberExpression memberExpression = GetMemberExpression(propertySelector);
+            _objectComparer.AllowOnType(new PropertyComparator
+                                            {
+                                                Property = memberExpression.Member,
+                                                Comparator = propertyComparison
+                                            });
         }
 
         private static MemberExpression GetMemberExpression<TType, TPropertyType>(Expression<Func<TType, TPropertyType>> expression)
