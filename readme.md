@@ -8,7 +8,7 @@ and a **[Dependency]**-attribute on any type calling external resources such as 
 Read more about the project in the [Wiki](http://wiki.github.com/follesoe/BlackBoxRecorder/) 
 or on the [project home page](http://follesoe.github.com/BlackBoxRecorder/).
 
-## Important information about PostSharp ##
+## Important Information about PostSharp Dependency ##
 BlackBoxRecorder uses PostSharp for aspect oriented programming. For licensing reasons we cannot include the PostSharp 
 binaries in the source repository so it has to be [downloaded separately](http://www.sharpcrafters.com/downloads/postsharp-2.0/ctp-5). 
 
