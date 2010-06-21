@@ -25,21 +25,9 @@
             </a>
             <ul id="navigation">
                 <li>
-                    <a href="#">
-                        <span class="mainTitle">MainTitle </span>
-                        <span class="subTitle">SubTitle </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="mainTitle">MainTitle </span>
-                        <span class="subTitle">SubTitle</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="mainTitle">MainTitle </span>
-                        <span class="subTitle">SubTitle</span>
+                    <a href="http://wiki.github.com/follesoe/BlackBoxRecorder/">
+                        <span class="mainTitle">Documentation</span>
+                        <span class="subTitle">Can be found in the Wiki</span>
                     </a>
                 </li>
             </ul>	
@@ -63,12 +51,14 @@
                             </li>
                             <li id="item-1">
                             	<p>
-                                    This is slide number 2
+                                    Tag the code you want under test with a <strong>[Recording]</strong>-attribute, 
+                                    and any external dependency with a <strong>[Dependency]</strong>-attribute
                                 </p>
                             </li>
                             <li id="item-2">
                                 <p>
-                                    This is slide number 3
+                                    The generated characterization-tests will notify you of any unintentional 
+                                    changes made in your codebase. 
                                 </p>
                             </li>
                         </ul>
@@ -82,29 +72,34 @@
 
                 </div>  
                 <div id="download">
-                    <a href="#">
+                    <a href="http://github.com/downloads/follesoe/BlackBoxRecorder/BlackBoxRecorder.zip">
                         <span id="title">Download</span>
-                        <span id="subTitle">Quickdownload v. 1.3</span>
+                        <span id="subTitle">Download v.0.1b</span>
                     	<img src="images/downloadbutton.png" alt="" />
                     </a>
                 </div>          	
             </div>
         </div>
         <div id="mainContent">
-        <!-- Double columns
             <div class="contentColumn double">
-                <h2>
-                    heading</h2>
+                <h2>about BlackBoxRecorder</h2>
                 <p>
-                    Aenean ac nibh iaculis magna hendrerit ultrices. Nulla volutpat mauris faucibus
-                    tortor blandit vitae sodales ligula ornare. Vestibulum elementum laoreet lobortis.
-                    Vestibulum dignissim ullamcorper velit, a pharetra neque gravida hendrerit. Fusce
-                    faucibus pulvinar convallis. Nunc lacus justo, pellentesque vel aliquet quis, pretium
-                    eget turpis. Aliquam a odio magna, ac luctus libero. Nunc blandit sapien sed odio
-                    accumsan nec vehicula turpis ultrices. Praesent sit amet diam sapien, quis dignissim
-                    lorem. Nullam quis lectus at nunc porta auctor pretium consectetur massa.
+                    BlackBoxRecorder is a tool that uses <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> 
+                    techniques to automatically record and generate <a href="http://en.wikipedia.org/wiki/Characterization_test">characterization tests</a> 
+                    for legacy .NET code (code without tests). You apply a <strong>[Recording]</strong>-attribute on the method you want 
+                    to generate tests for, and a <strong>[Dependency]</strong>-attribute on any class accessing external resources such 
+                    as the file system, web services or databases.<br /><br />
                 </p>
-            </div>-->
+                <p>
+                    BlackBoxRecorder works best for code following the <a href="http://en.wikipedia.org/wiki/Anemic_Domain_Model">anemic domain model anti-pattern</a> 
+                    This pattern is often found in Java/.NET n-layered enterprise applications, where you have a business logic layer, 
+                    a data access layer,  and a shared set of dumb entity objects. The business logic layer operates directly on the entities, 
+                    manipulating their values, or by creating new entity objects. Using BlackBoxRecorder you can get this kind of code under 
+                    test by marking your business logic with the Recording-attribute, and your service agents or data access classes with the 
+                    Dependency-attribute.
+                </p>
+            </div>
+            <!--
             <div class="contentColumn">
             	<h2>heading</h2>
                 <p>
@@ -129,6 +124,7 @@
                     lorem. Nullam quis lectus at nunc porta auctor pretium consectetur massa.
                 </p>
             </div>
+            -->
             <div class="contentColumn" id="lastColumn">
                 <h2>Contributors</h2>
                 <ul id="contributorList">
@@ -171,24 +167,6 @@
                 		</a>
                 	</li>
                 	<li>
-                        <a href="http://github.com/alexyork" title="Visit Git profile" target="_self">
-                            <img src="http://a1.twimg.com/profile_images/223473680/alexsimpson_bigger.png" alt="gravatar" />
-                        </a>
-                        <div class="tweet">
-                            <a href="http://twitter.com/alex_york">
-                                <img src="images/twitter_logo.png" alt="Twitter logo" />
-                            </a>
-                            <div class="twitter_div" id="alex">
-                            </div>
-                        </div>
-                		<h3>
-                			Alex York
-                		</h3>
-                		<a href="http://www.alexyork.net/" title="Visit Alex blog">
-                			http://www.alexyork.net/
-                		</a>
-                	</li>
-                	<li>
                         <a href="http://github.com/hegerokenes" title="Visit Git profile" target="_self">
                             <img src="http://a3.twimg.com/profile_images/53074263/msn_profilbilde_bigger.JPG" alt="gravatar" />
                         </a>
@@ -204,6 +182,24 @@
                 		</h3>
                 		<a href="http://hege.rokenes.com" title="Visit Heges blog">
                 			http://hege.rokenes.com
+                		</a>
+                	</li>
+                	<li>
+                        <a href="http://github.com/alexyork" title="Visit Git profile" target="_self">
+                            <img src="http://a1.twimg.com/profile_images/223473680/alexsimpson_bigger.png" alt="gravatar" />
+                        </a>
+                        <div class="tweet">
+                            <a href="http://twitter.com/alex_york">
+                                <img src="images/twitter_logo.png" alt="Twitter logo" />
+                            </a>
+                            <div class="twitter_div" id="alex">
+                            </div>
+                        </div>
+                		<h3>
+                			Alex York
+                		</h3>
+                		<a href="http://www.alexyork.net/" title="Visit Alex blog">
+                			http://www.alexyork.net/
                 		</a>
                 	</li>
                     <li id="contribute">
