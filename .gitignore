@@ -4,8 +4,6 @@ build
 TestResults
 _ReSharper.*
 BlackBox.Tests/PostSharp 1.5
-lib/PostSharp
-lib/PostSharp2
 *.csproj.user
 *.resharper.user
 *.ReSharper.user

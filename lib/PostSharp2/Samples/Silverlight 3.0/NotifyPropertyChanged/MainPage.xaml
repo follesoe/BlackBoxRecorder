@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="NotifyPropertyChanged.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:NotifyPropertyChanged="clr-namespace:NotifyPropertyChanged" 
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
+    <UserControl.DataContext>
+        <NotifyPropertyChanged:Contact FirstName="Yuri" LastName="Gagarin"/>
+    </UserControl.DataContext>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>First Name: </TextBlock>
+            <TextBox Text="{Binding Path=FirstName, Mode=TwoWay}"/>
+            <TextBlock> : </TextBlock>
+            <TextBlock Text="{Binding Path=FirstName}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Last Name:</TextBlock>
+            <TextBox Text="{Binding Path=LastName,  Mode=TwoWay}"/>
+            <TextBlock> :</TextBlock>
+            <TextBlock Text="{Binding Path=LastName}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="Cache" default="build">
+
+  <property name="samplesDir" value="../../.."/>
+  <property name="target" value="exe"/>
+  <property name="postsharp" value="true"/>
+  
+  <include buildfile="${samplesDir}/PostSharp-Samples.include"/>
+  
+  <property name="outputDir" value="bin/${nant.settings.currentframework}/${configuration}"/>
+  <property name="references" value="System.dll;${postsharpDir}/PostSharp.dll"/>
+  <property name="rootNamespace" value="Cache"/>
+
+  <fileset id="dependencies">
+    <include name="${postsharpDir}/PostSharp.build"/>
+  </fileset>
+
+  <fileset id="outputfiles">
+  </fileset>
+
+  <target name="_build" depends="standard-build">
+    <copy file="${postsharpDir}/PostSharp.dll" todir="${outputDir}" />
+  </target>
+   
+</project>

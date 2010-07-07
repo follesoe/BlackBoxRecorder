@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+
+
+  
+  
+  
+  <title>Transaction Boundary Sample</title>
+  <link rel="stylesheet" type="text/css" href="../UserGuide.css">
+</head>
+
+
+<body>
+
+
+
+<h1>Declarative Transactions Sample</h1>
+
+<span class="openfloat"><a href="PostSharp.Samples.Transactions.sln"><img src="../vs.png" border="0" alt="">Open this sample in Visual Studio</a> </span>
+
+<p>The <code>PostSharp.Samples.Transaction</code>
+project demonstrates
+the use of PostSharp Laos to author a custom attribute that defines
+transaction boundaries. This sample relies on the <code>System.Transactions</code>
+namespace. It demonstrates the use of the custom attribute
+with&nbsp;the classic "bank account transfer" scenario.</p>
+
+
+
+<p>This sample is written in Visual Basic .NET.</p>
+
+
+
+<h2>Objective</h2>
+
+What we are trying to achieve is to define a custom attribute that marks transaction boundaries, like the <code>TransactionAttribute</code> class of <code>System.EnterpriseServices</code>, but relying on the lighter&nbsp;<code>System.Transactions</code> framework. Transaction boundaries can be defined procedurally using the&nbsp;<code>TransactionScope</code> class, so our only ambition is to author a <code>TransactionScopeAttribute</code> class that would use <code>TransactionScope</code> as a back-end.<br>
+
+<h2>Implementation</h2>
+
+<p>What we need to do is to:</p>
+
+<ol>
+
+  <li>Create a new instance of the <code>TransactionScope</code> class in the beginning of the method,&nbsp;</li>
+
+  <li>Enclose the method body in a <i>try...finally</i> clause</li>
+
+  <li>Commit the <code>TransactionScope</code> in case of success (i.e. in case of absence of exception).</li>
+
+  <li>Dispose the <code>TransactionScope</code> instance in the <i>finally</i> clause.</li>
+
+</ol>
+
+<p>This is exactly the cup of tea of the <code>OnMethodBoundaryAspect</code> class. We will basically override two methods: <code>OnEntry</code> and <code>OnExit</code>. In the first, we will create the <code>TransactionScope</code> instance and, in the second, we will eventually commit it and anyway dispose it.</p>
+
+<p>In order to expose the full functionality of the <code>TransactionScope</code> class in our custom attribute, we add the properties <code>ScopeOption</code>, <code>IsolationLevel</code> and <code>Timeout</code>, which will be the parameters of the <code>TransactionScope</code> constructor.</p>
+
+<p>The principal methods look like this:</p>
+
+<pre>Public Overrides Sub OnEntry(ByVal eventArgs As MethodExecutionEventArgs)<br><br>    Dim transactionOptions As TransactionOptions<br>    transactionOptions.Timeout = TimeSpan.FromSeconds(Me._timeout)<br>    transactionOptions.IsolationLevel = Me._isolationLevel<br><br>    eventArgs.MethodExecutionTag = 
+     New TransactionScope(Me._scopeOption, transactionOptions, Me._interopOption)<br><br>End Sub<br><br>Public Overrides Sub OnExit(ByVal eventArgs As MethodExecutionEventArgs)<br><br>    Dim transactionScope As TransactionScope = eventArgs.MethodExecutionTag<br><br>    If eventArgs.Exception Is Nothing Then<br>        transactionScope.Complete()<br>    End If<br><br>    transactionScope.Dispose()<br><br>End Sub</pre>
+
+<h2>Usage</h2>
+
+<p>In order to demonstrate how to use the <code>TransactionScope</code> custom attribute, we have created a class&nbsp;<code>Account</code>
+that supports in-memory transactions. This implementation is
+uninteresting for the current discussion, so we don't comment it
+further.</p>
+
+<p>Now take the typical example of a bank transfer. Suppose that we
+have a Transfer method that should adjust the balances of two accounts
+in a transaction. The code is now as simple as this:</p>
+
+<pre>&lt;TransactionScope()&gt; _<br>Sub Transfer(ByVal fromAccount As Account, ByVal toAccount As Account, ByVal amount As Decimal)<br>    fromAccount.Balance -= amount<br>    toAccount.Balance += amount<br>End Sub</pre>
+
+
+
+</body>
+</html>

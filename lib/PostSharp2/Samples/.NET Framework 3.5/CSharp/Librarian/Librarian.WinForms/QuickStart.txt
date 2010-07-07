@@ -1,0 +1,61 @@
+Overview
+---------
+
+This sample application is a business software for library management.
+
+Functional features:
+
+- Customers + Customer Account (rentals are prepaid)
+
+- Book Rentals : open, return, book lost -- notes on rentals
+
+- Cashbox (to accept customer payments)
+
+
+Non-functional features:
+
+- Transactional object database (yes, really!) relying on .NET Serialization,
+  whose most amazing feature is the lack of support of indexes 
+  (everything is in memory and every search has linear complexity!)
+
+- Separation of business entities, business processes, business rules, storage
+  and user interface
+  
+- SOA style: the user interface composes messages using entity classes but access
+  the resources only through business processes. (Changing entity properties does
+  not change the underlying model; it affects only the message to which it belongs).
+
+
+
+Building the PostSharp.Samples.Librarian Sample
+-----------------------------
+
+Be sure to have PostSharp 1.0 (build >= 166) installed before building the solution.
+Visual C# Express and Visual Studio 2005 are OK.
+
+
+
+Running the sample
+-------------------
+
+The application creates a data directory in a folder named "data" and located in the
+same directory as the executable (PostSharp.Samples.Librarian.exe).
+
+An employee (you, the user) and a cashbox are automatically created.
+
+In order to test the functionalities, you have to:
+
+1. Create a customer
+2. Accept a payment from this customer
+3. Create a book
+4. Create a rental
+5. Return the book or report it as lost.
+
+
+
+Further documentation
+---------------------
+
+Each namespace contains a 'ReadMe.txt' file.
+
+

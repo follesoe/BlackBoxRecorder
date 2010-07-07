@@ -1,0 +1,151 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E3FA4416-1DAE-4D5C-BFA4-099E3CA3FF60}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>PostSharp.Samples.Explorer</RootNamespace>
+    <AssemblyName>PostSharp.Samples.Explorer</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <StartupObject>AssemblyExplorer.Program</StartupObject>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>false</GenerateManifests>
+    <ApplicationIcon>Resources\co0021-64.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SkipPostSharp</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\release\</OutputPath>
+    <DefineConstants>TRACE;SkipPostSharp</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PostSharp">
+      <HintPath>..\..\..\..\..\Release\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Sdk">
+      <HintPath>..\..\..\..\..\Release\PostSharp.Sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArrayHelper.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="AssemblyResolver.cs" />
+    <Compile Include="Formatter.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WaitForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WaitForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <Compile Include="TreeNodes\AssemblyTreeNode.cs" />
+    <Compile Include="TreeNodes\AttributeTreeNode.cs" />
+    <Compile Include="AutonomousTreeNode.cs" />
+    <Compile Include="AutonomousTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TreeNodes\BaseTreeNode.cs" />
+    <Compile Include="TreeNodes\CustomAttributeTreeNode.cs" />
+    <Compile Include="TreeNodes\EventTreeNode.cs" />
+    <Compile Include="TreeNodes\ExceptionHandlerTreeNode.cs" />
+    <Compile Include="TreeNodes\ExternalAssemblyTreeNode.cs" />
+    <Compile Include="TreeNodes\ExternalFieldTreeNode.cs" />
+    <Compile Include="TreeNodes\ExternalFoldersTreeNode.cs" />
+    <Compile Include="TreeNodes\ExternalMethodTreeNode.cs" />
+    <Compile Include="TreeNodes\ExternalTypeTreeNode.cs" />
+    <Compile Include="TreeNodes\FieldTreeNode.cs" />
+    <Compile Include="TreeNodes\GenericParameterTreeNode.cs" />
+    <Compile Include="TreeNodes\InstructionBlockTreeNode.cs" />
+    <Compile Include="TreeNodes\InstructionSequenceTreeNode.cs" />
+    <Compile Include="TreeNodes\InterfaceImplementationTreeNode.cs" />
+    <Compile Include="TreeNodes\LocalCollectionTreeNode.cs" />
+    <Compile Include="TreeNodes\LocalTreeNode.cs" />
+    <Compile Include="TreeNodes\MethodSpecTreeNode.cs" />
+    <Compile Include="TreeNodes\MethodTreeNode.cs" />
+    <Compile Include="TreeNodes\ModuleRefTreeNode.cs" />
+    <Compile Include="TreeNodes\ModuleTreeNode.cs" />
+    <Compile Include="TreeNodes\ModuleTypesFolderTreeNode.cs" />
+    <Compile Include="NamedDeclarationComparer.cs" />
+    <Compile Include="TreeNodes\NamespaceTreeNode.cs" />
+    <Compile Include="TreeNodes\ParameterTreeNode.cs" />
+    <Compile Include="TreeNodes\PropertyTreeNode.cs" />
+    <Compile Include="TreeNodes\TreeViewImage.cs" />
+    <Compile Include="TreeNodes\TypeSpecificationTreeNode.cs" />
+    <Compile Include="TreeNodes\TypeTreeNode.cs" />
+    <Compile Include="TreeNodes\UnmanagedResourceFolderTreeNode.cs" />
+    <Compile Include="TreeNodes\UnmanagedResourceTreeNode.cs" />
+    <Compile Include="UserConfiguration.cs" />
+    <Compile Include="WaitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WaitForm.Designer.cs">
+      <DependentUpon>WaitForm.cs</DependentUpon>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\assembly.bmp" />
+    <None Include="Resources\enum.bmp" />
+    <None Include="Resources\event.bmp" />
+    <None Include="Resources\field.bmp" />
+    <None Include="Resources\folder.bmp" />
+    <None Include="Resources\interface.bmp" />
+    <None Include="Resources\method.bmp" />
+    <None Include="Resources\module.bmp" />
+    <None Include="Resources\namespace.bmp" />
+    <None Include="Resources\parameter.bmp" />
+    <None Include="Resources\property.bmp" />
+    <None Include="Resources\type.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\co0021-64.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+</Project>

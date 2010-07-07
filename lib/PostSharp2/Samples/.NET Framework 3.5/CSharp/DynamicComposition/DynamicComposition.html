@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+
+
+  
+  
+  
+  <title>Object Composition Sample</title>
+  <link rel="stylesheet" type="text/css" href="../UserGuide.css">
+</head>
+
+
+<body>
+
+
+
+<h1>Object Composition Sample</h1>
+
+<span class="openfloat"><a href="PostSharp.Samples.Composition.sln"><img src="../vs.png" border="0" alt="">Open this sample in Visual Studio</a> </span>
+
+<p>The <code>PostSharp.Samples.Composition</code>
+project demonstrates the use of PostSharp Laos to compose objects.</p>
+
+
+
+<p>What is object composition? Say you want to implement a
+collection (<code>ICollection</code>)
+based on an <code>ArrayList</code>, but you want to hide <code>ArrayList</code>
+and don't want to implement each method manually. PostSharp can do it
+for you. Look at the following code sample:</p>
+
+
+
+<pre> [SimpleComposition( typeof(ArrayList), typeof(ICollection))]<br> class SampleCollection<br> {<br> // Optionally add some methods here.<br> }<br></pre>
+
+
+
+<p>After processing by PostSharp, the <code>SampleCollection</code>
+class will implement the <code>ICollection</code> method
+based on the <code>ArrayList</code> implementation.</p>
+
+
+
+<h2>Implementing the Composition Attribute</h2>
+
+<p>The functionality of composing an object into another is provided by
+the Composition Aspect. All we have to do in our sample is,
+conceptually, to give parameters to this Composition Aspects. That is,
+we have to tell which interface has to be composed, and which
+implementation object has to be used. Both types are the arguments of
+our custom attribute.</p>
+
+<p>So what we have to do is finally really easy: we create a class <code>SimpleCompositionAttribute</code> derived from <code>CompositionAspect</code>, we add a constructor with two parameters, and we override the <code>GetPublicInterface</code> and <code>CreateImplementationObject</code> methods. Because we need to create an instance of the implementation class (<code>ArrayList</code> in the sample use case here above), we have to require the implementation class to have a default constructor.</p>
+
+<p>A minor issue appears: how to serialize both interface and implementation type names? We cannot simply serialize the <code>Type</code> instance, because it is not safely serializable. So we will store the type names in the class.</p>
+
+<pre>[Serializable]<br>public sealed class SimpleCompositionAttribute : CompositionAspect<br>{<br>    // Name of the type of the composed object.<br>    string implementationTypeName;<br><br>    // Name of the exposed interface.<br>    string interfaceTypeName;<br><br>    public SimpleCompositionAttribute(Type interfaceType, Type implementationType)<br>    {<br>        if (implementationType != null)<br>        {<br>            this.implementationTypeName = implementationType.FullName;<br>        }<br><br>        if (interfaceType != null)<br>        {<br>            this.interfaceTypeName = interfaceType.FullName;<br>        }<br><br>    }<br><br>    public override object CreateImplementationObject(InstanceBoundLaosEventArgs eventArgs)<br>    {<br>        return Activator.CreateInstance(
+            GenericArg.Map( this.ImplementationType, 
+            eventArgs.Instance.GetType().GetGenericArguments(), null));<br>    }<br><br>    public override Type GetPublicInterface(Type containerType)<br>    {<br>        return GenericArg.Map( this.InterfaceType, containerType.GetGenericArguments(), null );<br>    }<br><br>}<br></pre>
+
+<p>If you have been attentive, you have noticed the call to <code>GenericArg.Map</code>. What is it?</p>
+
+<p>Well, we have been a little more ambitious. We want to be able to
+compose generic classes. For instance, we want to do able to do this:</p>
+
+<pre>[SimpleComposition(typeof(IList&lt;GenericTypeArg0&gt;), typeof(List&lt;GenericTypeArg0&gt;))]<br>class SimpleList&lt;T&gt; <br>{ <br>}</pre>
+
+<p>Note that we have use the type <code>GenericTypeArg0</code>. This is a 'magic type' meaning that you refer to the first generic type argument in the current context, that is, <code>T</code> in our example.</p>
+
+<p>The purpose of the <code>GenericArg.Map</code> method is precisely to resolve this 'magic type'.</p>
+
+<p>It smells like a hack, but in fact it is much cleaner than its
+appear. We give a general mechanism to provide unbound generic
+parameters and a method to bind them to their context.</p>
+
+<h2>Using the Composition Attribute</h2>
+
+<p>We've already given two examples of how to define a composed class. But how to use these classes?</p>
+
+<p>Since the new interface is added <i>after</i> compilation, you will
+not see the methods of this interface using IntelliSense and your
+program won't even compile if you reference them. Instead, you should
+explicitly cast the class. And to avoid your compiler complaining that
+the class cannot be casted to this interface, you first have to cast to
+<code>object</code>.</p>
+
+<pre>IList&lt;string&gt; list = (IList&lt;string&gt;)(object)new SimpleList&lt;string&gt;();<br><br>list.Add("dog");<br>list.Add("cat");<br>list.Add("cow");</pre>
+
+
+
+</body>
+</html>

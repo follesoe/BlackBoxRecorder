@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- NAnt build file for PostSharp.Samples.Explorer -->
+<project name="PostSharp.Samples.Explorer" default="build">
+
+  <property name="rootDir" value="../.." />
+  <include buildfile="${rootDir}/Build/Common.include"/>
+  <property name="target" value="exe" />
+  <property name="references" value="System.dll;System.Windows.Forms.dll;System.Drawing.dll"/>
+
+  <fileset id="dependencies">
+    <include name="${rootDir}/Core/PostSharp.Core/PostSharp.Core.build"/>
+  </fileset>
+
+  <fileset id="outputfiles"/>
+
+
+  <target name="_build" depends="standard-build"/>
+
+
+
+</project>
