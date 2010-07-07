@@ -37,11 +37,11 @@
   <ItemGroup>
     <Reference Include="PostSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\PostSharp Reference Assemblies\PostSharp.dll</HintPath>
+      <HintPath>..\lib\PostSharp2\Reference Assemblies\.NET Framework 2.0\PostSharp.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp.Laos, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+    <Reference Include="PostSharp.Laos, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\PostSharp Reference Assemblies\PostSharp.Laos.dll</HintPath>
+      <HintPath>..\lib\PostSharp2\Reference Assemblies\.NET Framework 2.0\PostSharp.Laos.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -87,9 +87,12 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup />
+  <PropertyGroup>
+    <DontImportPostSharp>True</DontImportPostSharp>
+    <!--<PostSharpUseCommandLine>True</PostSharpUseCommandLine>-->
+  </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\PostSharp.Custom.targets" />
+  <Import Project="..\lib\PostSharp2\PostSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

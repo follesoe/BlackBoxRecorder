@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<!-- Use PostSharp from the Program Files directory if it has been installed -->
-	<Import Project="$(CustomAfterMicrosoftCommonTargets)\PostSharp\PostSharp-2.0.targets"  Condition="Exists('$(CustomAfterMicrosoftCommonTargets)\PostSharp\PostSharp-2.0.targets')" />
-
-	<!-- Use PostSharp from the repository if it has not been installed. We have to tell our users to unzip the PostSharp distribution there. -->
-	<Import Project="lib\PostSharp\PostSharp.targets"  Condition="!Exists('$(CustomAfterMicrosoftCommonTargets)\PostSharp\PostSharp-2.0.targets')" />
-</Project>

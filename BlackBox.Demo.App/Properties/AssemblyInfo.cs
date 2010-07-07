@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using BlackBox.Recorder;
+using PostSharp.Extensibility;
 
 [assembly: AssemblyTitle("BlackBox.Demo.App")]
 [assembly: AssemblyDescription("")]
