@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("BlackBox")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Vital Forsikring ASA")]
+[assembly: AssemblyCompany("BlackBoxRecorder")]
 [assembly: AssemblyProduct("BlackBox")]
-[assembly: AssemblyCopyright("Copyright © Vital Forsikring ASA 2010")]
+[assembly: AssemblyCopyright("Copyright © Jonas Follesø, Marcus Almgren 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -8,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("BlackBox.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Vital Forsikring ASA")]
+[assembly: AssemblyCompany("BlackBoxRecorder")]
 [assembly: AssemblyProduct("BlackBox.Tests")]
-[assembly: AssemblyCopyright("Copyright © Vital Forsikring ASA 2010")]
+[assembly: AssemblyCopyright("Copyright © Jonas Follesø, Marcus Almgren 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
