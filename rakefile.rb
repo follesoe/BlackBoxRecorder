@@ -29,7 +29,9 @@ task :copy do
 	if Dir["build"] == nil 
 		mkdir "build"
 	end	
-	cp_r "BlackBox/bin/release/", "build/"
+	
+	cp_r "BlackBox/bin/release/", "build/BlackBoxRecorder"
+	cp_r "lib/PostSharp2/", "build/PostSharp2"
 end
 
 desc "Creating zip archive of built assemblies"
