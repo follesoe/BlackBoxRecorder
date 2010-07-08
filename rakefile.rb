@@ -30,6 +30,7 @@ task :copy do
 		mkdir "build"
 	end	
 	
+	cp "License.txt", "build/License.txt"
 	cp_r "BlackBox/bin/release/", "build/BlackBoxRecorder"
 	cp_r "lib/PostSharp2/", "build/PostSharp2"
 end
