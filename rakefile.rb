@@ -26,10 +26,7 @@ directory "build"
 
 desc "Copying assemblies to build directory"
 task :copy do
-	if Dir["build"] == nil 
-		mkdir "build"
-	end	
-	
+	mkdir "build"
 	cp "License.txt", "build/License.txt"
 	cp_r "BlackBox/bin/release/", "build/BlackBoxRecorder"
 	cp_r "lib/PostSharp2/", "build/PostSharp2"
