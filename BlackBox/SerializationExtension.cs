@@ -10,6 +10,8 @@ namespace BlackBox
     {
         public static XNode ToXml(this object obj)
         {
+            if (obj == null) return null;
+
             var serializer = new XmlSerializer(obj.GetType());
             
             using(var ms = new MemoryStream())
