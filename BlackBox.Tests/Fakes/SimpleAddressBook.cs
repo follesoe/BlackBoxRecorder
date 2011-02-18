@@ -22,6 +22,7 @@ namespace BlackBox.Tests.Fakes
         [Recording]
         public void UpdateContact(Contact contact)
         {
+            if (contact == null) return;
             contact.Name = contact.Name + " updated";
             contact.Email = contact.Email + " updated";
         }

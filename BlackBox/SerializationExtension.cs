@@ -31,6 +31,8 @@ namespace BlackBox
 
         public static object Deserialize(this string xml, Type type)
         {
+            if (xml.Equals("NULL")) return null;
+
             var serializer = new XmlSerializer(type);             
             var  xmlReader = XmlReader.Create(new StringReader(xml));
             return serializer.Deserialize(xmlReader);
@@ -38,7 +40,7 @@ namespace BlackBox
 
         public static object Copy(this object obj)
         {
-            return obj.ToXml().ToString().Deserialize(obj.GetType());
+            return obj == null ? null : obj.ToXml().ToString().Deserialize(obj.GetType());
         }
     }
 }

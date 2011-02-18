@@ -14,12 +14,13 @@ namespace BlackBox
             
         }
 
-        public ParameterRecording(string name, object value)
+        public ParameterRecording(string name, object value, Type type)
         {
             Name = name;
             Value = value;
-            Type = value.GetType();
+            Type = type;
             TypeName = Type.GetCodeDefinition();
+            Value = value;
         }
     }
 }

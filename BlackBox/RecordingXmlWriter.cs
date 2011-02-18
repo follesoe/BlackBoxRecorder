@@ -41,9 +41,14 @@ namespace BlackBox
             return from parameter in parameterRecordings
                    select new XElement("Parameter",
                                        new XElement("Name", parameter.Name),
-                                       new XElement("Type", new XCData(parameter.Value.GetType().GetCodeDefinition())),
-                                       new XElement("FullyQualifiedType", new XCData(parameter.Value.GetType().AssemblyQualifiedName)),
-                                       new XElement("Value", new XCData(parameter.Value.ToXml().ToString())));
+                                       new XElement("Type", new XCData(parameter.TypeName)),
+                                       new XElement("FullyQualifiedType", new XCData(parameter.Type.AssemblyQualifiedName)),
+                                       new XElement("Value", ValueNode(parameter.Value)));
+        }
+
+        private static XCData ValueNode(object value)
+        {
+            return value == null ? new XCData("NULL") : new XCData(value.ToXml().ToString());
         }
 
         private static IEnumerable<XElement> CreateDependencyNodes(IEnumerable<DependencyRecording> dependencyRecordings)

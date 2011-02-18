@@ -66,7 +66,7 @@ namespace BlackBox
             {
                 string name = parameters[i].Name;
                 object value = sourceParameters[i].Copy();
-                targetParameters.Add(new ParameterRecording(name, value));
+                targetParameters.Add(new ParameterRecording(name, value, parameters[i].ParameterType));
             }
         }
     }

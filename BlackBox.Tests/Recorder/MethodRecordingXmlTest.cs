@@ -78,6 +78,15 @@ namespace BlackBox.Tests.Recorder
         }
 
         [Fact]
+        public void Can_read_value_of_null_input_parameters()
+        {
+            Given.we_have_an_xml_recording_passing_in_null_as_a_parameter();
+            When.we_load_the_recording_into_the_reader();
+
+            reader.GetInputParameters()[0].Value.ShouldBeNull();
+        }
+
+        [Fact]
         public void Can_read_the_output_parameter_details_for_the_recorded_method()
         {
             Given.we_have_an_xml_recording();
@@ -199,6 +208,17 @@ namespace BlackBox.Tests.Recorder
 
             we_add_two_contacts();
             we_get_all_except_the_first_one();
+            we_should_be_able_to_format_the_recording_as_XML();
+        }
+
+        private void we_have_an_xml_recording_passing_in_null_as_a_parameter()
+        {
+            recorder.ClearRecordings();
+
+            we_add_two_contacts();
+
+            addressBook.UpdateContact(null);
+
             we_should_be_able_to_format_the_recording_as_XML();
         }
 
