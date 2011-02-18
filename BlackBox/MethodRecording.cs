@@ -65,7 +65,11 @@ namespace BlackBox
             for (int i = 0; i < parameters.Length; ++i)
             {
                 string name = parameters[i].Name;
-                object value = sourceParameters[i].Copy();
+                
+                object value = null;
+                if(sourceParameters[i] != null)
+                    value = sourceParameters[i].Copy();
+                
                 targetParameters.Add(new ParameterRecording(name, value, parameters[i].ParameterType));
             }
         }
