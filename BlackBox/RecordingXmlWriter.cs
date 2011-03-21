@@ -63,11 +63,23 @@ namespace BlackBox
                                            new XElement("Parameters",
                                                from parameter in dependency.Method.GetParameters()
                                                select new XElement("FullyQualifiedType", parameter.ParameterType.AssemblyQualifiedName)),
-                                           new XElement("ReturnValues",
+                                               new XElement("ReturnValues",
                                                from returnValue in dependency.ReturnValues
-                                               select new XElement("ReturnValue",
-                                                   new XElement("FullyQualifiedType", returnValue.GetType().AssemblyQualifiedName),
-                                                   new XElement("Value", new XCData(returnValue.ToXml().ToString()))))));
+                                               select new XElement("ReturnValue", CreateDependencyReturnNode(returnValue))
+                                           )));
+
+        }
+
+        private static IEnumerable<XElement> CreateDependencyReturnNode(object dependency)
+        {
+            if (dependency == null)
+            {
+                yield return new XElement("FullyQualifiedType", "void");
+                yield return new XElement("Value", ValueNode(null));
+                yield break;
+            }
+            yield return new XElement("FullyQualifiedType", new XCData(dependency.GetType().AssemblyQualifiedName));
+            yield return new XElement("Value", new XCData(dependency.ToXml().ToString()));
         }
     }
 }

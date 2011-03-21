@@ -22,9 +22,7 @@ namespace BlackBox.CodeGeneration.Writer
             if (_configurationSectionIsWritten)
                 return;
 
-            string qualifiedName = _recordingReader.IsVoidMethod() ?
-                                   _recordingReader.GetInputParameters().First().Type.AssemblyQualifiedName : 
-                                   _recordingReader.GetAssemblyQualifiedNameOfReturnValue();
+            string qualifiedName = ConstructAssemblyQualifiedNameExample();
 
             _output.AppendLine("\t\tprotected override void ConfigureComparison(string filename)");
             _output.AppendLine("\t\t{");
@@ -42,6 +40,18 @@ namespace BlackBox.CodeGeneration.Writer
             _output.AppendLine();
 
             _configurationSectionIsWritten = true;
+        }
+
+        private string ConstructAssemblyQualifiedNameExample()
+        {
+            if (!_recordingReader.IsVoidMethod())
+                return _recordingReader.GetAssemblyQualifiedNameOfReturnValue();
+
+            bool hasInputParameters = _recordingReader.GetInputParameters().Any();
+            if (hasInputParameters)
+                return _recordingReader.GetInputParameters().First().Type.AssemblyQualifiedName;
+
+            return typeof(string).AssemblyQualifiedName;
         }
 
         private static string ConstructObjectPropertySelectorExample(string assemblyQualifiedName)
